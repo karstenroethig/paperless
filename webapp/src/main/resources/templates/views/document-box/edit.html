@@ -50,6 +50,7 @@
 			<div class="form-group row">
 				<label class="col-sm-2 col-form-label text-right">
 					<span th:text="#{default.archived.label}">Archived</span>
+					<span class="far fa-question-circle text-muted help-icon" id="documentBox_archived_help"></span>
 				</label>
 				<div class="col-sm-10 col-form-label">
 					<div class="custom-control custom-checkbox">
@@ -57,6 +58,14 @@
 						<label class="custom-control-label" for="archived"></label>
 					</div>
 					<div class="invalid-feedback" th:if="${#fields.hasErrors('archived')}" th:each="err : ${#fields.errors('archived')}" th:text="${err}">validation error</div>
+				</div>
+			</div>
+			<div class="form-group row" id="documentBox_archived_help_section" style="display: none;">
+				<div class="offset-sm-2 col-sm-10">
+					<div class="alert alert-light help-box">
+						<span class="help-box-icon far fa-question-circle fa-lg mt-2 mr-3 mb-3"></span>
+						<p th:text="#{documentBox.archived.help}">Help text</p>
+					</div>
 				</div>
 			</div>
 

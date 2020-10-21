@@ -27,6 +27,8 @@ $( document ).ready( function() {
 		link.attr( 'href', template.replace( '{id}', id ) );
 	});
 
+	initializeHelpIcons();
+
 	initializeSearchSortAndPagination();
 });
 
@@ -88,3 +90,17 @@ function initializeSearchSortAndPagination()
 function postShowSearchParams() {}
 
 function postDeleteSearchParams() {}
+
+function initializeHelpIcons()
+{
+	$('.help-icon').click(function(event) {
+		var sectionElement = $('#' + event.target.id + '_section');
+		if (sectionElement.length) {
+			if (sectionElement.is(':visible')) {
+				sectionElement.hide('slow');
+			} else {
+				sectionElement.show('slow');
+			}
+		}
+	});
+}

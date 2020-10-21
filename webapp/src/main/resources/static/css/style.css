@@ -6,6 +6,19 @@
 	cursor: pointer;
 }
 
+.help-icon {
+	cursor: pointer;
+}
+
+.help-box {
+	border: 1px solid darkgrey;
+}
+
+.help-box-icon {
+	color: black;
+	float: left;
+}
+
 .file-icon-color-word {
 	color: #007bff;
 }
