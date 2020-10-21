@@ -68,9 +68,11 @@ function initializeSearchSortAndPagination()
 
 	// sorting: display sorting sign in sorted column header
 	$('table thead th').each(function() {
-		var head = $(this);
-		if (head.attr('data-sort-prop') == sortProperty) {
-			head.append(sortDesc?'▾':'▴');
+		var headerSortPropName = $(this).attr('data-sort-prop');
+		if (headerSortPropName !== undefined) {
+			if (headerSortPropName == sortProperty) {
+				$(this).append(sortDesc?'▾':'▴');
+			}
 		}
 	});
 
