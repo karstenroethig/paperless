@@ -1,0 +1,90 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{layout :: layout-fragment(
+							~{::title},
+							~{::content},
+							null,
+							null,
+							'dashboard'
+							)}">
+<head>
+	<title th:text="#{application.title-pattern(#{application.name}, #{dashboard.label})}">Dashboard</title>
+</head>
+<body>
+
+	<div th:fragment="content">
+
+		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+			<h1 class="h2" th:text="#{dashboard.label}">Dashboard</h1>
+		</div>
+
+		<div th:replace="~{fragments/messages :: messages-fragment(${messages})}"></div>
+
+		<div class="row">
+
+			<div class="col-lg-6">
+
+				<div class="card mb-3">
+					<h3 class="card-header">Activity Stream</h3>
+					<ul class="list-group list-group-flush">
+						<li class="list-group-item">
+							<h6 class="card-subtitle mb-2 text-muted">4 minutes ago - 2020-10-15 10:42:21</h6>
+							<p class="card-text"><a href="#"><strong>Karsten</strong></a> commented on <a href="#">document name</a>.</p>
+							<div class="alert alert-secondary">
+								You successfully read this important message.
+							</div>
+						</li>
+						<li class="list-group-item">
+							<h6 class="card-subtitle mb-2 text-muted">4 minutes ago - 2020-10-15 10:42:21</h6>
+							<p class="card-text"><a href="#"><strong>Karsten</strong></a> attachted one file to <a href="#">document name</a>.</p>
+							<ul style="list-style-type: disc;">
+								<li>
+									<a href="#">filename.pdf</a>
+								</li>
+							</ul>
+						</li>
+						<li class="list-group-item">
+							<h6 class="card-subtitle mb-2 text-muted">4 minutes ago - 2020-10-15 10:42:21</h6>
+							<p class="card-text"><a href="#"><strong>Karsten</strong></a> updated 2 fields of <a href="#">document name</a>.</p>
+							<ul style="list-style-type: disc;">
+								<li>Logged '2h'</li>
+								<li>Changed the Remaining Estimate to '0h'</li>
+							</ul>
+						</li>
+					</ul>
+					<div class="card-body">
+						<a href="#" class="card-link">Show more</a>
+					</div>
+				</div>
+
+			</div>
+
+			<div class="col-lg-6">
+
+				<div class="card mb-3" th:if="${showAdminCard}">
+					<h3 class="card-header">Administration</h3>
+					<div class="card-body">
+						<div class="alert alert-danger" th:if="${numberOfNewRegisteredUsers gt 0}">
+							<a href="#" class="alert-link"><span th:text="${numberOfNewRegisteredUsers}">5</span> users</a> have registered and are waiting to be activated.
+						</div>
+						<div class="alert alert-danger" th:if="${hasNoDocumentTypes}">
+							<a th:href="@{/document-type/create}" class="alert-link">Add document types</a>, otherwise no documents can be created.
+						</div>
+						<div class="alert alert-warning" th:if="${hasNoDocumentBoxes}">
+							<a th:href="@{/document-box/create}" class="alert-link">Add document boxes</a> so that documents can be provided with all the necessary data.
+						</div>
+						<div class="alert alert-warning" th:if="${hasNoContacts}">
+							<a th:href="@{/contact/create}" class="alert-link">Add contacts</a> so that documents can be provided with all the necessary data.
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+</body>
+</html>

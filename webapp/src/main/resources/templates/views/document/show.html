@@ -1,0 +1,191 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{layout :: layout-fragment(
+							~{::title},
+							~{::content},
+							null,
+							~{:: #additionalJs},
+							'document'
+							)}">
+<head>
+	<title th:text="#{application.title-pattern(#{application.name}, #{document.label.plural}+' - '+#{document.show.label})}"></title>
+</head>
+<body>
+
+	<div th:fragment="content">
+
+		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+			<h1 class="h2">
+				<span th:text="#{document.show.label}">Show document</span>:
+				<span th:text="${document.title}">[title]</span>
+				<span th:if="${document.archived}" class="badge badge-secondary" th:text="#{default.archived.label}">Archived</span>
+			</h1>
+			<div class="btn-toolbar mb-2 mb-md-0">
+				<div class="btn-group mr-2">
+					<a th:href="@{/document/edit/{id}(id=${document.id})}" class="btn btn-sm btn-outline-secondary" th:text="#{default.button.edit.label}">Edit</a>
+				</div>
+				<div class="btn-group mr-2">
+					<a href="" class="btn btn-sm btn-outline-danger" data-toggle="modal" data-target="#deleteModal" th:attr="data-id=${document.id}" th:text="#{default.button.delete.label}">Delete</a>
+				</div>
+			</div>
+		</div>
+
+		<div th:replace="~{fragments/messages :: messages-fragment(${messages})}"></div>
+
+		<form style="padding-top: 10px;" action="#" method="post">
+
+			<div class="form-group row" th:if="${document.title!=null}">
+				<label class="col-sm-2 text-right" th:text="#{document.title.label}">Title</label>
+				<div class="col-sm-10" th:text="${document.title}">[title]</div>
+			</div>
+
+			<div class="form-group row" th:if="${document.documentType!=null}">
+				<label class="col-sm-2 text-right" th:text="#{document.documentType.label}">Document type</label>
+				<div class="col-sm-10" th:text="${document.documentType?.name}">[documentType.name]</div>
+			</div>
+
+			<div class="form-group row" th:if="${document.dateOfIssue!=null}">
+				<label class="col-sm-2 text-right" th:text="#{document.dateOfIssue.label}">Date of issue</label>
+				<div class="col-sm-10" th:text="${#temporals.format(document.dateOfIssue, #messages.msg('default.dateFormat'))}">[dateOfIssue]</div>
+			</div>
+
+			<div class="form-group row">
+				<label class="col-sm-2 text-right" th:text="#{document.fileAttachments.label}">Files</label>
+				<div class="col-sm-10">
+					<table class="table table-bordered table-sm">
+						<thead>
+							<tr>
+								<th th:text="#{fileAttachment.name.label}">Name</th>
+								<th class="text-right" th:text="#{fileAttachment.size.label}">Size</th>
+								<th class="text-right" th:text="#{default.date.createdDatetime.label}">Created</th>
+								<th th:text="#{default.table.operations.label}">Actions</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:if="${#lists.isEmpty(document.fileAttachments)}">
+								<td colspan="4" align="center" th:text="#{default.table.empty.text}">Data can not be found.</td>
+							</tr>
+							<tr th:each="fileAttachment : ${document.fileAttachments}">
+								<td>
+									<i th:class="${fileAttachment.icon.styleClass}"></i>
+									<span th:text="${fileAttachment.name}">[name]</span>
+								</td>
+								<td class="text-right">
+									<span th:text="${fileAttachment.sizeFormatted}">[sizeFormatted]</span>
+								</td>
+								<td class="text-right">
+									<span th:if="${fileAttachment.createdDatetime==null}" th:text="#{default.date.unknown}">Unknown</span>
+									<span th:if="${fileAttachment.createdDatetime!=null}" th:text="${#temporals.format(fileAttachment.createdDatetime, #messages.msg('default.dateTimeHHmmssFormat'))}">[createdDate]</span>
+								</td>
+								<td>
+									<div class="btn-group btn-group-sm">
+										<a th:href="@{/file-attachment/show/{id}(id=${fileAttachment.id})}" class="btn btn-outline-secondary btn-sm" target="_blank" th:text="#{default.button.show.label}">Show</a>
+										<button type="button" class="btn btn-outline-secondary btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											<span class="sr-only">Toggle Dropdown</span>
+										</button>
+										<div class="dropdown-menu dropdown-menu-right">
+											<a th:href="@{/file-attachment/show/{id}?inline=false(id=${fileAttachment.id})}" class="dropdown-item" th:text="#{default.button.download.label}">Download</a>
+											<a href="" class="dropdown-item" data-toggle="modal" data-target="#deleteModal_fileAttachment" th:attr="data-id=${fileAttachment.id}" th:text="#{default.button.delete.label}">Delete</a>
+										</div>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<button id="fileUploadButton" type="button" class="btn btn-outline-secondary btn-sm" th:text="#{fileAttachment.add.label}">Add file(s)</button>
+				</div>
+			</div>
+
+			<div class="form-group row" th:if="${!#lists.isEmpty(document.tags)}">
+				<label class="col-sm-2 text-right" th:text="#{document.tags.label}">Tags</label>
+				<div class="col-sm-10">
+					<span th:each="tag : ${document.tags}" class="badge badge-pill badge-info mr-1" th:text="${tag.name}">[tag.name]</span>
+				</div>
+			</div>
+
+			<div class="form-group row" th:if="${document.sender!=null}">
+				<label class="col-sm-2 text-right" th:text="#{document.sender.label}">Sender</label>
+				<div class="col-sm-10" th:text="${document.sender?.name}">[sender.name]</div>
+			</div>
+
+			<div class="form-group row" th:if="${document.receiver!=null}">
+				<label class="col-sm-2 text-right" th:text="#{document.receiver.label}">Receiver</label>
+				<div class="col-sm-10" th:text="${document.receiver?.name}">[receiver.name]</div>
+			</div>
+
+			<div class="form-group row" th:if="${document.documentBox!=null}">
+				<label class="col-sm-2 text-right" th:text="#{document.documentBox.label}">Document box</label>
+				<div class="col-sm-10" th:text="${document.documentBox?.name}">[documentBox.name]</div>
+			</div>
+
+			<div class="form-group row" th:if="${document.description!=null}">
+				<label class="col-sm-2 text-right" th:text="#{document.description.label}">Description</label>
+				<div class="col-sm-10" th:utext="${document.description}">[description]</div>
+			</div>
+
+			<div class="form-group row" th:if="${document.createdDatetime!=null}">
+				<label class="col-sm-2 text-right" th:text="#{default.date.createdDatetime.label}">Created</label>
+				<div class="col-sm-10" th:text="${#temporals.format(document.createdDatetime, #messages.msg('default.dateTimeHHmmssFormat'))}">[createdDatetime]</div>
+			</div>
+
+			<div class="form-group row" th:if="${document.updatedDatetime!=null}">
+				<label class="col-sm-2 text-right" th:text="#{default.date.updatedDatetime.label}">Updated</label>
+				<div class="col-sm-10" th:text="${#temporals.format(document.updatedDatetime, #messages.msg('default.dateTimeHHmmssFormat'))}">[updatedDatetime]</div>
+			</div>
+
+		</form>
+
+		<form id="fileUploadForm" th:object="${fileAttachmentUpload}" th:action="@{/file-attachment/save}" action="#" method="post" enctype="multipart/form-data">
+			<input type="hidden" th:field="*{document}"/>
+			<input type="file" th:field="*{files}" hidden multiple/>
+		</form>
+
+		<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="deleteModalLabel" th:text="#{document.deletePopup.title}">Delete document</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<span th:text="#{document.deletePopup.question}">Do you really want to delete this document?</span>
+					</div>
+					<div class="modal-footer">
+						<a href="" th:attr="data-href-template=@{/document/delete/{id}}" class="btn btn-danger" th:text="#{default.button.delete.label}">Delete</a>
+						<button type="button" class="btn btn-outline-secondary" data-dismiss="modal" th:text="#{default.button.cancel.label}">Cancel</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade syncIdModal" id="deleteModal_fileAttachment" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel_fileAttachment" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="deleteModalLabel_fileAttachment" th:text="#{fileAttachment.deletePopup.title}">Delete file</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<span th:text="#{fileAttachment.deletePopup.question}">Do you really want to delete this file?</span>
+					</div>
+					<div class="modal-footer">
+						<a href="" th:attr="data-href-template=@{/file-attachment/delete/{id}}" class="btn btn-danger" th:text="#{default.button.delete.label}">Delete</a>
+						<button type="button" class="btn btn-outline-secondary" data-dismiss="modal" th:text="#{default.button.cancel.label}">Cancel</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<th:block id="additionalJs">
+		<script th:src="@{/js/document-show.js}"></script>
+	</th:block>
+
+</body>
+</html>

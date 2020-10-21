@@ -1,0 +1,27 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{layout :: layout-fragment(
+							~{::title},
+							~{::content},
+							null,
+							null,
+							'error'
+							)}">
+<head>
+	<title th:text="#{application.title-pattern(#{application.name}, #{error.404.label})}">Page not found</title>
+</head>
+<body>
+
+	<div th:fragment="content">
+
+		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+			<h1 class="h2"><span th:text="#{error.404.label}">Page not found</span> <span class="text-muted">(404)</span></h1>
+		</div>
+
+		<p th:text="#{error.404.text}">The page you are trying to access could not be found.</p>
+
+	</div>
+
+</body>
+</html>

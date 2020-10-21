@@ -1,0 +1,127 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{layout-admin :: layout-fragment(
+							~{::title},
+							~{::content},
+							null,
+							null,
+							'admin'
+							)}">
+<head>
+	<title th:text="#{application.title-pattern(#{application.name}, #{utility.serverInfo.label})}">Server Info</title>
+</head>
+<body>
+
+	<div th:fragment="content">
+
+		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+			<h1 class="h2" th:text="#{utility.serverInfo.label}">Server Info</h1>
+		</div>
+
+		<div th:replace="~{fragments/messages :: messages-fragment(${messages})}"></div>
+
+		<table class="table table-bordered">
+			<tr>
+				<td width="20%" th:text="#{utility.serverInfo.systemInfo.version.label}">Server Version</td>
+				<td th:text="${#messages.msg('utility.serverInfo.systemInfo.version.text', serverInfo.systemInfo.version, serverInfo.systemInfo.revision, serverInfo.systemInfo.buildDate)}"></td>
+			</tr>
+			<tr>
+				<td th:text="#{utility.serverInfo.systemInfo.serverTime.label}">Server Time</td>
+				<td th:text="${serverInfo.systemInfo.serverTime}"></td>
+			</tr>
+			<tr>
+				<td th:text="#{utility.serverInfo.systemInfo.uptime.label}">Server Uptime</td>
+				<td th:text="${serverInfo.systemInfo.uptime}"></td>
+			</tr>
+		</table>
+
+		<fieldset>
+			<legend th:text="#{utility.serverInfo.memoryInfo.label}">Memory</legend>
+			<table class="table table-bordered">
+				<tr>
+					<td width="20%" th:text="#{utility.serverInfo.memoryInfo.total.label}">Total Memory</td>
+					<td th:text="${serverInfo.memoryInfo.totalFormated}"></td>
+				</tr>
+				<tr>
+					<td th:text="#{utility.serverInfo.memoryInfo.free.label}">Free Memory</td>
+					<td>
+						<span th:text="${serverInfo.memoryInfo.freeFormated}"></span> (<span th:text="${serverInfo.memoryInfo.freePercentage}"></span>%)
+					</td>
+				</tr>
+				<tr>
+					<td th:text="#{utility.serverInfo.memoryInfo.used.label}">Used Memory</td>
+					<td th:text="${serverInfo.memoryInfo.usedFormated}"></td>
+				</tr>
+			</table>
+		</fieldset>
+
+		<fieldset>
+			<legend th:text="#{utility.serverInfo.systemInfo.label}">System</legend>
+			<table class="table table-bordered">
+				<tr>
+					<td width="20%" th:text="#{utility.serverInfo.systemInfo.userDir.label}">Current Working Directory</td>
+					<td th:text="${serverInfo.systemInfo.userDir}"></td>
+				</tr>
+				<tr>
+					<td th:text="#{utility.serverInfo.systemInfo.javaVersion.label}">Java Version</td>
+					<td th:text="${serverInfo.systemInfo.javaVersion}"></td>
+				</tr>
+				<tr>
+					<td th:text="#{utility.serverInfo.systemInfo.javaVendor.label}">Java Vendor</td>
+					<td th:text="${serverInfo.systemInfo.javaVendor}"></td>
+				</tr>
+				<tr>
+					<td th:text="#{utility.serverInfo.systemInfo.javaRuntime.label}">Java Runtime</td>
+					<td th:text="${serverInfo.systemInfo.javaRuntime}"></td>
+				</tr>
+				<tr>
+					<td th:text="#{utility.serverInfo.systemInfo.javaVm.label}">Java VM</td>
+					<td th:text="${serverInfo.systemInfo.javaVm}"></td>
+				</tr>
+				<tr>
+					<td th:text="#{utility.serverInfo.systemInfo.javaVmVersion.label}">Java VM Version</td>
+					<td th:text="${serverInfo.systemInfo.javaVmVersion}"></td>
+				</tr>
+				<tr>
+					<td th:text="#{utility.serverInfo.systemInfo.javaHome.label}">Java Home</td>
+					<td th:text="${serverInfo.systemInfo.javaHome}"></td>
+				</tr>
+				<tr>
+					<td th:text="#{utility.serverInfo.systemInfo.userName.label}">User Name</td>
+					<td th:text="${serverInfo.systemInfo.userName}"></td>
+				</tr>
+				<tr>
+					<td th:text="#{utility.serverInfo.systemInfo.userTimezone.label}">User Timezone</td>
+					<td th:text="${serverInfo.systemInfo.userTimezone}"></td>
+				</tr>
+				<tr>
+					<td th:text="#{utility.serverInfo.systemInfo.userLocale.label}">User Locale</td>
+					<td th:text="${serverInfo.systemInfo.userLocale}"></td>
+				</tr>
+				<tr>
+					<td th:text="#{utility.serverInfo.systemInfo.fileEncoding.label}">System Encoding</td>
+					<td th:text="${serverInfo.systemInfo.fileEncoding}"></td>
+				</tr>
+				<tr>
+					<td th:text="#{utility.serverInfo.systemInfo.os.label}">Operating System</td>
+					<td>
+						<span th:text="${serverInfo.systemInfo.osName}"></span> <span th:text="${serverInfo.systemInfo.osVersion}"></span>
+					</td>
+				</tr>
+				<tr>
+					<td th:text="#{utility.serverInfo.systemInfo.osArchitecture.label}">OS Architecture</td>
+					<td th:text="${serverInfo.systemInfo.osArchitecture}"></td>
+				</tr>
+				<tr>
+					<td th:text="#{utility.serverInfo.systemInfo.vmArguments.label}">VM arguments</td>
+					<td>
+						<div th:each="argument : ${serverInfo.systemInfo.inputArguments}" th:text="${argument}"></div>
+					</td>
+				</tr>
+			</table>
+		</fieldset>
+
+	</div>
+
+</body>
+</html>

@@ -1,0 +1,33 @@
+#
+# Spring Boot configuration
+#  - options: https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+#
+
+server:
+  port: 8080
+  #contextPath: /wodsapp
+  # Necessary setting for reverse proxy (see https://docs.spring.io/spring-boot/docs/current/reference/html/howto-embedded-servlet-containers.html#howto-use-tomcat-behind-a-proxy-server)
+  use-forward-headers: true
+
+tomcat:
+  ajp:
+    enabled: false
+    port: 8009
+
+spring:
+
+  jpa:
+    databasePlatform: org.hibernate.dialect.MySQL5Dialect
+
+  datasource:
+    url: jdbc:mysql://localhost/paperless_test?useSSL=false
+    username: paperless_test_user
+    password: paperless_test_password
+    # Connection Pooling (siehe https://github.com/brettwooldridge/HikariCP#configuration-knobs-baby)
+    hikari:
+      connectionTimeout: 30000
+      idleTimeout: 30000
+      maxLifetime: 2000000
+      minimumIdle: 3
+      maximumPoolSize: 5
+      poolName: SpringBootHikariCP

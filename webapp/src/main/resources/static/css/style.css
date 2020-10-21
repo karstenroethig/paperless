@@ -1,0 +1,27 @@
+.required {
+	color: #F00;
+}
+
+.clickable {
+	cursor: pointer;
+}
+
+.file-icon-color-word {
+	color: #007bff;
+}
+
+.file-icon-color-excel {
+	color: #28a745;
+}
+
+.file-icon-color-powerpoint {
+	color: #dc3545;
+}
+
+.file-icon-color-archive {
+	color: #ffc107;
+}
+
+.file-icon-color-other {
+	color: #6c757d;
+}

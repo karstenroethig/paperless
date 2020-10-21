@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+	<changeSet id="1.0" author="roethig">
+
+		<!-- =============== -->
+		<!-- Table "contact" -->
+		<!-- =============== -->
+		<createTable tableName="contact">
+			<column name="id" type="${type.id}" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="name" type="varchar(255)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="archived" type="${type.boolean}" defaultValueBoolean="false">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+
+		<addUniqueConstraint tableName="contact" columnNames="name" constraintName="u_contact__name"/>
+
+		<!-- ==================== -->
+		<!-- Table "document_box" -->
+		<!-- ==================== -->
+		<createTable tableName="document_box">
+			<column name="id" type="${type.id}" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="name" type="varchar(255)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="description" type="longtext">
+				<constraints nullable="true"/>
+			</column>
+			<column name="archived" type="${type.boolean}" defaultValueBoolean="false">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+
+		<addUniqueConstraint tableName="document_box" columnNames="name" constraintName="u_document_box__name"/>
+
+		<!-- ===================== -->
+		<!-- Table "document_type" -->
+		<!-- ===================== -->
+		<createTable tableName="document_type">
+			<column name="id" type="${type.id}" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="name" type="varchar(255)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="description" type="longtext">
+				<constraints nullable="true"/>
+			</column>
+			<column name="archived" type="${type.boolean}" defaultValueBoolean="false">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+
+		<addUniqueConstraint tableName="document_type" columnNames="name" constraintName="u_document_type__name"/>
+
+		<!-- =========== -->
+		<!-- Table "tag" -->
+		<!-- =========== -->
+		<createTable tableName="tag">
+			<column name="id" type="${type.id}" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="name" type="varchar(255)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="description" type="longtext">
+				<constraints nullable="true"/>
+			</column>
+			<column name="archived" type="${type.boolean}" defaultValueBoolean="false">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+
+		<!-- ================ -->
+		<!-- Table "document" -->
+		<!-- ================ -->
+		<createTable tableName="document">
+			<column name="id" type="${type.id}" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="title" type="varchar(255)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="document_type_id" type="${type.idRef}">
+				<constraints nullable="false"/>
+			</column>
+			<column name="date_of_issue" type="date">
+				<constraints nullable="true"/>
+			</column>
+			<column name="sender_id" type="${type.idRef}">
+				<constraints nullable="true"/>
+			</column>
+			<column name="receiver_id" type="${type.idRef}">
+				<constraints nullable="true"/>
+			</column>
+			<column name="document_box_id" type="${type.idRef}">
+				<constraints nullable="true"/>
+			</column>
+			<column name="description" type="longtext">
+				<constraints nullable="true"/>
+			</column>
+			<column name="created_datetime" type="datetime">
+				<constraints nullable="false"/>
+			</column>
+			<column name="updated_datetime" type="datetime">
+				<constraints nullable="false"/>
+			</column>
+			<column name="archived" type="${type.boolean}" defaultValueBoolean="false">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+
+		<addForeignKeyConstraint
+			baseTableName="document" baseColumnNames="document_type_id"
+			referencedTableName="document_type" referencedColumnNames="id"
+			constraintName="fk_document__document_type_id__document_type"/>
+
+		<addForeignKeyConstraint
+			baseTableName="document" baseColumnNames="sender_id"
+			referencedTableName="contact" referencedColumnNames="id"
+			constraintName="fk_document__sender_id__contact"/>
+
+		<addForeignKeyConstraint
+			baseTableName="document" baseColumnNames="receiver_id"
+			referencedTableName="contact" referencedColumnNames="id"
+			constraintName="fk_document__receiver_id__contact"/>
+
+		<addForeignKeyConstraint
+			baseTableName="document" baseColumnNames="document_box_id"
+			referencedTableName="document_box" referencedColumnNames="id"
+			constraintName="fk_document__document_box_id__document_box"/>
+
+		<!-- ==================== -->
+		<!-- Table "document_tag" -->
+		<!-- ==================== -->
+		<createTable tableName="document_tag">
+			<column name="document_id" type="${type.idRef}">
+				<constraints nullable="false"/>
+			</column>
+			<column name="tag_id" type="${type.idRef}">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+
+		<addPrimaryKey tableName="document_tag" columnNames="document_id,tag_id" constraintName="pk_document_tag__document_id__tag_id"/>
+
+		<addForeignKeyConstraint
+			baseTableName="document_tag" baseColumnNames="document_id"
+			referencedTableName="document" referencedColumnNames="id"
+			constraintName="fk_document_tag__document_id__document"/>
+
+		<addForeignKeyConstraint
+			baseTableName="document_tag" baseColumnNames="tag_id"
+			referencedTableName="tag" referencedColumnNames="id"
+			constraintName="fk_document_tag__tag_id__tag"/>
+
+		<!-- ==================== -->
+		<!-- Table "file_storage" -->
+		<!-- ==================== -->
+		<createTable tableName="file_storage">
+			<column name="id" type="${type.id}" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="key" type="varchar(255)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="file_size" type="int">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+
+		<addUniqueConstraint tableName="file_storage" columnNames="key" constraintName="u_file_storage__key"/>
+
+		<!-- ======================= -->
+		<!-- Table "file_attachment" -->
+		<!-- ======================= -->
+		<createTable tableName="file_attachment">
+			<column name="id" type="${type.id}" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="key" type="varchar(255)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="file_storage_id" type="${type.idRef}">
+				<constraints nullable="false"/>
+			</column>
+			<column name="document_id" type="${type.idRef}">
+				<constraints nullable="false"/>
+			</column>
+			<column name="name" type="varchar(255)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="file_size" type="int">
+				<constraints nullable="false"/>
+			</column>
+			<column name="content_type" type="varchar(255)">
+				<constraints nullable="true"/>
+			</column>
+			<column name="hash" type="varchar(255)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="created_datetime" type="datetime">
+				<constraints nullable="false"/>
+			</column>
+			<column name="updated_datetime" type="datetime">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+
+		<addUniqueConstraint tableName="file_attachment" columnNames="key" constraintName="u_file_attachment__key"/>
+
+		<addForeignKeyConstraint
+			baseTableName="file_attachment" baseColumnNames="document_id"
+			referencedTableName="document" referencedColumnNames="id"
+			constraintName="fk_file_attachment__document_id__document"/>
+
+		<addForeignKeyConstraint
+			baseTableName="file_attachment" baseColumnNames="file_storage_id"
+			referencedTableName="file_storage" referencedColumnNames="id"
+			constraintName="fk_file_attachment__file_storage_id__file_storage"/>
+
+	</changeSet>
+
+</databaseChangeLog>

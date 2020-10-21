@@ -1,0 +1,32 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8" />
+</head>
+<body>
+
+	<th:block th:fragment="js-fragment">
+
+		<!-- JQuery -->
+		<script th:src="@{'/webjars/jquery/'+#{application.dependency.jquery}+'/jquery.min.js'}"></script>
+
+		<!-- Popper.js -->
+		<script th:src="@{'/webjars/popper.js/'+#{application.dependency.popper}+'/dist/umd/popper.min.js'}"></script>
+
+		<!-- Bootstrap -->
+		<script th:src="@{'/webjars/bootstrap/'+#{application.dependency.bootstrap}+'/js/bootstrap.min.js'}"></script>
+
+		<!-- Select2 -->
+		<script th:src="@{'/webjars/select2/'+#{application.dependency.select2}+'/dist/js/select2.min.js'}"></script>
+
+		<!-- Summernote -->
+		<script th:src="@{'/webjars/summernote/'+#{application.dependency.summernote}+'/summernote-bs4.min.js'}"></script>
+
+		<!-- App JavaScript -->
+		<script th:src="@{/js/app.js}"></script>
+
+	</th:block>
+
+</body>
+</html>

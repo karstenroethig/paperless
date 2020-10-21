@@ -1,0 +1,42 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	th:lang="${#locale.language}"
+	th:fragment="layout-fragment (title, content, additionalStyles, additionalJs, menu)">
+<head>
+
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<title th:replace="${title}"></title>
+
+	<link rel="shortcut icon" th:href="@{/images/favicon.ico}"/>
+
+	<link th:replace="~{fragments/style :: style-fragment}"/>
+
+	<th:block th:replace="${additionalStyles} ?: ~{}"></th:block>
+
+</head>
+<body>
+
+	<div th:replace="~{fragments/header :: header-fragment(${menu})}"></div>
+
+	<div class="container-fluid">
+		<div class="row">
+
+			<div th:replace="~{fragments/header-admin :: header-fragment(${menu})}"></div>
+
+			<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+
+				<div th:replace="${content}"></div>
+
+			</main>
+		</div>
+	</div>
+
+	<div th:replace="~{fragments/js :: js-fragment}"></div>
+
+	<th:blcok th:replace="${additionalJs} ?: ~{}"></th:block>
+
+</body>
+</html>

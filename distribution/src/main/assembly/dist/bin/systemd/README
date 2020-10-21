@@ -1,0 +1,33 @@
+= How to configure ${dist.service.name} as a systemd service
+
+== Create a app user
+
+    # groupadd -r ${dist.service.user}
+    # useradd -r -g ${dist.service.user} -d /opt/${dist.service.id} -s /sbin/nologin ${dist.service.user}
+
+== Install the app
+
+    # mkdir /opt/${dist.service.id}
+    # cd /opt/${dist.service.id}
+    # tar -zxf ${app.name.files}-V${project.version}.tar.gz -C /opt/${dist.service.id}
+    # chown -R ${dist.service.user}:${dist.service.user} /opt/${dist.service.id}
+
+== Configure systemd
+
+    # cp ${dist.service.id}.service /etc/systemd/system/
+    # chmod +x /opt/${dist.service.id}/bin/run.sh
+
+== Start and enable
+
+    # systemctl daemon-reload
+    # systemctl enable ${dist.service.id}.service
+    # systemctl start ${dist.service.id}.service
+
+== Remove
+
+    # systemctl stop ${dist.service.id}.service
+    # systemctl disable ${dist.service.id}.service
+    # rm /etc/systemd/system/${dist.service.id}.service
+    # rm /etc/systemd/system/${dist.service.id}.service symlinks that might be related
+    # systemctl daemon-reload
+    # systemctl reset-failed

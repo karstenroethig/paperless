@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>karstenroethig.paperless</groupId>
+	<artifactId>paperless-project</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<name>paperless :: Project</name>
+	<description>A spring boot web application for the paperless processing of personal documents.</description>
+
+	<organization>
+		<name>Karsten Röthig</name>
+		<url>http://github.com/karstenroethig/</url>
+	</organization>
+
+	<modules>
+		<module>webapp</module>
+		<module>documentation</module>
+		<module>distribution</module>
+	</modules>
+
+	<properties>
+		<java.version>11</java.version>
+
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.build.outputEncoding>UTF-8</project.build.outputEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+		<app.name.id>paperless</app.name.id>
+		<app.name.pretty>paperless</app.name.pretty>
+		<app.name.files>paperless</app.name.files>
+
+		<spring.boot.version>2.3.4.RELEASE</spring.boot.version>
+
+		<webjars-jquery.version>3.4.1</webjars-jquery.version>
+		<webjars-bootstrap.version>4.3.1</webjars-bootstrap.version>
+		<webjars-popper.version>1.16.0</webjars-popper.version>
+		<webjars-select2.version>4.0.3</webjars-select2.version>
+		<webjars-fontawesome.version>5.11.2</webjars-fontawesome.version>
+		<webjars-summernote.version>0.8.10</webjars-summernote.version>
+		<webjars-bootswatch-cosmo.version>4.2.1</webjars-bootswatch-cosmo.version>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+
+			<!-- Spring Boot -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-dependencies</artifactId>
+				<version>${spring.boot.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<!-- WebJARs -->
+			<dependency>
+				<groupId>org.webjars</groupId>
+				<artifactId>jquery</artifactId>
+				<version>${webjars-jquery.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.webjars</groupId>
+				<artifactId>bootstrap</artifactId>
+				<version>${webjars-bootstrap.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.webjars.npm</groupId>
+				<artifactId>popper.js</artifactId>
+				<version>${webjars-popper.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.webjars</groupId>
+				<artifactId>select2</artifactId>
+				<version>${webjars-select2.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.webjars</groupId>
+				<artifactId>font-awesome</artifactId>
+				<version>${webjars-fontawesome.version}</version>
+			</dependency>
+			<dependency>
+				<!-- https://summernote.org/ -->
+				<groupId>org.webjars</groupId>
+				<artifactId>summernote</artifactId>
+				<version>${webjars-summernote.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.webjars</groupId>
+				<artifactId>bootswatch-cosmo</artifactId>
+				<version>${webjars-bootswatch-cosmo.version}</version>
+			</dependency>
+
+			<!-- Commons -->
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-lang3</artifactId>
+				<version>3.9</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>2.6</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-codec</groupId>
+				<artifactId>commons-codec</artifactId>
+				<version>1.13</version>
+			</dependency>
+
+			<!-- Thumbnails with Thumbnailator -->
+			<dependency>
+				<groupId>net.coobird</groupId>
+				<artifactId>thumbnailator</artifactId>
+				<version>0.4.8</version>
+			</dependency>
+
+			<!-- Lombok -->
+			<dependency>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok</artifactId>
+				<version>1.18.10</version>
+				<scope>provided</scope>
+			</dependency>
+
+			<!-- Modules -->
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>paperless-webapp</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>paperless-documentation</artifactId>
+				<version>${project.version}</version>
+				<type>zip</type>
+			</dependency>
+
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-eclipse-plugin</artifactId>
+					<configuration>
+						<downloadSources>true</downloadSources>
+						<downloadJavadocs>true</downloadJavadocs>
+					</configuration>
+				</plugin>
+
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>build-helper-maven-plugin</artifactId>
+					<version>3.0.0</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>buildnumber-maven-plugin</artifactId>
+					<version>1.4</version>
+					<configuration>
+						<revisionOnScmFailure>ERR</revisionOnScmFailure>
+						<timestampFormat>{0,date,yyyy-MM-dd HH:mm:ss}</timestampFormat>
+						<!-- Get the scm revision once for all modules -->
+						<getRevisionOnlyOnce>true</getRevisionOnlyOnce>
+						<!-- Don't fail on modified local resources -->
+						<doCheck>false</doCheck>
+						<!-- Don't update SCM -->
+						<doUpdate>false</doUpdate>
+						<!-- Use short version of git revision -->
+						<shortRevisionLength>7</shortRevisionLength>
+						<providerImplementations>
+							<git>jgit</git>
+						</providerImplementations>
+						<!--skip>true</skip-->
+					</configuration>
+					<dependencies>
+						<dependency>
+							<groupId>org.apache.maven.scm</groupId>
+							<artifactId>maven-scm-api</artifactId>
+							<version>1.11.2</version>
+						</dependency>
+						<dependency>
+							<groupId>org.apache.maven.scm</groupId>
+							<artifactId>maven-scm-provider-jgit</artifactId>
+							<version>1.11.2</version>
+						</dependency>
+					</dependencies>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<configuration>
+						<release>${java.version}</release>
+						<source>${java.version}</source>
+						<target>${java.version}</target>
+					</configuration>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<configuration>
+						<archive>
+							<manifest>
+								<!-- This will add the following to the manifest file: -->
+								<!--   Implementation-Title: ${pom.name} -->
+								<!--   Implementation-Version: ${pom.version} -->
+								<!--   Implementation-Vendor-Id: ${pom.groupId} -->
+								<!--   Implementation-Vendor: ${pom.organization.name} -->
+								<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							</manifest>
+						</archive>
+					</configuration>
+				</plugin>
+
+				<plugin>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-maven-plugin</artifactId>
+					<version>${spring.boot.version}</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<version>3.2.0</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-site-plugin</artifactId>
+					<version>3.8.2</version>
+					<configuration>
+						<skip>true</skip>
+						<skipDeploy>true</skipDeploy>
+					</configuration>
+				</plugin>
+
+			</plugins>
+		</pluginManagement>
+
+		<plugins>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>buildnumber-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>validate</phase>
+						<goals>
+							<goal>create</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+	</build>
+
+	<scm>
+		<connection>scm:git:git://github.com/karstenroethig/paperless.git</connection>
+		<developerConnection>scm:git:git://github.com/karstenroethig/paperless.git</developerConnection>
+		<url>https://github.com/karstenroethig/paperless</url>
+	</scm>
+
+</project>

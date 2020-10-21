@@ -1,0 +1,73 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{layout :: layout-fragment(
+							~{::title},
+							~{::content},
+							null,
+							null,
+							'tag'
+							)}">
+<head>
+	<title th:text="#{application.title-pattern(#{application.name}, #{tag.label.plural}+' - '+#{tag.show.label})}"></title>
+</head>
+<body>
+
+	<div th:fragment="content">
+
+		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+			<h1 class="h2">
+				<span th:text="#{tag.show.label}">Show tag</span>:
+				<span th:text="${tag.name}">[name]</span>
+				<span th:if="${tag.archived}" class="badge badge-secondary" th:text="#{default.archived.label}">Archived</span>
+			</h1>
+			<div class="btn-toolbar mb-2 mb-md-0">
+				<div class="btn-group mr-2">
+					<a th:href="@{/tag/edit/{id}(id=${tag.id})}" class="btn btn-sm btn-outline-secondary" th:text="#{default.button.edit.label}">Edit</a>
+				</div>
+				<div class="btn-group mr-2">
+					<a href="" class="btn btn-sm btn-outline-danger" data-toggle="modal" data-target="#deleteModal" th:attr="data-id=${tag.id}" th:text="#{default.button.delete.label}">Delete</a>
+				</div>
+			</div>
+		</div>
+
+		<div th:replace="~{fragments/messages :: messages-fragment(${messages})}"></div>
+
+		<form style="padding-top: 10px;" action="#" method="post">
+
+			<div class="form-group row">
+				<label class="col-sm-2 text-right" th:text="#{tag.name.label}">Name</label>
+				<div class="col-sm-10" th:text="${tag.name}">[name]</div>
+			</div>
+
+			<div class="form-group row">
+				<label class="col-sm-2 text-right" th:text="#{tag.description.label}">Description</label>
+				<div class="col-sm-10" th:utext="${tag.description}">[description]</div>
+			</div>
+
+		</form>
+
+		<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="deleteModalLabel" th:text="#{tag.deletePopup.title}">Delete tag</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<span th:text="#{tag.deletePopup.question}">Do you really want to delete this tag?</span>
+					</div>
+					<div class="modal-footer">
+						<a href="" th:attr="data-href-template=@{/tag/delete/{id}}" class="btn btn-danger" th:text="#{default.button.delete.label}">Delete</a>
+						<button type="button" class="btn btn-outline-secondary" data-dismiss="modal" th:text="#{default.button.cancel.label}">Cancel</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+</body>
+</html>

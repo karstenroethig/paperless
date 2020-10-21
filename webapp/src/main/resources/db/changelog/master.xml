@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+	<property name="type.id" value="decimal(18,0)" dbms="h2"/>
+	<property name="type.id" value="bigint"        dbms="mysql,mariadb"/>
+	<property name="type.id" value="bigserial"     dbms="postgresql"/>
+	<property name="type.id" value="decimal(18,0)" dbms="mssql"/>
+
+	<property name="type.idRef" value="decimal(18,0)" dbms="h2"/>
+	<property name="type.idRef" value="bigint"        dbms="mysql,mariadb"/>
+	<property name="type.idRef" value="bigint"        dbms="postgresql"/>
+	<property name="type.idRef" value="decimal(18,0)" dbms="mssql"/>
+
+	<property name="type.boolean" value="boolean" dbms="h2"/>
+	<property name="type.boolean" value="bit(1)"  dbms="mysql,mariadb"/>
+	<property name="type.boolean" value="boolean" dbms="postgresql"/>
+	<property name="type.boolean" value="bit"     dbms="mssql"/>
+
+	<property name="now" value="CURRENT_TIMESTAMP()" dbms="h2"/>
+	<property name="now" value="NOW()" dbms="mysql,mariadb"/>
+
+	<preConditions>
+		<or>
+			<dbms type="h2"/>
+			<dbms type="mysql"/>
+			<dbms type="mariadb"/>
+		</or>
+	</preConditions>
+
+	<include file="db/changelog/1.0.xml"/>
+	<include file="db/changelog/testdata.xml"/>
+
+</databaseChangeLog>

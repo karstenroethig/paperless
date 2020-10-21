@@ -1,0 +1,30 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8" />
+</head>
+<body>
+
+	<th:block th:fragment="style-fragment">
+
+		<!-- Bootstrap -->
+<!-- 		<link rel="stylesheet" th:href="@{'/webjars/bootstrap/'+#{application.dependency.bootstrap}+'/css/bootstrap.min.css'}"/> -->
+		<link rel="stylesheet" th:href="@{'/webjars/bootswatch-cosmo/'+#{application.dependency.bootswatch-cosmo}+'/bootstrap.min.css'}"/>
+
+		<!-- Font Awesome -->
+		<link rel="stylesheet" th:href="@{'/webjars/font-awesome/'+#{application.dependency.fontawesome}+'/css/all.min.css'}"/>
+
+		<!-- Select2 -->
+		<link rel="stylesheet" th:href="@{'/webjars/select2/'+#{application.dependency.select2}+'/dist/css/select2.min.css'}"/>
+
+		<!-- Summernote -->
+		<link rel="stylesheet" th:href="@{'/webjars/summernote/'+#{application.dependency.summernote}+'/summernote-bs4.css'}"/>
+
+		<!-- App style -->
+		<link rel="stylesheet" th:href="@{/css/style.css}" />
+
+	</th:block>
+
+</body>
+</html>

@@ -1,0 +1,5 @@
+                          _           
+ _ __  __ _ _ __  ___ _ _| |___ ______
+| '_ \/ _` | '_ \/ -_) '_| / -_|_-<_-<
+| .__/\__,_| .__/\___|_| |_\___/__/__/
+|_|        |_|                        ${application.version} (running on Spring Boot ${spring-boot.version})

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>karstenroethig.paperless</groupId>
+		<artifactId>paperless-project</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+
+	<artifactId>paperless-distribution</artifactId>
+	<packaging>pom</packaging>
+
+	<name>paperless :: Distribution</name>
+	<description>With this module, the complete distribution of the application is packed as a ZIP file.</description>
+
+	<properties>
+		<dist.service.id>paperless</dist.service.id>
+		<dist.service.name>${app.name.pretty}</dist.service.name>
+		<dist.service.user>paperless</dist.service.user>
+	</properties>
+
+	<build>
+		<plugins>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<finalName>${app.name.files}_v${project.version}</finalName>
+							<appendAssemblyId>false</appendAssemblyId>
+							<descriptors>
+								<descriptor>src/main/assembly/distribution.xml</descriptor>
+							</descriptors>
+							<attach>true</attach>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+	</build>
+
+	<dependencies>
+
+		<!-- The web application -->
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>paperless-webapp</artifactId>
+		</dependency>
+
+		<!-- The documentation of the application -->
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>paperless-documentation</artifactId>
+			<type>zip</type>
+		</dependency>
+
+	</dependencies>
+
+</project>
