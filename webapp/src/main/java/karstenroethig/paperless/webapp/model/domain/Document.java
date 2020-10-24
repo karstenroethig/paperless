@@ -43,7 +43,7 @@ public class Document extends AbstractEntityId
 	@JoinColumn(name = "document_type_id")
 	private DocumentType documentType;
 
-	@Column(name = "date_of_issue", nullable = false)
+	@Column(name = "date_of_issue", nullable = true)
 	@Type(type = "org.hibernate.type.LocalDateType")
 	private LocalDate dateOfIssue;
 
@@ -76,6 +76,14 @@ public class Document extends AbstractEntityId
 	@Column(name = "updated_datetime", nullable = false)
 	@Type(type = "org.hibernate.type.LocalDateTimeType")
 	private LocalDateTime updatedDatetime;
+
+	@Column(name = "review_date", nullable = true)
+	@Type(type = "org.hibernate.type.LocalDateType")
+	private LocalDate reviewDate;
+
+	@Column(name = "deletion_date", nullable = true)
+	@Type(type = "org.hibernate.type.LocalDateType")
+	private LocalDate deletionDate;
 
 	@Column(name = "archived", nullable = false)
 	private boolean archived;

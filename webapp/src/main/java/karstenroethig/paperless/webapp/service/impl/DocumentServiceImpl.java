@@ -100,6 +100,8 @@ public class DocumentServiceImpl
 		document.setDocumentBox(documentBoxService.transform(documentDto.getDocumentBox()));
 		document.setDescription(documentDto.getDescription());
 		document.setUpdatedDatetime(LocalDateTime.now());
+		document.setReviewDate(documentDto.getReviewDate());
+		document.setDeletionDate(documentDto.getDeletionDate());
 		document.setArchived(documentDto.isArchived());
 
 		document.clearTags();
@@ -126,6 +128,8 @@ public class DocumentServiceImpl
 		documentDto.setDescription(document.getDescription());
 		documentDto.setCreatedDatetime(document.getCreatedDatetime());
 		documentDto.setUpdatedDatetime(document.getUpdatedDatetime());
+		documentDto.setReviewDate(document.getReviewDate());
+		documentDto.setDeletionDate(document.getDeletionDate());
 		documentDto.setArchived(document.isArchived());
 
 		List<FileAttachment> fileAttachments = document.getFileAttachments();

@@ -49,6 +49,12 @@ public class DocumentDto extends AbstractDtoId
 
 	private LocalDateTime updatedDatetime;
 
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate reviewDate;
+
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate deletionDate;
+
 	private boolean archived = false;
 
 	public void addFileAttachment(FileAttachmentDto fileAttachment)

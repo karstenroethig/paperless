@@ -53,6 +53,18 @@
 				<span class="badge badge-secondary" th:if="${searchParams.documentBox!=null}">
 					<span th:text="#{document.documentBox.label}">Document box</span>: <span th:text="${searchParams.documentBox.name}">[searchParams.documentBox]</span>
 				</span>
+				<span class="badge badge-secondary" th:if="${searchParams.reviewDateFrom!=null}">
+					<span th:text="#{document.search.reviewDateFrom.label}">Review date (from)</span>: <span th:text="${#temporals.format(searchParams.reviewDateFrom, #messages.msg('default.dateFormat'))}">[searchParams.reviewDateFrom]</span>
+				</span>
+				<span class="badge badge-secondary" th:if="${searchParams.reviewDateTo!=null}">
+					<span th:text="#{document.search.reviewDateTo.label}">Review date (to)</span>: <span th:text="${#temporals.format(searchParams.reviewDateTo, #messages.msg('default.dateFormat'))}">[searchParams.reviewDateTo]</span>
+				</span>
+				<span class="badge badge-secondary" th:if="${searchParams.deletionDateFrom!=null}">
+					<span th:text="#{document.search.deletionDateFrom.label}">Deletion date (from)</span>: <span th:text="${#temporals.format(searchParams.deletionDateFrom, #messages.msg('default.dateFormat'))}">[searchParams.deletionDateFrom]</span>
+				</span>
+				<span class="badge badge-secondary" th:if="${searchParams.deletionDateTo!=null}">
+					<span th:text="#{document.search.deletionDateTo.label}">Deletion date (to)</span>: <span th:text="${#temporals.format(searchParams.deletionDateTo, #messages.msg('default.dateFormat'))}">[searchParams.deletionDateTo]</span>
+				</span>
 				<span class="badge badge-secondary" th:if="${searchParams.showArchived}">
 					<span th:text="#{default.search.showArchived.label}">Show archived</span>
 				</span>
@@ -120,6 +132,22 @@
 								<option value=""></option>
 								<option th:each="box : ${allDocumentBoxes}" th:value="${{box}}" th:text="${box.name}"></option>
 							</select>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-sm-2 col-form-label text-right" th:text="#{document.search.reviewDateFromTo.label}">Review date (from/to)</label>
+						<div class="col-sm-2">
+							<input type="date" th:field="*{reviewDateFrom}" class="form-control">
+						</div>
+						<div class="col-sm-2">
+							<input type="date" th:field="*{reviewDateTo}" class="form-control">
+						</div>
+						<label class="col-sm-2 col-form-label text-right" th:text="#{document.search.deletionDateFromTo.label}">Deletion date (from/to)</label>
+						<div class="col-sm-2">
+							<input type="date" th:field="*{deletionDateFrom}" class="form-control">
+						</div>
+						<div class="col-sm-2">
+							<input type="date" th:field="*{deletionDateTo}" class="form-control">
 						</div>
 					</div>
 					<div class="form-group row">

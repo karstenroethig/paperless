@@ -77,6 +77,18 @@ public class DocumentSpecifications
 				if (documentSearchDto.getDocumentBox() != null && documentSearchDto.getDocumentBox().getId() != null)
 					restrictions.add(cb.equal(root.get(Document_.documentBox).get(DocumentBox_.id), documentSearchDto.getDocumentBox().getId()));
 
+				if (documentSearchDto.getReviewDateFrom() != null)
+					restrictions.add(cb.greaterThanOrEqualTo(root.get(Document_.reviewDate), documentSearchDto.getReviewDateFrom()));
+
+				if (documentSearchDto.getReviewDateTo() != null)
+					restrictions.add(cb.lessThanOrEqualTo(root.get(Document_.reviewDate), documentSearchDto.getReviewDateTo()));
+
+				if (documentSearchDto.getDeletionDateFrom() != null)
+					restrictions.add(cb.greaterThanOrEqualTo(root.get(Document_.deletionDate), documentSearchDto.getDeletionDateFrom()));
+
+				if (documentSearchDto.getDeletionDateTo() != null)
+					restrictions.add(cb.lessThanOrEqualTo(root.get(Document_.deletionDate), documentSearchDto.getDeletionDateTo()));
+
 				if (!documentSearchDto.isShowArchived())
 					restrictions.add(cb.equal(root.get(Document_.archived), Boolean.FALSE));
 

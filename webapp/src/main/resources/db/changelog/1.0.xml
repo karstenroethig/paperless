@@ -117,6 +117,12 @@
 			<column name="updated_datetime" type="datetime">
 				<constraints nullable="false"/>
 			</column>
+			<column name="review_date" type="date">
+				<constraints nullable="true"/>
+			</column>
+			<column name="deletion_date" type="date">
+				<constraints nullable="true"/>
+			</column>
 			<column name="archived" type="${type.boolean}" defaultValueBoolean="false">
 				<constraints nullable="false"/>
 			</column>

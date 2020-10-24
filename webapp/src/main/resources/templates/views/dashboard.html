@@ -80,6 +80,78 @@
 					</div>
 				</div>
 
+				<div class="card mb-3">
+					<h3 class="card-header" th:text="#{dashboard.card.review.title}">Review</h3>
+					<div class="card-body" th:if="${#lists.isEmpty(documentReviewPage.content)}">
+						<p th:text="#{dashboard.card.review.empty.text}">There are currently no documents to be reviewed.</p>
+					</div>
+					<div class="card-body" th:if="${!#lists.isEmpty(documentReviewPage.content)}">
+						<table class="table table-sm">
+							<thead>
+								<tr>
+									<th th:text="#{document.label}">Document</th>
+									<th class="text-right">Days</th>
+									<th class="text-right" th:text="#{document.reviewDate.label}">Review date</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="document : ${documentReviewPage.content}">
+									<td>
+										<a th:href="@{/document/show/{id}(id=${document.id})}" th:text="${document.title}">[title]</a>
+									</td>
+									<td class="text-right">
+										<span th:if="${document.reviewDate==null}" th:text="#{default.date.unknown}">Unknown</span>
+										<span th:if="${document.reviewDate!=null}" th:text="${dateUtils.daysFromDateUntilNow(document.reviewDate)}">[days]</span>
+									</td>
+									<td class="text-right">
+										<span th:if="${document.reviewDate==null}" th:text="#{default.date.unknown}">Unknown</span>
+										<span th:if="${document.reviewDate!=null}" th:text="${#temporals.format(document.reviewDate, #messages.msg('default.dateFormat'))}">[reviewDate]</span>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<span th:if="${documentReviewPage.hasNext()}">
+							<span th:text="${documentReviewPage.totalElements - documentReviewPage.numberOfElements}"></span> more (<a th:href="@{/document/search/review}">show all</a>)
+						</span>
+					</div>
+				</div>
+
+				<div class="card mb-3">
+					<h3 class="card-header" th:text="#{dashboard.card.deletion.title}">Deletion</h3>
+					<div class="card-body" th:if="${#lists.isEmpty(documentDeletionPage.content)}">
+						<p th:text="#{dashboard.card.deletion.empty.text}">There are currently no documents to delete.</p>
+					</div>
+					<div class="card-body" th:if="${!#lists.isEmpty(documentDeletionPage.content)}">
+						<table class="table table-sm">
+							<thead>
+								<tr>
+									<th th:text="#{document.label}">Document</th>
+									<th class="text-right">Days</th>
+									<th class="text-right" th:text="#{document.deletionDate.label}">Deletion date</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="document : ${documentDeletionPage.content}">
+									<td>
+										<a th:href="@{/document/show/{id}(id=${document.id})}" th:text="${document.title}">[title]</a>
+									</td>
+									<td class="text-right">
+										<span th:if="${document.deletionDate==null}" th:text="#{default.date.unknown}">Unknown</span>
+										<span th:if="${document.deletionDate!=null}" th:text="${dateUtils.daysFromDateUntilNow(document.deletionDate)}">[days]</span>
+									</td>
+									<td class="text-right">
+										<span th:if="${document.deletionDate==null}" th:text="#{default.date.unknown}">Unknown</span>
+										<span th:if="${document.deletionDate!=null}" th:text="${#temporals.format(document.deletionDate, #messages.msg('default.dateFormat'))}">[reviewDate]</span>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<span th:if="${documentDeletionPage.hasNext()}">
+							<span th:text="${documentDeletionPage.totalElements - documentDeletionPage.numberOfElements}"></span> more (<a th:href="@{/document/search/deletion}">show all</a>)
+						</span>
+					</div>
+				</div>
+
 			</div>
 
 		</div>

@@ -39,6 +39,18 @@ public class DocumentSearchDto extends AbstractArchivedSearchDto
 
 	private DocumentBoxDto documentBox;
 
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate reviewDateFrom;
+
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate reviewDateTo;
+
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate deletionDateFrom;
+
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate deletionDateTo;
+
 	@Override
 	public boolean hasParams()
 	{
@@ -49,6 +61,10 @@ public class DocumentSearchDto extends AbstractArchivedSearchDto
 				|| (contact != null && contact.getId() != null)
 				|| (tags != null && !tags.isEmpty())
 				|| (documentBox != null && documentBox.getId() != null)
+				|| reviewDateFrom != null
+				|| reviewDateTo != null
+				|| deletionDateFrom != null
+				|| deletionDateTo != null
 				|| super.hasParams();
 	}
 

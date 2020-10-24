@@ -1,6 +1,7 @@
 package karstenroethig.paperless.webapp.controller;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
@@ -91,6 +92,24 @@ public class DocumentController extends AbstractController
 
 		documentSearchBean.clear();
 		documentSearchBean.getDocumentSearchDto().setTags(Arrays.asList(tag));
+
+		return UrlMappings.redirect(UrlMappings.CONTROLLER_DOCUMENT, UrlMappings.ACTION_LIST);
+	}
+
+	@GetMapping(value = UrlMappings.ACTION_SEARCH + "/review")
+	public String searchReview(Model model)
+	{
+		documentSearchBean.clear();
+		documentSearchBean.getDocumentSearchDto().setReviewDateTo(LocalDate.now());
+
+		return UrlMappings.redirect(UrlMappings.CONTROLLER_DOCUMENT, UrlMappings.ACTION_LIST);
+	}
+
+	@GetMapping(value = UrlMappings.ACTION_SEARCH + "/deletion")
+	public String searchDeletion(Model model)
+	{
+		documentSearchBean.clear();
+		documentSearchBean.getDocumentSearchDto().setDeletionDateTo(LocalDate.now());
 
 		return UrlMappings.redirect(UrlMappings.CONTROLLER_DOCUMENT, UrlMappings.ACTION_LIST);
 	}
