@@ -1,0 +1,10 @@
+package karstenroethig.paperless.webapp.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+
+import karstenroethig.paperless.webapp.model.domain.Comment;
+
+public interface CommentRepository extends JpaRepository<Comment,Long>, JpaSpecificationExecutor<Comment>
+{
+}

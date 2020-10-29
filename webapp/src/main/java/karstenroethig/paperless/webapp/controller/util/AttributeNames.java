@@ -4,6 +4,10 @@ public class AttributeNames
 {
 	private AttributeNames() {}
 
+	// Utils
+	public static final String DATE_UTILS = "dateUtils";
+	public static final String TEXT_UTILS = "textUtils";
+
 	// Messages
 	public static final String MESSAGES = "messages";
 

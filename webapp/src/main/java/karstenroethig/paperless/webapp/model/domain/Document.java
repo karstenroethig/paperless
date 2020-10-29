@@ -66,7 +66,7 @@ public class Document extends AbstractEntityId
 	@JoinColumn(name = "document_box_id")
 	private DocumentBox documentBox;
 
-	@Column(name = "description", nullable = false)
+	@Column(name = "description", nullable = true)
 	private String description;
 
 	@Column(name = "created_datetime", nullable = false)
@@ -88,6 +88,9 @@ public class Document extends AbstractEntityId
 	@Column(name = "archived", nullable = false)
 	private boolean archived;
 
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "document")
+	private List<Comment> comments = new ArrayList<>();
+
 	public void addTag(Tag tag)
 	{
 		tags.add(tag);
@@ -102,5 +105,11 @@ public class Document extends AbstractEntityId
 	{
 		fileAttachment.setDocument(null);
 		fileAttachments.remove(fileAttachment);
+	}
+
+	public void removeComment(Comment comment)
+	{
+		comment.setDocument(null);
+		comments.remove(comment);
 	}
 }

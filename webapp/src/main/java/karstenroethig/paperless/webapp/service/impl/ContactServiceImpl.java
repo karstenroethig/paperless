@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import karstenroethig.paperless.webapp.model.domain.Contact;
+import karstenroethig.paperless.webapp.model.domain.Contact_;
 import karstenroethig.paperless.webapp.model.dto.ContactDto;
 import karstenroethig.paperless.webapp.model.dto.ContactSearchDto;
 import karstenroethig.paperless.webapp.model.dto.DocumentDto;
@@ -26,7 +27,7 @@ import karstenroethig.paperless.webapp.service.exceptions.StillInUseException;
 @Transactional
 public class ContactServiceImpl
 {
-	private static final PageRequest ALL_ELEMENTS_PAGE_REQUEST = PageRequest.of(0, Integer.MAX_VALUE, Sort.by("name"));
+	private static final PageRequest ALL_ELEMENTS_PAGE_REQUEST = PageRequest.of(0, Integer.MAX_VALUE, Sort.by(Contact_.NAME));
 
 	private static final ContactSearchDto EMPTY_SEACH_PARAMS = new ContactSearchDto();
 

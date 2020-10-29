@@ -8,6 +8,15 @@ public enum MessageKeyEnum
 	APPLICATION_REVISION("application.revision"),
 	APPLICATION_BUILD_DATE("application.buildDate"),
 
+	COMMENT_SAVE_INVALID("comment.save.invalid"),
+	COMMENT_SAVE_SUCCESS("comment.save.success"),
+	COMMENT_SAVE_ERROR("comment.save.error"),
+	COMMENT_UPDATE_INVALID("comment.update.invalid"),
+	COMMENT_UPDATE_SUCCESS("comment.update.success"),
+	COMMENT_UPDATE_ERROR("comment.update.error"),
+	COMMENT_DELETE_SUCCESS("comment.delete.success"),
+	COMMENT_DELETE_ERROR("comment.delete.error"),
+
 	CONTACT_SAVE_INVALID("contact.save.invalid"),
 	CONTACT_SAVE_SUCCESS("contact.save.success"),
 	CONTACT_SAVE_ERROR("contact.save.error"),

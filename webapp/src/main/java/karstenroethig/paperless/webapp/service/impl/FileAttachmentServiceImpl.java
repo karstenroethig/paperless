@@ -5,22 +5,26 @@ import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import karstenroethig.paperless.webapp.model.domain.Document;
 import karstenroethig.paperless.webapp.model.domain.FileAttachment;
+import karstenroethig.paperless.webapp.model.domain.FileAttachment_;
 import karstenroethig.paperless.webapp.model.dto.DocumentDto;
 import karstenroethig.paperless.webapp.model.dto.FileAttachmentDto;
 import karstenroethig.paperless.webapp.model.dto.FileAttachmentUploadDto;
 import karstenroethig.paperless.webapp.model.dto.FileStorageDto;
 import karstenroethig.paperless.webapp.repository.FileAttachmentRepository;
+import karstenroethig.paperless.webapp.repository.specification.FileAttachmentSpecifications;
 import karstenroethig.paperless.webapp.util.FileIconEnum;
 import karstenroethig.paperless.webapp.util.FilesizeUtils;
 
@@ -105,12 +109,20 @@ public class FileAttachmentServiceImpl
 		return true;
 	}
 
+	public List<FileAttachmentDto> findAllByDocument(DocumentDto document)
+	{
+		return fileAttachmentRepository.findAll(FileAttachmentSpecifications.matchesDocument(document), Sort.by(FileAttachment_.NAME))
+				.stream()
+				.map(this::transform)
+				.collect(Collectors.toList());
+	}
+
 	public FileAttachmentDto find(Long id)
 	{
 		return transform(fileAttachmentRepository.findById(id).orElse(null));
 	}
 
-	protected FileAttachmentDto transform(FileAttachment fileAttachment)
+	private FileAttachmentDto transform(FileAttachment fileAttachment)
 	{
 		if (fileAttachment == null)
 			return null;
@@ -118,7 +130,7 @@ public class FileAttachmentServiceImpl
 		FileAttachmentDto fileAttachmentDto = new FileAttachmentDto();
 
 		fileAttachmentDto.setId(fileAttachment.getId());
-		fileAttachmentDto.setDocumentId(fileAttachment.getDocument().getId());
+		fileAttachmentDto.setDocument(documentService.transform(fileAttachment.getDocument()));
 		fileAttachmentDto.setName(fileAttachment.getName());
 		fileAttachmentDto.setSize(fileAttachment.getSize());
 		fileAttachmentDto.setSizeFormatted(FilesizeUtils.formatFilesize(fileAttachment.getSize()));

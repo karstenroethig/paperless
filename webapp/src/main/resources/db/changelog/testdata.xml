@@ -26,6 +26,25 @@
 			<column name="updated_datetime" value="now()"/>
 		</insert>
 
+		<insert tableName="comment">
+			<column name="document_id" valueNumeric="select id from document where title='Testdokument'"/>
+			<column name="text" value="Ein erster Kommentar"/>
+			<column name="created_datetime" value="now()"/>
+		</insert>
+
+		<insert tableName="comment">
+			<column name="document_id" valueNumeric="select id from document where title='Testdokument'"/>
+			<column name="created_datetime" value="now()"/>
+			<column name="deleted" valueBoolean="true"/>
+		</insert>
+
+		<insert tableName="comment">
+			<column name="document_id" valueNumeric="select id from document where title='Testdokument'"/>
+			<column name="text" value="Ein bearbeiteter Kommentar"/>
+			<column name="created_datetime" value="now()"/>
+			<column name="updated_datetime" value="now()"/>
+		</insert>
+
 	</changeSet>
 
 </databaseChangeLog>

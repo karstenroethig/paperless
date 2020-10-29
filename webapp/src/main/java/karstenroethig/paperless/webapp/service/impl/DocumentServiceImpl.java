@@ -1,7 +1,6 @@
 package karstenroethig.paperless.webapp.service.impl;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Set;
 
 import javax.transaction.Transactional;
@@ -12,7 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import karstenroethig.paperless.webapp.model.domain.Document;
-import karstenroethig.paperless.webapp.model.domain.FileAttachment;
 import karstenroethig.paperless.webapp.model.domain.Tag;
 import karstenroethig.paperless.webapp.model.dto.DocumentDto;
 import karstenroethig.paperless.webapp.model.dto.DocumentSearchDto;
@@ -27,7 +25,6 @@ public class DocumentServiceImpl
 	@Autowired private ContactServiceImpl contactService;
 	@Autowired private DocumentBoxServiceImpl documentBoxService;
 	@Autowired private DocumentTypeServiceImpl documentTypeService;
-	@Autowired private FileAttachmentServiceImpl fileAttachmentService;
 	@Autowired private TagServiceImpl tagService;
 
 	@Autowired private DocumentRepository documentRepository;
@@ -111,7 +108,7 @@ public class DocumentServiceImpl
 		return document;
 	}
 
-	private DocumentDto transform(Document document)
+	protected DocumentDto transform(Document document)
 	{
 		if (document == null)
 			return null;
@@ -131,11 +128,6 @@ public class DocumentServiceImpl
 		documentDto.setReviewDate(document.getReviewDate());
 		documentDto.setDeletionDate(document.getDeletionDate());
 		documentDto.setArchived(document.isArchived());
-
-		List<FileAttachment> fileAttachments = document.getFileAttachments();
-		if (fileAttachments != null && !fileAttachments.isEmpty())
-			for (FileAttachment fileAttachment : fileAttachments)
-				documentDto.addFileAttachment(fileAttachmentService.transform(fileAttachment));
 
 		Set<Tag> tags = document.getTags();
 		if (tags != null && !tags.isEmpty())

@@ -23,6 +23,14 @@
 			</h1>
 			<div class="btn-toolbar mb-2 mb-md-0">
 				<div class="btn-group mr-2">
+					<div class="btn-group">
+						<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-ellipsis-v fa-sm"></i> </button>
+						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1">
+							<button type="button" class="dropdown-item add-comment-btn" th:text="#{comment.add.label}">Add comment</button>
+						</div>
+					</div>
+				</div>
+				<div class="btn-group mr-2">
 					<a th:href="@{/document/edit/{id}(id=${document.id})}" class="btn btn-sm btn-outline-secondary" th:text="#{default.button.edit.label}">Edit</a>
 				</div>
 				<div class="btn-group mr-2">
@@ -33,162 +41,233 @@
 
 		<div th:replace="~{fragments/messages :: messages-fragment(${messages})}"></div>
 
-		<form style="padding-top: 10px;" action="#" method="post">
+		<div class="form-group row" th:if="${document.title!=null}">
+			<label class="col-sm-2 text-right" th:text="#{document.title.label}">Title</label>
+			<div class="col-sm-10" th:text="${document.title}">[title]</div>
+		</div>
 
-			<div class="form-group row" th:if="${document.title!=null}">
-				<label class="col-sm-2 text-right" th:text="#{document.title.label}">Title</label>
-				<div class="col-sm-10" th:text="${document.title}">[title]</div>
-			</div>
+		<div class="form-group row" th:if="${document.documentType!=null}">
+			<label class="col-sm-2 text-right" th:text="#{document.documentType.label}">Document type</label>
+			<div class="col-sm-10" th:text="${document.documentType?.name}">[documentType.name]</div>
+		</div>
 
-			<div class="form-group row" th:if="${document.documentType!=null}">
-				<label class="col-sm-2 text-right" th:text="#{document.documentType.label}">Document type</label>
-				<div class="col-sm-10" th:text="${document.documentType?.name}">[documentType.name]</div>
-			</div>
-
-			<div class="form-group row" th:if="${document.dateOfIssue!=null}">
-				<label class="col-sm-2 text-right">
-					<span th:text="#{document.dateOfIssue.label}">Date of issue</span>
-					<span class="far fa-question-circle text-muted help-icon" id="document_dateOfIssue_help"></span>
-				</label>
-				<div class="col-sm-10" th:text="${#temporals.format(document.dateOfIssue, #messages.msg('default.dateFormat'))}">[dateOfIssue]</div>
-			</div>
-			<div class="form-group row" th:if="${document.dateOfIssue!=null}" id="document_dateOfIssue_help_section" style="display: none;">
-				<div class="offset-sm-2 col-sm-10">
-					<div class="alert alert-light help-box">
-						<span class="help-box-icon far fa-question-circle fa-lg mt-2 mr-3 mb-3"></span>
-						<p th:text="#{document.dateOfIssue.help}">Help text</p>
-					</div>
+		<div class="form-group row" th:if="${document.dateOfIssue!=null}">
+			<label class="col-sm-2 text-right">
+				<span th:text="#{document.dateOfIssue.label}">Date of issue</span>
+				<span class="far fa-question-circle text-muted help-icon" id="document_dateOfIssue_help"></span>
+			</label>
+			<div class="col-sm-10" th:text="${#temporals.format(document.dateOfIssue, #messages.msg('default.dateFormat'))}">[dateOfIssue]</div>
+		</div>
+		<div class="form-group row" th:if="${document.dateOfIssue!=null}" id="document_dateOfIssue_help_section" style="display: none;">
+			<div class="offset-sm-2 col-sm-10">
+				<div class="alert alert-light help-box">
+					<span class="help-box-icon far fa-question-circle fa-lg mt-2 mr-3 mb-3"></span>
+					<p th:text="#{document.dateOfIssue.help}">Help text</p>
 				</div>
 			</div>
+		</div>
 
-			<div class="form-group row">
-				<label class="col-sm-2 text-right" th:text="#{document.fileAttachments.label}">Files</label>
-				<div class="col-sm-10">
-					<table class="table table-bordered table-sm">
-						<thead>
-							<tr>
-								<th th:text="#{fileAttachment.name.label}">Name</th>
-								<th class="text-right" th:text="#{fileAttachment.size.label}">Size</th>
-								<th class="text-right" th:text="#{default.date.createdDatetime.label}">Created</th>
-								<th th:text="#{default.table.operations.label}">Actions</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr th:if="${#lists.isEmpty(document.fileAttachments)}">
-								<td colspan="4" align="center" th:text="#{default.table.empty.text}">Data can not be found.</td>
-							</tr>
-							<tr th:each="fileAttachment : ${document.fileAttachments}">
-								<td>
-									<i th:class="${fileAttachment.icon.styleClass}"></i>
-									<span th:text="${fileAttachment.name}">[name]</span>
-								</td>
-								<td class="text-right">
-									<span th:text="${fileAttachment.sizeFormatted}">[sizeFormatted]</span>
-								</td>
-								<td class="text-right">
-									<span th:if="${fileAttachment.createdDatetime==null}" th:text="#{default.date.unknown}">Unknown</span>
-									<span th:if="${fileAttachment.createdDatetime!=null}" th:text="${#temporals.format(fileAttachment.createdDatetime, #messages.msg('default.dateTimeHHmmssFormat'))}">[createdDate]</span>
-								</td>
-								<td>
-									<div class="btn-group btn-group-sm">
-										<a th:href="@{/file-attachment/show/{id}(id=${fileAttachment.id})}" class="btn btn-outline-secondary btn-sm" target="_blank" th:text="#{default.button.show.label}">Show</a>
-										<button type="button" class="btn btn-outline-secondary btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-											<span class="sr-only">Toggle Dropdown</span>
-										</button>
-										<div class="dropdown-menu dropdown-menu-right">
-											<a th:href="@{/file-attachment/show/{id}?inline=false(id=${fileAttachment.id})}" class="dropdown-item" th:text="#{default.button.download.label}">Download</a>
-											<a href="" class="dropdown-item" data-toggle="modal" data-target="#deleteModal_fileAttachment" th:attr="data-id=${fileAttachment.id}" th:text="#{default.button.delete.label}">Delete</a>
-										</div>
+		<div class="form-group row">
+			<label class="col-sm-2 text-right" th:text="#{document.fileAttachments.label}">Files</label>
+			<div class="col-sm-10">
+				<table class="table table-bordered table-sm">
+					<thead>
+						<tr>
+							<th th:text="#{fileAttachment.name.label}">Name</th>
+							<th class="text-right" th:text="#{fileAttachment.size.label}">Size</th>
+							<th class="text-right" th:text="#{default.date.createdDatetime.label}">Created</th>
+							<th th:text="#{default.table.operations.label}">Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:if="${#lists.isEmpty(fileAttachments)}">
+							<td colspan="4" align="center" th:text="#{default.table.empty.text}">Data can not be found.</td>
+						</tr>
+						<tr th:each="fileAttachment : ${fileAttachments}">
+							<td>
+								<i th:class="${fileAttachment.icon.styleClass}"></i>
+								<span th:text="${fileAttachment.name}">[name]</span>
+							</td>
+							<td class="text-right">
+								<span th:text="${fileAttachment.sizeFormatted}">[sizeFormatted]</span>
+							</td>
+							<td class="text-right">
+								<span th:if="${fileAttachment.createdDatetime==null}" th:text="#{default.date.unknown}">Unknown</span>
+								<span th:if="${fileAttachment.createdDatetime!=null}" th:text="${#temporals.format(fileAttachment.createdDatetime, #messages.msg('default.dateTimeHHmmssFormat'))}">[createdDate]</span>
+							</td>
+							<td>
+								<div class="btn-group btn-group-sm">
+									<a th:href="@{/file-attachment/show/{id}(id=${fileAttachment.id})}" class="btn btn-outline-secondary btn-sm" target="_blank" th:text="#{default.button.show.label}">Show</a>
+									<button type="button" class="btn btn-outline-secondary btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<span class="sr-only">Toggle Dropdown</span>
+									</button>
+									<div class="dropdown-menu dropdown-menu-right">
+										<a th:href="@{/file-attachment/show/{id}?inline=false(id=${fileAttachment.id})}" class="dropdown-item" th:text="#{default.button.download.label}">Download</a>
+										<a href="" class="dropdown-item" data-toggle="modal" data-target="#deleteModal_fileAttachment" th:attr="data-id=${fileAttachment.id}" th:text="#{default.button.delete.label}">Delete</a>
 									</div>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-					<button id="fileUploadButton" type="button" class="btn btn-outline-secondary btn-sm" th:text="#{fileAttachment.add.label}">Add file(s)</button>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<button id="fileUploadButton" type="button" class="btn btn-outline-secondary btn-sm" th:text="#{fileAttachment.add.label}">Add file(s)</button>
+			</div>
+		</div>
+
+		<div class="form-group row" th:if="${!#lists.isEmpty(document.tags)}">
+			<label class="col-sm-2 text-right" th:text="#{document.tags.label}">Tags</label>
+			<div class="col-sm-10">
+				<span th:each="tag : ${document.tags}" class="badge badge-pill badge-info mr-1" th:text="${tag.name}">[tag.name]</span>
+			</div>
+		</div>
+
+		<div class="form-group row" th:if="${document.sender!=null}">
+			<label class="col-sm-2 text-right" th:text="#{document.sender.label}">Sender</label>
+			<div class="col-sm-10" th:text="${document.sender?.name}">[sender.name]</div>
+		</div>
+
+		<div class="form-group row" th:if="${document.receiver!=null}">
+			<label class="col-sm-2 text-right" th:text="#{document.receiver.label}">Receiver</label>
+			<div class="col-sm-10" th:text="${document.receiver?.name}">[receiver.name]</div>
+		</div>
+
+		<div class="form-group row" th:if="${document.documentBox!=null}">
+			<label class="col-sm-2 text-right">
+				<span th:text="#{document.documentBox.label}">Document box</span>
+				<span class="far fa-question-circle text-muted help-icon" id="document_documentBox_help"></span>
+			</label>
+			<div class="col-sm-10" th:text="${document.documentBox?.name}">[documentBox.name]</div>
+		</div>
+		<div class="form-group row" th:if="${document.documentBox!=null}" id="document_documentBox_help_section" style="display: none;">
+			<div class="offset-sm-2 col-sm-10">
+				<div class="alert alert-light help-box">
+					<span class="help-box-icon far fa-question-circle fa-lg mt-2 mr-3 mb-3"></span>
+					<p th:text="#{document.documentBox.help}">Help text</p>
 				</div>
 			</div>
+		</div>
 
-			<div class="form-group row" th:if="${!#lists.isEmpty(document.tags)}">
-				<label class="col-sm-2 text-right" th:text="#{document.tags.label}">Tags</label>
-				<div class="col-sm-10">
-					<span th:each="tag : ${document.tags}" class="badge badge-pill badge-info mr-1" th:text="${tag.name}">[tag.name]</span>
+		<div class="form-group row" th:if="${document.description!=null}">
+			<label class="col-sm-2 text-right" th:text="#{document.description.label}">Description</label>
+			<div class="col-sm-10" th:utext="${document.description}">[description]</div>
+		</div>
+
+		<div class="form-group row" th:if="${document.createdDatetime!=null}">
+			<label class="col-sm-2 text-right" th:text="#{default.date.createdDatetime.label}">Created</label>
+			<div class="col-sm-10" th:text="${#temporals.format(document.createdDatetime, #messages.msg('default.dateTimeHHmmssFormat'))}">[createdDatetime]</div>
+		</div>
+
+		<div class="form-group row" th:if="${document.updatedDatetime!=null}">
+			<label class="col-sm-2 text-right" th:text="#{default.date.updatedDatetime.label}">Updated</label>
+			<div class="col-sm-10" th:text="${#temporals.format(document.updatedDatetime, #messages.msg('default.dateTimeHHmmssFormat'))}">[updatedDatetime]</div>
+		</div>
+
+		<div class="form-group row" th:if="${document.reviewDate!=null}">
+			<label class="col-sm-2 text-right">
+				<span th:text="#{document.reviewDate.label}">Review date</span>
+				<span class="far fa-question-circle text-muted help-icon" id="document_reviewDate_help"></span>
+			</label>
+			<div class="col-sm-10" th:text="${#temporals.format(document.reviewDate, #messages.msg('default.dateFormat'))}">[reviewDate]</div>
+		</div>
+		<div class="form-group row" th:if="${document.reviewDate!=null}" id="document_reviewDate_help_section" style="display: none;">
+			<div class="offset-sm-2 col-sm-10">
+				<div class="alert alert-light help-box">
+					<span class="help-box-icon far fa-question-circle fa-lg mt-2 mr-3 mb-3"></span>
+					<p th:text="#{document.reviewDate.help}">Help text</p>
 				</div>
 			</div>
+		</div>
 
-			<div class="form-group row" th:if="${document.sender!=null}">
-				<label class="col-sm-2 text-right" th:text="#{document.sender.label}">Sender</label>
-				<div class="col-sm-10" th:text="${document.sender?.name}">[sender.name]</div>
+		<div class="form-group row" th:if="${document.deletionDate!=null}">
+			<label class="col-sm-2 text-right">
+				<span th:text="#{document.deletionDate.label}">Review date</span>
+				<span class="far fa-question-circle text-muted help-icon" id="document_deletionDate_help"></span>
+			</label>
+			<div class="col-sm-10" th:text="${#temporals.format(document.deletionDate, #messages.msg('default.dateFormat'))}">[deletionDate]</div>
+		</div>
+		<div class="form-group row" th:if="${document.deletionDate!=null}" id="document_deletionDate_help_section" style="display: none;">
+			<div class="offset-sm-2 col-sm-10">
+				<div class="alert alert-light help-box">
+					<span class="help-box-icon far fa-question-circle fa-lg mt-2 mr-3 mb-3"></span>
+					<p th:text="#{document.deletionDate.help}">Help text</p>
+				</div>
 			</div>
+		</div>
 
-			<div class="form-group row" th:if="${document.receiver!=null}">
-				<label class="col-sm-2 text-right" th:text="#{document.receiver.label}">Receiver</label>
-				<div class="col-sm-10" th:text="${document.receiver?.name}">[receiver.name]</div>
-			</div>
+		<div class="form-group row">
+			<div class="col-sm-12">
+				<ul class="nav nav-tabs">
+					<li class="nav-item">
+						<a class="nav-link active" data-toggle="tab" href="#comments">Comments</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" data-toggle="tab" href="#activityStream">Activity Stream</a>
+					</li>
+				</ul>
+				<div id="myTabContent" class="tab-content">
 
-			<div class="form-group row" th:if="${document.documentBox!=null}">
-				<label class="col-sm-2 text-right">
-					<span th:text="#{document.documentBox.label}">Document box</span>
-					<span class="far fa-question-circle text-muted help-icon" id="document_documentBox_help"></span>
-				</label>
-				<div class="col-sm-10" th:text="${document.documentBox?.name}">[documentBox.name]</div>
-			</div>
-			<div class="form-group row" th:if="${document.documentBox!=null}" id="document_documentBox_help_section" style="display: none;">
-				<div class="offset-sm-2 col-sm-10">
-					<div class="alert alert-light help-box">
-						<span class="help-box-icon far fa-question-circle fa-lg mt-2 mr-3 mb-3"></span>
-						<p th:text="#{document.documentBox.help}">Help text</p>
+					<div class="tab-pane fade active show" id="comments">
+
+						<p class="pt-3 pl-2" th:if="${#lists.isEmpty(comments)}" th:text="#{comment.empty.text}">There are no comments posted.</p>
+
+						<div class="pt-3 pl-2 pr-2 border-bottom border-gray" th:each="comment : ${comments}" th:id="${'comment-'+comment.id}">
+							<p class="pb-3 mb-0" th:if="${!comment.deleted}">
+								<span class="d-block">
+									<a href="#"><strong>Karsten</strong></a>
+									<span th:if="${comment.createdDatetime!=null}" class="text-muted">
+										-
+										<span th:text="${dateUtils.prettyFormatDuration(comment.createdDatetime)}">4 minutes ago</span>
+										-
+										<span th:text="${#temporals.format(comment.createdDatetime, #messages.msg('default.dateTimeHHmmssFormat'))}">[createdDatetime]</span>
+									</span>
+									<span th:if="${comment.updatedDatetime!=null}">-</span>
+									<span th:if="${comment.updatedDatetime!=null}" class="text-danger" th:title="${dateUtils.prettyFormatDuration(comment.updatedDatetime) + ' - ' + #temporals.format(comment.updatedDatetime, #messages.msg('default.dateTimeHHmmssFormat'))}">edited</span>
+									<span class="float-right">
+										<a th:href="${'#comment-'+comment.id}" class="text-muted permlink-comment-btn" th:attr="data-id=${comment.id}"><i class="fas fa-link"></i></a>
+										<i class="fas fa-pencil-alt edit-comment-btn clickable text-muted" th:attr="data-id=${comment.id}"></i>
+										<a href="" class="text-muted" data-toggle="modal" data-target="#deleteModal_comment" th:attr="data-id=${comment.id}">
+											<i class="fas fa-trash-alt"></i>
+										</a>
+									</span>
+								</span>
+								<span th:id="${'commentText-'+comment.id}" th:utext="${textUtils.escapeHtml(comment.text)}">[comment.text]</span>
+							</p>
+							<p class="pb-3 mb-0" th:if="${comment.deleted}">
+								<em th:text="#{comment.deleted.text}">This comment has been deleted.</em>
+							</p>
+						</div>
+
+						<div class="pt-3 pl-2 pr-2" id="newCommentForm" style="display: none;">
+							<form th:object="${newComment}" th:action="@{/comment/save}" action="#" method="post">
+								<input type="hidden" th:field="*{document}"/>
+
+								<div class="form-group row">
+									<div class="col-sm-12">
+										<textarea class="form-control" th:field="*{text}" id="newCommentInput" rows="5" th:classappend="${#fields.hasErrors('text')} ? is-invalid"></textarea>
+										<div class="invalid-feedback" th:if="${#fields.hasErrors('text')}" th:each="err : ${#fields.errors('text')}" th:text="${err}">validation error</div>
+									</div>
+								</div>
+
+								<div class="form-group row">
+									<div class="col-sm-12">
+										<input type="submit" class="btn btn-sm btn-primary" th:value="#{default.button.save.label}" value="Save">
+										<button type="button" id="newCommentCancelButton" class="btn btn-sm btn-outline-secondary" th:text="#{default.button.cancel.label}">Cancel</button>
+									</div>
+								</div>
+							</form>
+						</div>
+
+						<button type="button" class="btn btn-sm btn-outline-secondary mt-3 add-comment-btn" th:text="#{comment.add.label}">Add comment</button>
+
 					</div>
-				</div>
-			</div>
 
-			<div class="form-group row" th:if="${document.description!=null}">
-				<label class="col-sm-2 text-right" th:text="#{document.description.label}">Description</label>
-				<div class="col-sm-10" th:utext="${document.description}">[description]</div>
-			</div>
-
-			<div class="form-group row" th:if="${document.createdDatetime!=null}">
-				<label class="col-sm-2 text-right" th:text="#{default.date.createdDatetime.label}">Created</label>
-				<div class="col-sm-10" th:text="${#temporals.format(document.createdDatetime, #messages.msg('default.dateTimeHHmmssFormat'))}">[createdDatetime]</div>
-			</div>
-
-			<div class="form-group row" th:if="${document.updatedDatetime!=null}">
-				<label class="col-sm-2 text-right" th:text="#{default.date.updatedDatetime.label}">Updated</label>
-				<div class="col-sm-10" th:text="${#temporals.format(document.updatedDatetime, #messages.msg('default.dateTimeHHmmssFormat'))}">[updatedDatetime]</div>
-			</div>
-
-			<div class="form-group row" th:if="${document.reviewDate!=null}">
-				<label class="col-sm-2 text-right">
-					<span th:text="#{document.reviewDate.label}">Review date</span>
-					<span class="far fa-question-circle text-muted help-icon" id="document_reviewDate_help"></span>
-				</label>
-				<div class="col-sm-10" th:text="${#temporals.format(document.reviewDate, #messages.msg('default.dateFormat'))}">[reviewDate]</div>
-			</div>
-			<div class="form-group row" th:if="${document.reviewDate!=null}" id="document_reviewDate_help_section" style="display: none;">
-				<div class="offset-sm-2 col-sm-10">
-					<div class="alert alert-light help-box">
-						<span class="help-box-icon far fa-question-circle fa-lg mt-2 mr-3 mb-3"></span>
-						<p th:text="#{document.reviewDate.help}">Help text</p>
+					<div class="tab-pane fade" id="activityStream">
+						<p class="pt-3 pl-2">Coming soon</p>
 					</div>
+
 				</div>
 			</div>
-
-			<div class="form-group row" th:if="${document.deletionDate!=null}">
-				<label class="col-sm-2 text-right">
-					<span th:text="#{document.deletionDate.label}">Review date</span>
-					<span class="far fa-question-circle text-muted help-icon" id="document_deletionDate_help"></span>
-				</label>
-				<div class="col-sm-10" th:text="${#temporals.format(document.deletionDate, #messages.msg('default.dateFormat'))}">[deletionDate]</div>
-			</div>
-			<div class="form-group row" th:if="${document.deletionDate!=null}" id="document_deletionDate_help_section" style="display: none;">
-				<div class="offset-sm-2 col-sm-10">
-					<div class="alert alert-light help-box">
-						<span class="help-box-icon far fa-question-circle fa-lg mt-2 mr-3 mb-3"></span>
-						<p th:text="#{document.deletionDate.help}">Help text</p>
-					</div>
-				</div>
-			</div>
-
-		</form>
+		</div>
 
 		<form id="fileUploadForm" th:object="${fileAttachmentUpload}" th:action="@{/file-attachment/save}" action="#" method="post" enctype="multipart/form-data">
 			<input type="hidden" th:field="*{document}"/>
@@ -234,6 +313,34 @@
 				</div>
 			</div>
 		</div>
+
+		<div class="modal fade syncIdModal" id="deleteModal_comment" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel_comment" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="deleteModalLabel_comment" th:text="#{comment.deletePopup.title}">Delete comment</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<span th:text="#{comment.deletePopup.question}">Do you really want to delete this comment?</span>
+					</div>
+					<div class="modal-footer">
+						<a href="" th:attr="data-href-template=@{/comment/delete/{id}}" class="btn btn-danger" th:text="#{default.button.delete.label}">Delete</a>
+						<button type="button" class="btn btn-outline-secondary" data-dismiss="modal" th:text="#{default.button.cancel.label}">Cancel</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script th:inline="javascript">
+			/*<![CDATA[*/
+			var documentId = /*[[${document.id}]]*/ null;
+			var messages_defaultButtonSaveLabel = /*[[#{default.button.save.label}]]*/ 'Save';
+			var messages_defaultButtonCancelLabel = /*[[#{default.button.cancel.label}]]*/ 'Cancel';
+			/*]]>*/
+		</script>
 
 	</div>
 

@@ -27,6 +27,7 @@ import karstenroethig.paperless.webapp.controller.exceptions.NotFoundException;
 import karstenroethig.paperless.webapp.controller.util.AttributeNames;
 import karstenroethig.paperless.webapp.controller.util.UrlMappings;
 import karstenroethig.paperless.webapp.controller.util.ViewEnum;
+import karstenroethig.paperless.webapp.model.domain.Contact_;
 import karstenroethig.paperless.webapp.model.dto.ContactDto;
 import karstenroethig.paperless.webapp.model.dto.ContactSearchDto;
 import karstenroethig.paperless.webapp.service.exceptions.AlreadyExistsException;
@@ -45,7 +46,7 @@ public class ContactController extends AbstractController
 	@Autowired private ContactSearchBean contactSearchBean;
 
 	@GetMapping(value = UrlMappings.ACTION_LIST)
-	public String list(Model model, @PageableDefault(size = 20, sort = "name") Pageable pageable)
+	public String list(Model model, @PageableDefault(size = 20, sort = Contact_.NAME) Pageable pageable)
 	{
 		Page<ContactDto> resultsPage = contactService.find(contactSearchBean.getContactSearchDto(), pageable);
 		addPagingAttributes(model, resultsPage);

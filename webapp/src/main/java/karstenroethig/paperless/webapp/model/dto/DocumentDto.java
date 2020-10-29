@@ -37,8 +37,6 @@ public class DocumentDto extends AbstractDtoId
 
 	private ContactDto receiver;
 
-	private List<FileAttachmentDto> fileAttachments = new ArrayList<>();
-
 	private List<TagDto> tags = new ArrayList<>();
 
 	private DocumentBoxDto documentBox;
@@ -56,11 +54,6 @@ public class DocumentDto extends AbstractDtoId
 	private LocalDate deletionDate;
 
 	private boolean archived = false;
-
-	public void addFileAttachment(FileAttachmentDto fileAttachment)
-	{
-		fileAttachments.add(fileAttachment);
-	}
 
 	public void addTag(TagDto tag)
 	{

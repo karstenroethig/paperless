@@ -31,9 +31,11 @@ import karstenroethig.paperless.webapp.controller.exceptions.NotFoundException;
 import karstenroethig.paperless.webapp.controller.util.AttributeNames;
 import karstenroethig.paperless.webapp.controller.util.UrlMappings;
 import karstenroethig.paperless.webapp.controller.util.ViewEnum;
+import karstenroethig.paperless.webapp.model.domain.Document_;
 import karstenroethig.paperless.webapp.model.dto.DocumentDto;
 import karstenroethig.paperless.webapp.model.dto.DocumentSearchDto;
 import karstenroethig.paperless.webapp.model.dto.TagDto;
+import karstenroethig.paperless.webapp.service.impl.CommentServiceImpl;
 import karstenroethig.paperless.webapp.service.impl.ContactServiceImpl;
 import karstenroethig.paperless.webapp.service.impl.DocumentBoxServiceImpl;
 import karstenroethig.paperless.webapp.service.impl.DocumentServiceImpl;
@@ -48,6 +50,7 @@ import karstenroethig.paperless.webapp.util.Messages;
 @RequestMapping(UrlMappings.CONTROLLER_DOCUMENT)
 public class DocumentController extends AbstractController
 {
+	@Autowired private CommentServiceImpl commentService;
 	@Autowired private ContactServiceImpl contactService;
 	@Autowired private DocumentServiceImpl documentService;
 	@Autowired private DocumentBoxServiceImpl documentBoxService;
@@ -58,7 +61,7 @@ public class DocumentController extends AbstractController
 	@Autowired private DocumentSearchBean documentSearchBean;
 
 	@GetMapping(value = UrlMappings.ACTION_LIST)
-	public String list(Model model, @PageableDefault(size = 20, sort = "title") Pageable pageable)
+	public String list(Model model, @PageableDefault(size = 20, sort = Document_.TITLE) Pageable pageable)
 	{
 		Page<DocumentDto> resultsPage = documentService.find(documentSearchBean.getDocumentSearchDto(), pageable);
 		addPagingAttributes(model, resultsPage);
@@ -122,7 +125,12 @@ public class DocumentController extends AbstractController
 			throw new NotFoundException(String.valueOf(id));
 
 		model.addAttribute("document", document);
+		model.addAttribute("fileAttachments", fileAttachmentService.findAllByDocument(document));
+		model.addAttribute("comments", commentService.findAllByDocument(document));
+
 		model.addAttribute("fileAttachmentUpload", fileAttachmentService.create(document));
+		model.addAttribute("newComment", commentService.create(document));
+
 		return ViewEnum.DOCUMENT_SHOW.getViewName();
 	}
 

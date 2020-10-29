@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import karstenroethig.paperless.webapp.model.domain.DocumentType;
+import karstenroethig.paperless.webapp.model.domain.DocumentType_;
 import karstenroethig.paperless.webapp.model.dto.DocumentDto;
 import karstenroethig.paperless.webapp.model.dto.DocumentSearchDto;
 import karstenroethig.paperless.webapp.model.dto.DocumentTypeDto;
@@ -25,7 +26,7 @@ import karstenroethig.paperless.webapp.service.exceptions.StillInUseException;
 @Transactional
 public class DocumentTypeServiceImpl
 {
-	private static final PageRequest ALL_ELEMENTS_PAGE_REQUEST = PageRequest.of(0, Integer.MAX_VALUE, Sort.by("name"));
+	private static final PageRequest ALL_ELEMENTS_PAGE_REQUEST = PageRequest.of(0, Integer.MAX_VALUE, Sort.by(DocumentType_.NAME));
 
 	private static final DocumentTypeSearchDto EMPTY_SEACH_PARAMS = new DocumentTypeSearchDto();
 

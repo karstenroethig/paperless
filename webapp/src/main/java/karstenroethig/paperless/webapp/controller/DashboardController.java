@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import karstenroethig.paperless.webapp.controller.util.DateUtils;
 import karstenroethig.paperless.webapp.controller.util.UrlMappings;
 import karstenroethig.paperless.webapp.controller.util.ViewEnum;
 import karstenroethig.paperless.webapp.model.domain.Document_;
@@ -37,8 +36,6 @@ public class DashboardController
 		addAttributesForAdminCard(model);
 		addAttributesForReviewCard(model);
 		addAttributesForDeletionCard(model);
-
-		model.addAttribute("dateUtils", DateUtils.INSTANCE);
 
 		return ViewEnum.DASHBOARD.getViewName();
 	}

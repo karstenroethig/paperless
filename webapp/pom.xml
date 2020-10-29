@@ -136,10 +136,10 @@
 			<artifactId>commons-codec</artifactId>
 		</dependency>
 
-		<!-- Thumbnails with Thumbnailator -->
+		<!-- prettytime (see https://www.ocpsoft.org/prettytime/) -->
 		<dependency>
-			<groupId>net.coobird</groupId>
-			<artifactId>thumbnailator</artifactId>
+			<groupId>org.ocpsoft.prettytime</groupId>
+			<artifactId>prettytime</artifactId>
 		</dependency>
 
 		<!-- Lombok -->

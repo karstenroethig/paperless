@@ -27,6 +27,7 @@ import karstenroethig.paperless.webapp.controller.exceptions.NotFoundException;
 import karstenroethig.paperless.webapp.controller.util.AttributeNames;
 import karstenroethig.paperless.webapp.controller.util.UrlMappings;
 import karstenroethig.paperless.webapp.controller.util.ViewEnum;
+import karstenroethig.paperless.webapp.model.domain.DocumentBox_;
 import karstenroethig.paperless.webapp.model.dto.DocumentBoxDto;
 import karstenroethig.paperless.webapp.model.dto.DocumentBoxSearchDto;
 import karstenroethig.paperless.webapp.service.exceptions.AlreadyExistsException;
@@ -45,7 +46,7 @@ public class DocumentBoxController extends AbstractController
 	@Autowired private DocumentBoxSearchBean documentBoxSearchBean;
 
 	@GetMapping(value = UrlMappings.ACTION_LIST)
-	public String list(Model model, @PageableDefault(size = 20, sort = "name") Pageable pageable)
+	public String list(Model model, @PageableDefault(size = 20, sort = DocumentBox_.NAME) Pageable pageable)
 	{
 		Page<DocumentBoxDto> resultsPage = documentBoxService.find(documentBoxSearchBean.getDocumentBoxSearchDto(), pageable);
 		addPagingAttributes(model, resultsPage);

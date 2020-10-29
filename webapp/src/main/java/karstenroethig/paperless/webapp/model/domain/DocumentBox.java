@@ -23,7 +23,7 @@ public class DocumentBox extends AbstractEntityId
 	@Column(name = "name", length = 255, nullable = false)
 	private String name;
 
-	@Column(name = "description", nullable = false)
+	@Column(name = "description", nullable = true)
 	private String description;
 
 	@Column(name = "archived", nullable = false)

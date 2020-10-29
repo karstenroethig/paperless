@@ -237,6 +237,35 @@
 			referencedTableName="file_storage" referencedColumnNames="id"
 			constraintName="fk_file_attachment__file_storage_id__file_storage"/>
 
+		<!-- =============== -->
+		<!-- Table "comment" -->
+		<!-- =============== -->
+		<createTable tableName="comment">
+			<column name="id" type="${type.id}" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="document_id" type="${type.idRef}">
+				<constraints nullable="false"/>
+			</column>
+			<column name="text" type="longtext">
+				<constraints nullable="true"/>
+			</column>
+			<column name="created_datetime" type="datetime">
+				<constraints nullable="false"/>
+			</column>
+			<column name="updated_datetime" type="datetime">
+				<constraints nullable="true"/>
+			</column>
+			<column name="deleted" type="${type.boolean}" defaultValueBoolean="false">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+
+		<addForeignKeyConstraint
+			baseTableName="comment" baseColumnNames="document_id"
+			referencedTableName="document" referencedColumnNames="id"
+			constraintName="fk_comment__document_id__document"/>
+
 	</changeSet>
 
 </databaseChangeLog>

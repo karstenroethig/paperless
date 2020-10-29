@@ -78,7 +78,7 @@ public class FileAttachmentController extends AbstractController
 			redirectAttributes.addFlashAttribute(AttributeNames.MESSAGES,
 				Messages.createWithError(MessageKeyEnum.FILE_ATTACHMENT_DELETE_ERROR, fileAttachment.getName()));
 
-		return UrlMappings.redirectWithId(UrlMappings.CONTROLLER_DOCUMENT, UrlMappings.ACTION_SHOW, fileAttachment.getDocumentId());
+		return UrlMappings.redirectWithId(UrlMappings.CONTROLLER_DOCUMENT, UrlMappings.ACTION_SHOW, fileAttachment.getDocument().getId());
 	}
 
 	@PostMapping(value = UrlMappings.ACTION_SAVE)

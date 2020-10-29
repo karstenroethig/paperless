@@ -21,7 +21,7 @@
 
 		<div th:replace="~{fragments/messages :: messages-fragment(${messages})}"></div>
 
-		<form style="padding-top: 10px;" th:object="${documentBox}" th:action="@{/document-box/save}" action="#" method="post">
+		<form th:object="${documentBox}" th:action="@{/document-box/save}" action="#" method="post">
 
 			<div class="form-group row">
 				<label class="col-sm-2 col-form-label text-right">

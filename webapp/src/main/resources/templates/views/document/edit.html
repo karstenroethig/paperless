@@ -24,7 +24,7 @@
 
 		<div th:replace="~{fragments/messages :: messages-fragment(${messages})}"></div>
 
-		<form style="padding-top: 10px;" th:object="${document}" th:action="@{/document/update}" action="#" method="post">
+		<form th:object="${document}" th:action="@{/document/update}" action="#" method="post">
 			<input type="hidden" th:field="*{id}"/>
 
 			<div class="form-group row">
