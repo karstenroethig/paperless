@@ -28,7 +28,7 @@
 
 		<div class="row">
 			<div class="col-sm-10">
-				<form class="form-inline" th:object="${searchParams}" th:action="@{/document-box/search}" action="#" method="post">
+				<form class="form-inline" th:object="${searchParams}" th:action="@{/document-box/search}" action="#" method="post" autocomplete="off">
 					<div class="form-check form-check-inline">
 						<input class="form-check-input" type="checkbox" th:field="*{showArchived}" onchange="this.form.submit();">
 						<label class="form-check-label" th:text="#{default.search.showArchived.label}">Show archived</label>
@@ -36,7 +36,7 @@
 				</form>
 			</div>
 			<div class="col-sm-2">
-				<form class="form-inline float-right mb-2">
+				<form class="form-inline float-right mb-2" autocomplete="off">
 					<select class="form-control mr-2 pagination-pagesize">
 						<option th:each="size : ${availablePagesizes}" th:value="${size}" th:text="${size}" th:selected="${size == page.size}"></option>
 					</select>
@@ -83,7 +83,7 @@
 
 		<div class="row" th:if="${page.hasContent()}">
 			<div class="col-sm-12">
-				<form class="form-inline float-right" th:with="sortParam=${sortProperty+','+(sortDesc?'desc':'asc')}">
+				<form class="form-inline float-right" th:with="sortParam=${sortProperty+','+(sortDesc?'desc':'asc')}" autocomplete="off">
 					<span class="mr-2">
 						<span th:text="${currentItems}">[currentItems]</span>
 						<span th:text="#{default.pagination.pageOfPages.label}">of</span>

@@ -69,7 +69,7 @@ $( document ).ready( function() {
 			var commentText = $('#commentText-' + commentId).html();
 
 			var html = '';
-			html += '<form action="/comment/update" method="post" id="editCommentForm-' + commentId + '">';
+			html += '<form action="/comment/update" method="post" id="editCommentForm-' + commentId + '" autocomplete="off">';
 			html += '	<input type="hidden" id="id" name="id" value="' + commentId + '">';
 			html += '	<input type="hidden" id="document" name="document" value="' + documentId + '">';
 			html += '	<div class="form-group row">';

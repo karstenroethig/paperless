@@ -238,7 +238,7 @@
 						</div>
 
 						<div class="pt-3 pl-2 pr-2" id="newCommentForm" style="display: none;">
-							<form th:object="${newComment}" th:action="@{/comment/save}" action="#" method="post">
+							<form th:object="${newComment}" th:action="@{/comment/save}" action="#" method="post" autocomplete="off">
 								<input type="hidden" th:field="*{document}"/>
 
 								<div class="form-group row">
@@ -269,7 +269,7 @@
 			</div>
 		</div>
 
-		<form id="fileUploadForm" th:object="${fileAttachmentUpload}" th:action="@{/file-attachment/save}" action="#" method="post" enctype="multipart/form-data">
+		<form id="fileUploadForm" th:object="${fileAttachmentUpload}" th:action="@{/file-attachment/save}" action="#" method="post" enctype="multipart/form-data" autocomplete="off">
 			<input type="hidden" th:field="*{document}"/>
 			<input type="file" th:field="*{files}" hidden multiple/>
 		</form>
