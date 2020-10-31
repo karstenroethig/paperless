@@ -5,4 +5,5 @@ jdk:
 os:
   - linux
   - osx
-  - windows
+  # The language 'java' is currently unsupported on the Windows Build Environment.
+  #- windows

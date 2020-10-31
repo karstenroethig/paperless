@@ -78,6 +78,7 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-jpamodelgen</artifactId>
+			<scope>provided</scope>
 		</dependency>
 
 		<!-- validation-api -->
@@ -196,25 +197,6 @@
 		<plugins>
 
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>build-helper-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>add-source</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>add-source</goal>
-						</goals>
-						<configuration>
-							<sources>
-								<source>${project.build.directory}/generated-sources/annotations/</source>
-							</sources>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<executions>
@@ -299,6 +281,71 @@
 								<goals>
 									<goal>report</goal>
 								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+		<profile>
+			<id>m2e</id>
+			<activation>
+				<property>
+					<name>m2e.version</name>
+				</property>
+			</activation>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<!-- This plugin's configuration is used to store Eclipse m2e settings only. -->
+						<!-- It has no influence on the Maven build itself. -->
+						<plugin>
+							<groupId>org.eclipse.m2e</groupId>
+							<artifactId>lifecycle-mapping</artifactId>
+							<version>1.0.0</version>
+							<configuration>
+								<lifecycleMappingMetadata>
+									<pluginExecutions>
+										<pluginExecution>
+											<pluginExecutionFilter>
+												<groupId>org.codehaus.mojo</groupId>
+												<artifactId>build-helper-maven-plugin</artifactId>
+												<versionRange>[1.9.1,)</versionRange>
+												<goals>
+													<goal>add-source</goal>
+												</goals>
+											</pluginExecutionFilter>
+											<action>
+												<execute>
+													<runOnConfiguration>true</runOnConfiguration>
+													<runOnIncremental>true</runOnIncremental>
+												</execute>
+											</action>
+										</pluginExecution>
+									</pluginExecutions>
+								</lifecycleMappingMetadata>
+							</configuration>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>build-helper-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>add-source</id>
+								<phase>generate-sources</phase>
+								<goals>
+									<goal>add-source</goal>
+								</goals>
+								<configuration>
+									<sources>
+										<source>${project.build.directory}/generated-sources/annotations/</source>
+									</sources>
+								</configuration>
 							</execution>
 						</executions>
 					</plugin>
