@@ -1,4 +1,6 @@
-# paperless [![Build Status](https://travis-ci.org/karstenroethig/paperless.svg?branch=master)](https://travis-ci.org/karstenroethig/paperless)
+# paperless
+
+[![Build Status](https://travis-ci.org/karstenroethig/paperless.svg?branch=master)](https://travis-ci.org/karstenroethig/paperless)
 
 A spring boot web application for the paperless processing of personal documents.
 
