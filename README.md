@@ -1,7 +1,9 @@
 # paperless
 
 [![Build Status](https://travis-ci.org/karstenroethig/paperless.svg?branch=master)](https://travis-ci.org/karstenroethig/paperless)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=karstenroethig.paperless%3Apaperless-project&metric=coverage)](https://sonarcloud.io/dashboard?id=karstenroethig.paperless%3Apaperless-project)
 [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=karstenroethig.paperless%3Apaperless-project&metric=alert_status)](https://sonarcloud.io/dashboard/index/karstenroethig.paperless:paperless-project)
+
 
 A spring boot web application for the paperless processing of personal documents.
 
