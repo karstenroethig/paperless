@@ -7,3 +7,11 @@ os:
   - osx
   # The language 'java' is currently unsupported on the Windows Build Environment.
   #- windows
+
+addons:
+  sonarcloud:
+    organization: "karstenroethig"
+
+script:
+  # JaCoCo is used to have code coverage, "-Pcoverage" activates the maven profile in the pom.xml
+  - mvn clean verify sonar:sonar -Pcoverage
