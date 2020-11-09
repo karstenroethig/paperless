@@ -6,7 +6,7 @@ This guide describes how to prepare the Eclipse to further develop the applicati
 ## Requirements
 
 * Java 11+
-* Maven 3.6.x ([http://maven.apache.org](http://maven.apache.org))
+* Maven 3.6.3 ([http://maven.apache.org](http://maven.apache.org))
 * Lombok ([https://projectlombok.org/](https://projectlombok.org/))
 
 
