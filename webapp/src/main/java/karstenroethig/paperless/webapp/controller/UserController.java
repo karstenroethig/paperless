@@ -190,17 +190,11 @@ public class UserController extends AbstractController
 
 	private boolean validate(UserDto user, boolean forInitialCreation, BindingResult bindingResult)
 	{
-		if (bindingResult.hasErrors())
-			return false;
-
 		ValidationResult validationResult = userService.validate(user, forInitialCreation);
 		if (validationResult.hasErrors())
-		{
 			addValidationMessagesToBindingResult(validationResult.getErrors(), bindingResult);
-			return false;
-		}
 
-		return true;
+		return !bindingResult.hasErrors() && !validationResult.hasErrors();
 	}
 
 	private void addBasicAttributes(Model model)
