@@ -10,6 +10,19 @@ public enum ViewEnum
 
 	ADMIN_SERVER_INFO(ControllerEnum.ADMIN, "/server-info" ),
 
+	USER_LOGIN(ControllerEnum.USER, "/login"),
+	USER_LOGOUT_SUCCESS(ControllerEnum.USER, "/logout-success"),
+	USER_REGISTER(ControllerEnum.USER, "/register"),
+	USER_REGISTER_SUCCESS(ControllerEnum.USER, "/register-success"),
+	USER_SHOW(ControllerEnum.USER, ActionEnum.SHOW),
+	USER_EDIT(ControllerEnum.USER, ActionEnum.EDIT),
+	USER_DELETE_SUCCESS(ControllerEnum.USER, "/delete-success"),
+
+	USER_ADMIN_LIST(ControllerEnum.USER_ADMIN, ActionEnum.LIST),
+	USER_ADMIN_SHOW(ControllerEnum.USER_ADMIN, ActionEnum.SHOW),
+	USER_ADMIN_CREATE(ControllerEnum.USER_ADMIN, ActionEnum.CREATE),
+	USER_ADMIN_EDIT(ControllerEnum.USER_ADMIN, ActionEnum.EDIT),
+
 	CONTACT_LIST(ControllerEnum.CONTACT, ActionEnum.LIST),
 	CONTACT_SHOW(ControllerEnum.CONTACT, ActionEnum.SHOW),
 	CONTACT_CREATE(ControllerEnum.CONTACT, ActionEnum.CREATE),
@@ -43,6 +56,8 @@ public enum ViewEnum
 	private enum ControllerEnum
 	{
 		ADMIN,
+		USER_ADMIN("/user-admin"),
+		USER,
 		CONTACT,
 		DOCUMENT,
 		DOCUMENT_BOX("/document-box"),

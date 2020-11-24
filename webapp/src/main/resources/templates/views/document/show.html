@@ -180,7 +180,7 @@
 
 		<div class="form-group row" th:if="${document.deletionDate!=null}">
 			<label class="col-sm-2 text-right">
-				<span th:text="#{document.deletionDate.label}">Review date</span>
+				<span th:text="#{document.deletionDate.label}">Deletion date</span>
 				<span class="far fa-question-circle text-muted help-icon" id="document_deletionDate_help"></span>
 			</label>
 			<div class="col-sm-10" th:text="${#temporals.format(document.deletionDate, #messages.msg('default.dateFormat'))}">[deletionDate]</div>

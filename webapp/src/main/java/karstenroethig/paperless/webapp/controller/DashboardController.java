@@ -14,12 +14,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import karstenroethig.paperless.webapp.controller.util.UrlMappings;
 import karstenroethig.paperless.webapp.controller.util.ViewEnum;
 import karstenroethig.paperless.webapp.model.domain.Document_;
+import karstenroethig.paperless.webapp.model.domain.User_;
 import karstenroethig.paperless.webapp.model.dto.DocumentDto;
 import karstenroethig.paperless.webapp.model.dto.DocumentSearchDto;
+import karstenroethig.paperless.webapp.model.dto.UserDto;
+import karstenroethig.paperless.webapp.model.dto.UserSearchDto;
+import karstenroethig.paperless.webapp.model.dto.UserSearchDto.NewRegisteredSearchTypeEnum;
 import karstenroethig.paperless.webapp.service.impl.ContactServiceImpl;
 import karstenroethig.paperless.webapp.service.impl.DocumentBoxServiceImpl;
 import karstenroethig.paperless.webapp.service.impl.DocumentServiceImpl;
 import karstenroethig.paperless.webapp.service.impl.DocumentTypeServiceImpl;
+import karstenroethig.paperless.webapp.service.impl.UserAdminServiceImpl;
 
 @ComponentScan
 @Controller
@@ -29,6 +34,7 @@ public class DashboardController
 	@Autowired private DocumentTypeServiceImpl documentTypeService;
 	@Autowired private DocumentBoxServiceImpl documentBoxService;
 	@Autowired private ContactServiceImpl contactService;
+	@Autowired private UserAdminServiceImpl userService;
 
 	@GetMapping(value = {UrlMappings.HOME, UrlMappings.DASHBOARD})
 	public String dashborad(Model model)
@@ -42,7 +48,12 @@ public class DashboardController
 
 	private void addAttributesForAdminCard(Model model)
 	{
-		int numberOfNewRegisteredUsers = 5;
+		UserSearchDto userSearch = new UserSearchDto();
+		userSearch.setNewRegisteredSearchType(NewRegisteredSearchTypeEnum.NEW_REGISTERED);
+
+		Page<UserDto> newRegisteredUserPage = userService.find(userSearch, PageRequest.of(0, 1, Sort.by(User_.USERNAME)));
+		long numberOfNewRegisteredUsers = newRegisteredUserPage.getTotalElements();
+
 		boolean hasNoDocumentTypes = documentTypeService.findAll().isEmpty();
 		boolean hasNoDocumentBoxes = documentBoxService.findAll().isEmpty();
 		boolean hasNoContacts = contactService.findAll().isEmpty();

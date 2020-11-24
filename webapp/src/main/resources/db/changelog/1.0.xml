@@ -8,6 +8,82 @@
 
 	<changeSet id="1.0" author="roethig">
 
+		<!-- ============ -->
+		<!-- Table "user" -->
+		<!-- ============ -->
+		<createTable tableName="user">
+			<column name="id" type="${type.id}" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="username" type="varchar(255)">
+				<constraints nullable="true"/>
+			</column>
+			<column name="hashed_password" type="varchar(255)">
+				<constraints nullable="true"/>
+			</column>
+			<column name="full_name" type="varchar(255)">
+				<constraints nullable="true"/>
+			</column>
+			<column name="enabled" type="${type.boolean}" defaultValueBoolean="false">
+				<constraints nullable="false"/>
+			</column>
+			<column name="locked" type="${type.boolean}" defaultValueBoolean="false">
+				<constraints nullable="false"/>
+			</column>
+			<column name="failed_login_attempts" type="int">
+				<constraints nullable="false"/>
+			</column>
+			<column name="new_registered" type="${type.boolean}" defaultValueBoolean="false">
+				<constraints nullable="false"/>
+			</column>
+			<column name="deleted" type="${type.boolean}" defaultValueBoolean="false">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+
+		<addUniqueConstraint tableName="user" columnNames="username" constraintName="u_user__username"/>
+
+		<!-- ================= -->
+		<!-- Table "authority" -->
+		<!-- ================= -->
+		<createTable tableName="authority">
+			<column name="id" type="${type.id}" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="name" type="varchar(255)">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+
+		<addUniqueConstraint tableName="authority" columnNames="name" constraintName="u_authority__name"/>
+
+		<!-- ====================== -->
+		<!-- Table "user_authority" -->
+		<!-- ====================== -->
+		<createTable tableName="user_authority">
+			<column name="id" type="${type.id}" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="user_id" type="${type.idRef}">
+				<constraints nullable="false"/>
+			</column>
+			<column name="authority_id" type="${type.idRef}">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+
+		<addUniqueConstraint tableName="user_authority" columnNames="user_id,authority_id" constraintName="u_user_authority__user_id__authority_id"/>
+
+		<addForeignKeyConstraint
+			baseTableName="user_authority" baseColumnNames="user_id"
+			referencedTableName="user" referencedColumnNames="id"
+			constraintName="fk_user_authority__user_id__user"/>
+
+		<addForeignKeyConstraint
+			baseTableName="user_authority" baseColumnNames="authority_id"
+			referencedTableName="authority" referencedColumnNames="id"
+			constraintName="fk_user_authority__authority_id__authority"/>
+
 		<!-- =============== -->
 		<!-- Table "contact" -->
 		<!-- =============== -->

@@ -10,8 +10,12 @@ public class UrlMappings
 	public static final String CONTROLLER_API_VERSION_1_0 = "/1.0";
 
 	public static final String HOME = "/";
+	public static final String LOGOUT = "/logout";
 	public static final String DASHBOARD = "/dashboard";
 	public static final String CONTROLLER_ADMIN = "/admin";
+
+	public static final String CONTROLLER_USER = "/user";
+	public static final String CONTROLLER_USER_ADMIN = "/user-admin";
 
 	public static final String CONTROLLER_COMMENT = "/comment";
 	public static final String CONTROLLER_CONTACT = "/contact";

@@ -1,6 +1,7 @@
 <!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	th:replace="~{layout :: layout-fragment(
 							~{::title},
 							~{::content},
@@ -62,11 +63,11 @@
 
 			<div class="col-lg-6">
 
-				<div class="card mb-3" th:if="${showAdminCard}">
+				<div class="card mb-3" th:if="${showAdminCard}" sec:authorize="hasRole('ADMIN')">
 					<h3 class="card-header">Administration</h3>
 					<div class="card-body">
 						<div class="alert alert-danger" th:if="${numberOfNewRegisteredUsers gt 0}">
-							<a href="#" class="alert-link"><span th:text="${numberOfNewRegisteredUsers}">5</span> users</a> have registered and are waiting to be activated.
+							<a th:href="@{/user-admin/search/new-registered}" class="alert-link"><span th:text="${numberOfNewRegisteredUsers}">[numberOfNewRegisteredUsers]</span> user(s)</a> have registered and are waiting to be activated.
 						</div>
 						<div class="alert alert-danger" th:if="${hasNoDocumentTypes}">
 							<a th:href="@{/document-type/create}" class="alert-link">Add document types</a>, otherwise no documents can be created.

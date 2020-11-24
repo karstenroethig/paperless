@@ -3,6 +3,7 @@ package karstenroethig.paperless.webapp.controller;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -10,11 +11,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import karstenroethig.paperless.webapp.controller.exceptions.ForbiddenException;
 import karstenroethig.paperless.webapp.controller.exceptions.NotFoundException;
 import karstenroethig.paperless.webapp.controller.util.AttributeNames;
+import karstenroethig.paperless.webapp.util.validation.PropertyValidationMessage;
+import karstenroethig.paperless.webapp.util.validation.ValidationMessage;
 
 public abstract class AbstractController
 {
@@ -41,6 +45,28 @@ public abstract class AbstractController
 		int itemsTo = page.getNumber() * page.getSize() + page.getNumberOfElements();
 
 		return String.format("%s-%s", itemsFrom, itemsTo);
+	}
+
+	protected void addValidationMessagesToBindingResult(List<ValidationMessage> messages, BindingResult bindingResult)
+	{
+		if (messages == null || messages.isEmpty())
+			return;
+
+		for (ValidationMessage message : messages)
+		{
+			if (message instanceof PropertyValidationMessage)
+			{
+				PropertyValidationMessage propertyMessage = (PropertyValidationMessage)message;
+
+				if (propertyMessage.hasPropertyIds())
+				{
+					for (String propertyId : propertyMessage.getPropertyIds())
+					{
+						bindingResult.rejectValue(propertyId, propertyMessage.getKey().getKey());
+					}
+				}
+			}
+		}
 	}
 
 	@ExceptionHandler(ForbiddenException.class)

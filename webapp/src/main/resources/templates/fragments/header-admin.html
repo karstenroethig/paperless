@@ -1,6 +1,7 @@
 <!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org">
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 	<meta charset="UTF-8" />
 </head>
@@ -8,7 +9,7 @@
 
 	<nav th:fragment="header-fragment (menu)" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
 		<div class="sidebar-sticky pt-3">
-			<ul class="nav flex-column">
+			<ul class="nav flex-column" sec:authorize="hasRole('ADMIN')">
 				<li class="nav-item" th:classappend="${#strings.equals(menu,'server-info')} ? active">
 					<a class="nav-link" th:href="@{/admin/server-info}">
 						<i class="fas fa-info-circle fa-lg"></i>
@@ -16,12 +17,12 @@
 					</a>
 				</li>
 			</ul>
-			<h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+			<h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted" sec:authorize="hasRole('ADMIN')">
 				<span th:text="#{admin.section.userAdministration.label}">User administration</span>
 			</h6>
-			<ul class="nav flex-column">
-				<li class="nav-item" th:classappend="${#strings.equals(menu,'user')} ? active">
-					<a class="nav-link" th:href="@{/user/list}">
+			<ul class="nav flex-column" sec:authorize="hasRole('ADMIN')">
+				<li class="nav-item" th:classappend="${#strings.equals(menu,'user-admin')} ? active">
+					<a class="nav-link" th:href="@{/user-admin/list}">
 						<i class="fas fa-user"></i>
 						<span th:text="#{user.label.plural}">Users</span>
 					</a>
@@ -33,10 +34,10 @@
 					</a>
 				</li>
 			</ul>
-			<h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+			<h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted" sec:authorize="hasRole('USER') or hasRole('ADMIN')">
 				<span th:text="#{admin.section.generalSettings.label}">General settings</span>
 			</h6>
-			<ul class="nav flex-column">
+			<ul class="nav flex-column" sec:authorize="hasRole('USER') or hasRole('ADMIN')">
 				<li class="nav-item" th:classappend="${#strings.equals(menu,'document-type')} ? active">
 					<a class="nav-link" th:href="@{/document-type/list}">
 						<i class="fas fa-file fa-lg"></i>

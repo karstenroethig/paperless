@@ -1,0 +1,26 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{layout-auth :: layout-fragment(
+							~{::title},
+							~{::content},
+							null,
+							null,
+							'user'
+							)}">
+<head>
+	<title th:text="#{application.title-pattern(#{application.name}, #{user.register.label})}"></title>
+</head>
+<body>
+
+	<div th:fragment="content">
+
+		<h4 class="card-title mt-1 mb-3 text-center" th:text="#{user.register.label}">Register user</h4>
+
+		<p th:text="#{user.register.success}">Registration was successful. An administrator will check the data and activate your account.</p>
+		<p><a th:href="@{/}">To the login</a></p>
+
+	</div>
+
+</body>
+</html>

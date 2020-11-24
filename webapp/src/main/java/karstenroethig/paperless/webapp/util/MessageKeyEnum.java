@@ -73,7 +73,28 @@ public enum MessageKeyEnum
 	TAG_UPDATE_SUCCESS("tag.update.success"),
 	TAG_UPDATE_ERROR("tag.update.error"),
 	TAG_DELETE_SUCCESS("tag.delete.success"),
-	TAG_DELETE_ERROR("tag.delete.error");
+	TAG_DELETE_ERROR("tag.delete.error"),
+
+	USER_SAVE_INVALID("user.save.invalid"),
+	USER_SAVE_ERROR("user.save.error"),
+	USER_SAVE_ERROR_EXISTS("user.save.error.exists"),
+	USER_SAVE_ERROR_PASSWORD_EMPTY("user.save.error.passwordEmpty"),
+	USER_SAVE_ERROR_PASSWORD_MIN_LENGTH("user.save.error.passwordMinLength"),
+	USER_SAVE_ERROR_REPEAT_PASSWORD_NOT_EQUAL("user.save.error.repeatPasswordNotEqual"),
+	USER_UPDATE_INVALID("user.update.invalid"),
+	USER_UPDATE_SUCCESS("user.update.success"),
+	USER_UPDATE_ERROR("user.update.error"),
+	USER_DELETE_ERROR("user.delete.error"),
+
+	USER_ADMIN_SAVE_INVALID("userAdmin.save.invalid"),
+	USER_ADMIN_SAVE_SUCCESS("userAdmin.save.success"),
+	USER_ADMIN_SAVE_ERROR("userAdmin.save.error"),
+	USER_ADMIN_SAVE_ERROR_EXISTS("userAdmin.save.error.exists"),
+	USER_ADMIN_UPDATE_INVALID("userAdmin.update.invalid"),
+	USER_ADMIN_UPDATE_SUCCESS("userAdmin.update.success"),
+	USER_ADMIN_UPDATE_ERROR("userAdmin.update.error"),
+	USER_ADMIN_DELETE_SUCCESS("userAdmin.delete.success"),
+	USER_ADMIN_DELETE_ERROR("userAdmin.delete.error");
 
 	@Getter
 	private String key;

@@ -1,0 +1,69 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{layout-auth :: layout-fragment(
+							~{::title},
+							~{::content},
+							null,
+							null,
+							'user'
+							)}">
+<head>
+	<title th:text="#{application.title-pattern(#{application.name}, #{user.register.label})}"></title>
+</head>
+<body>
+
+	<div th:fragment="content">
+
+		<h4 class="card-title mt-1 mb-3 text-center" th:text="#{user.register.label}">Register user</h4>
+
+		<p class="text-danger text-center" th:if="${messages!=null and messages.hasErrors()}">
+			<small th:each="message : ${messages.errors}" th:utext="${#messages.msgWithParams(message.key, message.params)}">[error message]</small>
+		</p>
+
+		<form th:object="${user}" th:action="@{/register}" method="post" autocomplete="off">
+			<div class="form-group">
+				<label>
+					<span th:text="#{user.username.label}">Username</span>
+					<span class="required">*</span>
+				</label>
+				<input type="text" th:field="*{username}" class="form-control" th:classappend="${#fields.hasErrors('username')} ? is-invalid">
+				<div class="invalid-feedback" th:if="${#fields.hasErrors('username')}" th:each="err : ${#fields.errors('username')}" th:text="${err}">validation error</div>
+			</div>
+			<div class="form-group">
+				<label>
+					<span th:text="#{user.password.label}">Password</span>
+					<span class="required">*</span>
+				</label>
+				<input type="password" th:field="*{password}" class="form-control" th:classappend="${#fields.hasErrors('password')} ? is-invalid">
+				<div class="invalid-feedback" th:if="${#fields.hasErrors('password')}" th:each="err : ${#fields.errors('password')}" th:text="${err}">validation error</div>
+			</div>
+			<div class="form-group">
+				<label>
+					<span th:text="#{user.repeatPassword.label}">Repeat password</span>
+					<span class="required">*</span>
+				</label>
+				<input type="password" th:field="*{repeatPassword}" class="form-control" th:classappend="${#fields.hasErrors('repeatPassword')} ? is-invalid">
+				<div class="invalid-feedback" th:if="${#fields.hasErrors('repeatPassword')}" th:each="err : ${#fields.errors('repeatPassword')}" th:text="${err}">validation error</div>
+			</div>
+			<div class="form-group">
+				<label>
+					<span th:text="#{user.fullName.label}">Full name</span>
+					<span class="required">*</span>
+				</label>
+				<input type="text" th:field="*{fullName}" class="form-control" th:classappend="${#fields.hasErrors('fullName')} ? is-invalid">
+				<div class="invalid-feedback" th:if="${#fields.hasErrors('fullName')}" th:each="err : ${#fields.errors('fullName')}" th:text="${err}">validation error</div>
+			</div>
+			<div class="form-group">
+				<span class="required">*</span> <span th:text="#{default.form.required}">required</span>
+			</div>
+			<div class="form-group">
+				<input type="submit" class="btn btn-primary" th:value="#{default.button.save.label}" value="Save">
+				<a th:href="@{/}" class="btn btn-outline-secondary" th:text="#{default.button.cancel.label}">Cancel</a>
+			</div>
+		</form>
+
+	</div>
+
+</body>
+</html>
