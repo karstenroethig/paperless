@@ -96,7 +96,7 @@ function postDeleteSearchParams() {}
 function initializeHelpIcons()
 {
 	$('.help-icon').click(function(event) {
-		var sectionElement = $('#' + event.target.id + '_section');
+		var sectionElement = $('#' + event.target.id + '_content');
 		if (sectionElement.length) {
 			if (sectionElement.is(':visible')) {
 				sectionElement.hide('slow');
