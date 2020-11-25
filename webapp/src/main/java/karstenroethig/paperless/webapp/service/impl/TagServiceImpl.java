@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -134,9 +135,29 @@ public class TagServiceImpl
 
 	protected Tag transform(TagDto tagDto)
 	{
-		if (tagDto == null || tagDto.getId() == null)
+		if (tagDto == null)
 			return null;
 
-		return tagRepository.findById(tagDto.getId()).orElse(null);
+		if (tagDto.getId() != null)
+			return tagRepository.findById(tagDto.getId()).orElse(null);
+
+		if (StringUtils.isNotBlank(tagDto.getName()))
+			return findOrCreateTag(tagDto.getName());
+
+		return null;
+	}
+
+	private Tag findOrCreateTag(String name)
+	{
+		Tag tag = tagRepository.findOneByNameIgnoreCase(name);
+
+		if (tag != null)
+			return tag;
+
+		tag = new Tag();
+		tag.setName(name);
+		tag.setArchived(Boolean.FALSE);
+
+		return tagRepository.save(tag);
 	}
 }

@@ -5,7 +5,7 @@
 							~{::title},
 							~{::content},
 							null,
-							null,
+							~{:: #additionalJs},
 							'document'
 							)}">
 <head>
@@ -74,8 +74,9 @@
 					<span th:text="#{document.tags.label}">Tags</span>
 				</label>
 				<div class="col-sm-10">
-					<select th:field="*{tags}" class="form-control select2-multiple" size="4" multiple="multiple">
+					<select th:field="*{tags}" class="form-control tags-input" size="4" multiple="multiple">
 						<option th:each="tag : ${allTags}" th:value="${{tag}}" th:text="${tag.name}">[name]</option>
+						<option th:each="tag : *{tags}" th:value="${{tag}}" th:text="${tag.name}" th:if="${tag.id==null}">[name]</option>
 					</select>
 					<div class="invalid-feedback" th:if="${#fields.hasErrors('tags')}" th:each="err : ${#fields.errors('tags')}" th:text="${err}">validation error</div>
 				</div>
@@ -206,6 +207,10 @@
 		</form>
 
 	</div>
+
+	<th:block id="additionalJs">
+		<script th:src="@{/js/document-create.js}"></script>
+	</th:block>
 
 </body>
 </html>

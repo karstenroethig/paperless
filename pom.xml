@@ -41,8 +41,8 @@
 		<webjars-jquery.version>3.4.1</webjars-jquery.version>
 		<webjars-bootstrap.version>4.3.1</webjars-bootstrap.version>
 		<webjars-popper.version>1.16.0</webjars-popper.version>
-		<webjars-select2.version>4.0.3</webjars-select2.version>
 		<webjars-fontawesome.version>5.11.2</webjars-fontawesome.version>
+		<webjars-selectize.version>0.12.5</webjars-selectize.version>
 		<webjars-summernote.version>0.8.10</webjars-summernote.version>
 		<webjars-bootswatch-cosmo.version>4.2.1</webjars-bootswatch-cosmo.version>
 	</properties>
@@ -77,13 +77,14 @@
 			</dependency>
 			<dependency>
 				<groupId>org.webjars</groupId>
-				<artifactId>select2</artifactId>
-				<version>${webjars-select2.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.webjars</groupId>
 				<artifactId>font-awesome</artifactId>
 				<version>${webjars-fontawesome.version}</version>
+			</dependency>
+			<dependency>
+				<!-- http://selectize.github.io/selectize.js -->
+				<groupId>org.webjars</groupId>
+				<artifactId>selectize.js</artifactId>
+				<version>${webjars-selectize.version}</version>
 			</dependency>
 			<dependency>
 				<!-- https://summernote.org/ -->

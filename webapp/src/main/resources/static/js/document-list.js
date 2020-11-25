@@ -1,14 +1,10 @@
 
 $( document ).ready( function() {
-	$('#search-card').hide();
+
+	var $select = $('.tags-search').selectize();
+	var control = $select[0].selectize;
+
+	$('#search-button-delete-parameters').click(function() {
+		control.clear();
+	});
 });
-
-function postShowSearchParams()
-{
-//	$('.select2-multiple').select2();
-}
-
-function postDeleteSearchParams()
-{
-	$('.select2-multiple').val(null).trigger('change');
-}

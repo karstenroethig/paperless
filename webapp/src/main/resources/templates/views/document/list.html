@@ -79,7 +79,7 @@
 			</div>
 		</div>
 
-		<div class="card mb-3" id="search-card"><!-- style="display: none;" -->
+		<div class="card mb-3" id="search-card" style="display: none;">
 			<div class="card-body">
 				<h5 class="card-title" th:text="#{default.search.filterEntries.label}">Filter entries</h5>
 				<form style="padding-top: 10px;" th:object="${searchParams}" th:action="@{/document/search}" action="#" method="post" autocomplete="off">
@@ -122,7 +122,7 @@
 					<div class="form-group row">
 						<label class="col-sm-2 col-form-label text-right" th:text="#{document.tags.label}">Tags</label>
 						<div class="col-sm-4">
-							<select th:field="*{tags}" class="form-control select2-multiple" size="4" multiple="multiple">
+							<select th:field="*{tags}" class="form-control tags-search" size="4" multiple="multiple">
 								<option th:each="tag : ${allTags}" th:value="${{tag}}" th:text="${tag.name}">[name]</option>
 							</select>
 						</div>

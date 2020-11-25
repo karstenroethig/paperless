@@ -1,8 +1,6 @@
 
 $( document ).ready( function() {
 
-	$('.select2-multiple').select2();
-
 	$('[data-toggle="popover"]').popover();
 
 	// initialize summernote
