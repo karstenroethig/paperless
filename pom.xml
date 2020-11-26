@@ -42,7 +42,7 @@
 		<webjars-bootstrap.version>4.3.1</webjars-bootstrap.version>
 		<webjars-popper.version>1.16.0</webjars-popper.version>
 		<webjars-fontawesome.version>5.11.2</webjars-fontawesome.version>
-		<webjars-selectize.version>0.12.5</webjars-selectize.version>
+		<webjars-selectize.version>0.12.6</webjars-selectize.version>
 		<webjars-summernote.version>0.8.10</webjars-summernote.version>
 		<webjars-bootswatch-cosmo.version>4.2.1</webjars-bootswatch-cosmo.version>
 	</properties>
