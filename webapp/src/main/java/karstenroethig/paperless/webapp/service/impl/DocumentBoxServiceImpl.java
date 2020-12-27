@@ -87,9 +87,7 @@ public class DocumentBoxServiceImpl
 	public Page<DocumentBoxDto> find(DocumentBoxSearchDto documentBoxSearchDto, Pageable pageable)
 	{
 		Page<DocumentBox> page = documentBoxRepository.findAll(DocumentBoxSpecifications.matchesSearchParam(documentBoxSearchDto), pageable);
-		Page<DocumentBoxDto> pageDto = page.map(this::transform);
-
-		return pageDto;
+		return page.map(this::transform);
 	}
 
 	public List<DocumentBoxDto> findAll()

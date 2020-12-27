@@ -5,7 +5,6 @@ import java.lang.management.RuntimeMXBean;
 import java.time.LocalDateTime;
 import java.util.Locale;
 
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -28,7 +27,7 @@ public class ServerInfoServiceImpl implements ApplicationContextAware
 	private ApplicationContext applicationContext;
 
 	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException
+	public void setApplicationContext(ApplicationContext applicationContext)
 	{
 		this.applicationContext = applicationContext;
 	}

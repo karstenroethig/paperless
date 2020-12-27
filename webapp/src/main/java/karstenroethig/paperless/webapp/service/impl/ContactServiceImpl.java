@@ -89,9 +89,7 @@ public class ContactServiceImpl
 	public Page<ContactDto> find(ContactSearchDto contactSearchDto, Pageable pageable)
 	{
 		Page<Contact> page = contactRepository.findAll(ContactSpecifications.matchesSearchParam(contactSearchDto), pageable);
-		Page<ContactDto> pageDto = page.map(this::transform);
-
-		return pageDto;
+		return page.map(this::transform);
 	}
 
 	public List<ContactDto> findAll()

@@ -19,7 +19,7 @@ import lombok.ToString;
 @ToString
 public class DocumentSearchDto extends AbstractArchivedSearchDto
 {
-	public static final List<ContactSearchTypeEnum> ALL_AVAILABLE_CONTACT_SEARCH_TYPES = Stream.of(ContactSearchTypeEnum.values()).collect(Collectors.toList());
+	public static final List<ContactSearchTypeEnum> ALL_AVAILABLE_CONTACT_SEARCH_TYPES = Stream.of(ContactSearchTypeEnum.values()).collect(Collectors.toUnmodifiableList());
 
 	private String text;
 

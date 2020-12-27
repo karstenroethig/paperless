@@ -70,14 +70,14 @@ public class DocumentBoxController extends AbstractController
 		if (documentBox == null)
 			throw new NotFoundException(String.valueOf(id));
 
-		model.addAttribute("documentBox", documentBox);
+		model.addAttribute(AttributeNames.DOCUMENT_BOX, documentBox);
 		return ViewEnum.DOCUMENT_BOX_SHOW.getViewName();
 	}
 
 	@GetMapping(value = UrlMappings.ACTION_CREATE)
 	public String create(Model model)
 	{
-		model.addAttribute("documentBox", documentBoxService.create());
+		model.addAttribute(AttributeNames.DOCUMENT_BOX, documentBoxService.create());
 		return ViewEnum.DOCUMENT_BOX_CREATE.getViewName();
 	}
 
@@ -88,7 +88,7 @@ public class DocumentBoxController extends AbstractController
 		if (documentBox == null)
 			throw new NotFoundException(String.valueOf(id));
 
-		model.addAttribute("documentBox", documentBox);
+		model.addAttribute(AttributeNames.DOCUMENT_BOX, documentBox);
 		return ViewEnum.DOCUMENT_BOX_EDIT.getViewName();
 	}
 
@@ -122,7 +122,7 @@ public class DocumentBoxController extends AbstractController
 	}
 
 	@PostMapping(value = UrlMappings.ACTION_SAVE)
-	public String save(@ModelAttribute("documentBox") @Valid DocumentBoxDto documentBox, BindingResult bindingResult,
+	public String save(@ModelAttribute(AttributeNames.DOCUMENT_BOX) @Valid DocumentBoxDto documentBox, BindingResult bindingResult,
 		final RedirectAttributes redirectAttributes, Model model)
 	{
 		if (bindingResult.hasErrors())
@@ -152,7 +152,7 @@ public class DocumentBoxController extends AbstractController
 	}
 
 	@PostMapping(value = UrlMappings.ACTION_UPDATE)
-	public String update(@ModelAttribute("documentBox") @Valid DocumentBoxDto documentBox, BindingResult bindingResult,
+	public String update(@ModelAttribute(AttributeNames.DOCUMENT_BOX) @Valid DocumentBoxDto documentBox, BindingResult bindingResult,
 		final RedirectAttributes redirectAttributes, Model model)
 	{
 		if (bindingResult.hasErrors())

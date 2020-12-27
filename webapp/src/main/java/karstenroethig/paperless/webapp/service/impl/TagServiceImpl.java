@@ -78,9 +78,7 @@ public class TagServiceImpl
 	public Page<TagDto> find(TagSearchDto tagSearchDto, Pageable pageable)
 	{
 		Page<Tag> page = tagRepository.findAll(TagSpecifications.matchesSearchParam(tagSearchDto), pageable);
-		Page<TagDto> pageDto = page.map(this::transform);
-
-		return pageDto;
+		return page.map(this::transform);
 	}
 
 	public List<TagDto> findAll()

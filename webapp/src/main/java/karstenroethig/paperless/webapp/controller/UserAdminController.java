@@ -84,7 +84,7 @@ public class UserAdminController extends AbstractController
 		if (user == null)
 			throw new NotFoundException(String.valueOf(id));
 
-		model.addAttribute("user", user);
+		model.addAttribute(AttributeNames.USER, user);
 
 		return ViewEnum.USER_ADMIN_SHOW.getViewName();
 	}
@@ -92,7 +92,7 @@ public class UserAdminController extends AbstractController
 	@GetMapping(value = UrlMappings.ACTION_CREATE)
 	public String create(Model model)
 	{
-		model.addAttribute("user", userService.create());
+		model.addAttribute(AttributeNames.USER, userService.create());
 		addBasicAttributes(model);
 		return ViewEnum.USER_ADMIN_CREATE.getViewName();
 	}
@@ -104,7 +104,7 @@ public class UserAdminController extends AbstractController
 		if (user == null)
 			throw new NotFoundException(String.valueOf(id));
 
-		model.addAttribute("user", user);
+		model.addAttribute(AttributeNames.USER, user);
 		addBasicAttributes(model);
 		return ViewEnum.USER_ADMIN_EDIT.getViewName();
 	}
@@ -127,7 +127,7 @@ public class UserAdminController extends AbstractController
 	}
 
 	@PostMapping(value = UrlMappings.ACTION_SAVE)
-	public String save(@ModelAttribute("user") @Valid UserDto user, BindingResult bindingResult,
+	public String save(@ModelAttribute(AttributeNames.USER) @Valid UserDto user, BindingResult bindingResult,
 		final RedirectAttributes redirectAttributes, Model model)
 	{
 		if (!validate(user, true, bindingResult))
@@ -160,7 +160,7 @@ public class UserAdminController extends AbstractController
 	}
 
 	@PostMapping(value = UrlMappings.ACTION_UPDATE)
-	public String update(@ModelAttribute("user") @Valid UserDto user, BindingResult bindingResult,
+	public String update(@ModelAttribute(AttributeNames.USER) @Valid UserDto user, BindingResult bindingResult,
 		final RedirectAttributes redirectAttributes, Model model)
 	{
 		if (!validate(user, false, bindingResult))

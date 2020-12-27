@@ -30,6 +30,8 @@ public class FileStorageServiceImpl
 {
 	private static final long FILE_STORAGE_MAX_SIZE = 500000000l;
 
+	private static final String ROOT_PATH_DELIMITER = "/";
+
 	@Autowired private ApplicationProperties applicationProperties;
 
 	@Autowired private FileStorageRepository fileStorageRepository;
@@ -43,7 +45,7 @@ public class FileStorageServiceImpl
 
 		try (FileSystem fileStorageFileSystem = FileSystems.newFileSystem(fileStorageArchivePath, null))
 		{
-			Path pathToFileInArchive = fileStorageFileSystem.getPath("/" + fileKey);
+			Path pathToFileInArchive = fileStorageFileSystem.getPath(ROOT_PATH_DELIMITER + fileKey);
 			multipartFile.transferTo(pathToFileInArchive);
 		}
 
@@ -61,7 +63,7 @@ public class FileStorageServiceImpl
 		Path fileStorageArchivePath = createAndGetStorageArchiveIfItDoesNotExist(fileStorage.getKey());
 		try (FileSystem fileStorageFileSystem = FileSystems.newFileSystem(fileStorageArchivePath, null))
 		{
-			Path pathToFileInArchive = fileStorageFileSystem.getPath("/" + fileStorageDto.getFileKey());
+			Path pathToFileInArchive = fileStorageFileSystem.getPath(ROOT_PATH_DELIMITER + fileStorageDto.getFileKey());
 			return new ByteArrayResource(Files.readAllBytes(pathToFileInArchive));
 		}
 	}
@@ -77,7 +79,7 @@ public class FileStorageServiceImpl
 
 		try (FileSystem fileStorageFileSystem = FileSystems.newFileSystem(fileStorageArchivePath, null))
 		{
-			Path pathToFileInArchive = fileStorageFileSystem.getPath("/" + fileStorageDto.getFileKey());
+			Path pathToFileInArchive = fileStorageFileSystem.getPath(ROOT_PATH_DELIMITER + fileStorageDto.getFileKey());
 			fileSize = Files.size(pathToFileInArchive);
 			Files.deleteIfExists(pathToFileInArchive);
 		}

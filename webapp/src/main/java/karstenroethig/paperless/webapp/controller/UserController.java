@@ -66,13 +66,13 @@ public class UserController extends AbstractController
 	@GetMapping(value = "/register")
 	public String register(Model model)
 	{
-		model.addAttribute("user", userService.create());
+		model.addAttribute(AttributeNames.USER, userService.create());
 		addBasicAttributes(model);
 		return ViewEnum.USER_REGISTER.getViewName();
 	}
 
 	@PostMapping(value = "/register")
-	public String register(@ModelAttribute("user") @Valid UserDto user, BindingResult bindingResult,
+	public String register(@ModelAttribute(AttributeNames.USER) @Valid UserDto user, BindingResult bindingResult,
 		final RedirectAttributes redirectAttributes, Model model)
 	{
 		if (!validate(user, true, bindingResult))
@@ -114,7 +114,7 @@ public class UserController extends AbstractController
 		for (GrantedAuthority authority : SecurityContextHolder.getContext().getAuthentication().getAuthorities())
 			user.addSessionAuthority(authority.getAuthority());
 
-		model.addAttribute("user", user);
+		model.addAttribute(AttributeNames.USER, user);
 
 		return ViewEnum.USER_SHOW.getViewName();
 	}
@@ -127,13 +127,13 @@ public class UserController extends AbstractController
 		if (user == null)
 			throw new NotFoundException(username);
 
-		model.addAttribute("user", user);
+		model.addAttribute(AttributeNames.USER, user);
 		addBasicAttributes(model);
 		return ViewEnum.USER_EDIT.getViewName();
 	}
 
 	@PostMapping(value = UrlMappings.CONTROLLER_USER + "/update")
-	public String update(@ModelAttribute("user") @Valid UserDto user, BindingResult bindingResult,
+	public String update(@ModelAttribute(AttributeNames.USER) @Valid UserDto user, BindingResult bindingResult,
 		final RedirectAttributes redirectAttributes, Model model)
 	{
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();

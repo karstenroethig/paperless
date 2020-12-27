@@ -70,14 +70,14 @@ public class ContactController extends AbstractController
 		if (contact == null)
 			throw new NotFoundException(String.valueOf(id));
 
-		model.addAttribute("contact", contact);
+		model.addAttribute(AttributeNames.CONTACT, contact);
 		return ViewEnum.CONTACT_SHOW.getViewName();
 	}
 
 	@GetMapping(value = UrlMappings.ACTION_CREATE)
 	public String create(Model model)
 	{
-		model.addAttribute("contact", contactService.create());
+		model.addAttribute(AttributeNames.CONTACT, contactService.create());
 		return ViewEnum.CONTACT_CREATE.getViewName();
 	}
 
@@ -88,7 +88,7 @@ public class ContactController extends AbstractController
 		if (contact == null)
 			throw new NotFoundException(String.valueOf(id));
 
-		model.addAttribute("contact", contact);
+		model.addAttribute(AttributeNames.CONTACT, contact);
 		return ViewEnum.CONTACT_EDIT.getViewName();
 	}
 
@@ -122,7 +122,7 @@ public class ContactController extends AbstractController
 	}
 
 	@PostMapping(value = UrlMappings.ACTION_SAVE)
-	public String save(@ModelAttribute("contact") @Valid ContactDto contact, BindingResult bindingResult,
+	public String save(@ModelAttribute(AttributeNames.CONTACT) @Valid ContactDto contact, BindingResult bindingResult,
 		final RedirectAttributes redirectAttributes, Model model)
 	{
 		if (bindingResult.hasErrors())
@@ -152,7 +152,7 @@ public class ContactController extends AbstractController
 	}
 
 	@PostMapping(value = UrlMappings.ACTION_UPDATE)
-	public String update(@ModelAttribute("contact") @Valid ContactDto contact, BindingResult bindingResult,
+	public String update(@ModelAttribute(AttributeNames.CONTACT) @Valid ContactDto contact, BindingResult bindingResult,
 		final RedirectAttributes redirectAttributes, Model model)
 	{
 		if (bindingResult.hasErrors())

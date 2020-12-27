@@ -20,4 +20,11 @@ public class AttributeNames
 
 	// Search
 	public static final String SEARCH_PARAMS = "searchParams";
+
+	public static final String CONTACT = "contact";
+	public static final String DOCUMENT = "document";
+	public static final String DOCUMENT_BOX = "documentBox";
+	public static final String DOCUMENT_TYPE = "documentType";
+	public static final String TAG = "tag";
+	public static final String USER = "user";
 }

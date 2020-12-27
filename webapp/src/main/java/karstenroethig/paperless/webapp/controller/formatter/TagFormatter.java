@@ -3,7 +3,6 @@ package karstenroethig.paperless.webapp.controller.formatter;
 import java.util.Locale;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.expression.ParseException;
 import org.springframework.format.Formatter;
 
 import karstenroethig.paperless.webapp.model.dto.TagDto;
@@ -21,7 +20,7 @@ public class TagFormatter implements Formatter<TagDto>
 	}
 
 	@Override
-	public TagDto parse(String text, Locale locale) throws ParseException
+	public TagDto parse(String text, Locale locale)
 	{
 		if (StringUtils.isBlank(text))
 			return null;

@@ -13,13 +13,10 @@ import javax.persistence.criteria.Subquery;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.jpa.domain.Specification;
 
-import karstenroethig.paperless.webapp.model.domain.Contact_;
+import karstenroethig.paperless.webapp.model.domain.AbstractEntityId_;
 import karstenroethig.paperless.webapp.model.domain.Document;
-import karstenroethig.paperless.webapp.model.domain.DocumentBox_;
-import karstenroethig.paperless.webapp.model.domain.DocumentType_;
 import karstenroethig.paperless.webapp.model.domain.Document_;
 import karstenroethig.paperless.webapp.model.domain.Tag;
-import karstenroethig.paperless.webapp.model.domain.Tag_;
 import karstenroethig.paperless.webapp.model.dto.DocumentSearchDto;
 import karstenroethig.paperless.webapp.model.dto.DocumentSearchDto.ContactSearchTypeEnum;
 import karstenroethig.paperless.webapp.model.dto.TagDto;
@@ -40,7 +37,7 @@ public class DocumentSpecifications
 							cb.like(cb.lower(root.get(Document_.description)), "%" + StringUtils.lowerCase(documentSearchDto.getText()) + "%")));
 
 				if (documentSearchDto.getDocumentType() != null && documentSearchDto.getDocumentType().getId() != null)
-					restrictions.add(cb.equal(root.get(Document_.documentType).get(DocumentType_.id), documentSearchDto.getDocumentType().getId()));
+					restrictions.add(cb.equal(root.get(Document_.documentType).get(AbstractEntityId_.id), documentSearchDto.getDocumentType().getId()));
 
 				if (documentSearchDto.getDateOfIssueFrom() != null)
 					restrictions.add(cb.greaterThanOrEqualTo(root.get(Document_.dateOfIssue), documentSearchDto.getDateOfIssueFrom()));
@@ -51,13 +48,13 @@ public class DocumentSpecifications
 				if (documentSearchDto.getContact() != null && documentSearchDto.getContact().getId() != null)
 				{
 					if (documentSearchDto.getContactSearchType() == ContactSearchTypeEnum.ONLY_SENDER)
-						restrictions.add(cb.equal(root.get(Document_.sender).get(Contact_.id), documentSearchDto.getContact().getId()));
+						restrictions.add(cb.equal(root.get(Document_.sender).get(AbstractEntityId_.id), documentSearchDto.getContact().getId()));
 					else if (documentSearchDto.getContactSearchType() == ContactSearchTypeEnum.ONLY_RECEIVER)
-						restrictions.add(cb.equal(root.get(Document_.receiver).get(Contact_.id), documentSearchDto.getContact().getId()));
+						restrictions.add(cb.equal(root.get(Document_.receiver).get(AbstractEntityId_.id), documentSearchDto.getContact().getId()));
 					else
 						restrictions.add(cb.or(
-								cb.equal(root.get(Document_.sender).get(Contact_.id), documentSearchDto.getContact().getId()),
-								cb.equal(root.get(Document_.receiver).get(Contact_.id), documentSearchDto.getContact().getId())));
+								cb.equal(root.get(Document_.sender).get(AbstractEntityId_.id), documentSearchDto.getContact().getId()),
+								cb.equal(root.get(Document_.receiver).get(AbstractEntityId_.id), documentSearchDto.getContact().getId())));
 				}
 
 				if (documentSearchDto.getTags() != null && !documentSearchDto.getTags().isEmpty())
@@ -67,15 +64,15 @@ public class DocumentSpecifications
 						Subquery<Long> sub = query.subquery(Long.class);
 						Root<Tag> subRoot = sub.from(Tag.class);
 						SetJoin<Document, Tag> subTags = root.join(Document_.tags);
-						sub.select(subRoot.get(Tag_.id));
-						sub.where(cb.equal(subTags.get(Tag_.id), tag.getId()));
+						sub.select(subRoot.get(AbstractEntityId_.id));
+						sub.where(cb.equal(subTags.get(AbstractEntityId_.id), tag.getId()));
 
 						restrictions.add(cb.exists(sub));
 					}
 				}
 
 				if (documentSearchDto.getDocumentBox() != null && documentSearchDto.getDocumentBox().getId() != null)
-					restrictions.add(cb.equal(root.get(Document_.documentBox).get(DocumentBox_.id), documentSearchDto.getDocumentBox().getId()));
+					restrictions.add(cb.equal(root.get(Document_.documentBox).get(AbstractEntityId_.id), documentSearchDto.getDocumentBox().getId()));
 
 				if (documentSearchDto.getReviewDateFrom() != null)
 					restrictions.add(cb.greaterThanOrEqualTo(root.get(Document_.reviewDate), documentSearchDto.getReviewDateFrom()));

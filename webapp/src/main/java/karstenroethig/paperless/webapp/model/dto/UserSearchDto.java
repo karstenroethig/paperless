@@ -17,11 +17,11 @@ import lombok.ToString;
 @ToString
 public class UserSearchDto
 {
-	public static final List<EnabledSearchTypeEnum> ALL_AVAILABLE_ENABLED_SEARCH_TYPES = Stream.of(EnabledSearchTypeEnum.values()).collect(Collectors.toList());
+	public static final List<EnabledSearchTypeEnum> ALL_AVAILABLE_ENABLED_SEARCH_TYPES = Stream.of(EnabledSearchTypeEnum.values()).collect(Collectors.toUnmodifiableList());
 
-	public static final List<LockedSearchTypeEnum> ALL_AVAILABLE_LOCKED_SEARCH_TYPES = Stream.of(LockedSearchTypeEnum.values()).collect(Collectors.toList());
+	public static final List<LockedSearchTypeEnum> ALL_AVAILABLE_LOCKED_SEARCH_TYPES = Stream.of(LockedSearchTypeEnum.values()).collect(Collectors.toUnmodifiableList());
 
-	public static final List<NewRegisteredSearchTypeEnum> ALL_AVAILABLE_NEW_REGISTERED_SEARCH_TYPES = Stream.of(NewRegisteredSearchTypeEnum.values()).collect(Collectors.toList());
+	public static final List<NewRegisteredSearchTypeEnum> ALL_AVAILABLE_NEW_REGISTERED_SEARCH_TYPES = Stream.of(NewRegisteredSearchTypeEnum.values()).collect(Collectors.toUnmodifiableList());
 
 	private String name;
 

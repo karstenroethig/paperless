@@ -43,9 +43,7 @@ public class UserAdminServiceImpl extends UserServiceImpl
 	public Page<UserDto> find(UserSearchDto userSearchDto, Pageable pageable)
 	{
 		Page<User> page = userRepository.findAll(UserSpecifications.matchesSearchParam(userSearchDto), pageable);
-		Page<UserDto> pageDto = page.map(this::transform);
-
-		return pageDto;
+		return page.map(this::transform);
 	}
 
 	public List<UserDto> findAll()

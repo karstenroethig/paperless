@@ -10,9 +10,9 @@ import javax.persistence.criteria.Root;
 
 import org.springframework.data.jpa.domain.Specification;
 
+import karstenroethig.paperless.webapp.model.domain.AbstractEntityId_;
 import karstenroethig.paperless.webapp.model.domain.Comment;
 import karstenroethig.paperless.webapp.model.domain.Comment_;
-import karstenroethig.paperless.webapp.model.domain.Document_;
 import karstenroethig.paperless.webapp.model.dto.DocumentDto;
 
 public class CommentSpecifications
@@ -26,7 +26,7 @@ public class CommentSpecifications
 				List<Predicate> restrictions = new ArrayList<>();
 
 				if (document != null && document.getId() != null)
-					restrictions.add(cb.equal(root.get(Comment_.document).get(Document_.id), document.getId()));
+					restrictions.add(cb.equal(root.get(Comment_.document).get(AbstractEntityId_.id), document.getId()));
 
 				return cb.and(restrictions.toArray(new Predicate[] {}));
 			};

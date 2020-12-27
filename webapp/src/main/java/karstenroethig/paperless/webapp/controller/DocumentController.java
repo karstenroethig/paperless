@@ -124,7 +124,7 @@ public class DocumentController extends AbstractController
 		if (document == null)
 			throw new NotFoundException(String.valueOf(id));
 
-		model.addAttribute("document", document);
+		model.addAttribute(AttributeNames.DOCUMENT, document);
 		model.addAttribute("fileAttachments", fileAttachmentService.findAllByDocument(document));
 		model.addAttribute("comments", commentService.findAllByDocument(document));
 
@@ -137,7 +137,7 @@ public class DocumentController extends AbstractController
 	@GetMapping(value = UrlMappings.ACTION_CREATE)
 	public String create(Model model)
 	{
-		model.addAttribute("document", documentService.create());
+		model.addAttribute(AttributeNames.DOCUMENT, documentService.create());
 		addBasicAttributes(model);
 		return ViewEnum.DOCUMENT_CREATE.getViewName();
 	}
@@ -149,7 +149,7 @@ public class DocumentController extends AbstractController
 		if (document == null)
 			throw new NotFoundException(String.valueOf(id));
 
-		model.addAttribute("document", document);
+		model.addAttribute(AttributeNames.DOCUMENT, document);
 		addBasicAttributes(model);
 		return ViewEnum.DOCUMENT_EDIT.getViewName();
 	}
@@ -172,7 +172,7 @@ public class DocumentController extends AbstractController
 	}
 
 	@PostMapping(value = UrlMappings.ACTION_SAVE)
-	public String save(@ModelAttribute("document") @Valid DocumentDto document, BindingResult bindingResult,
+	public String save(@ModelAttribute(AttributeNames.DOCUMENT) @Valid DocumentDto document, BindingResult bindingResult,
 		final RedirectAttributes redirectAttributes, Model model)
 	{
 		if (bindingResult.hasErrors())
@@ -195,7 +195,7 @@ public class DocumentController extends AbstractController
 	}
 
 	@PostMapping(value = UrlMappings.ACTION_UPDATE)
-	public String update(@ModelAttribute("document") @Valid DocumentDto document, BindingResult bindingResult,
+	public String update(@ModelAttribute(AttributeNames.DOCUMENT) @Valid DocumentDto document, BindingResult bindingResult,
 		final RedirectAttributes redirectAttributes, Model model)
 	{
 		if (bindingResult.hasErrors())

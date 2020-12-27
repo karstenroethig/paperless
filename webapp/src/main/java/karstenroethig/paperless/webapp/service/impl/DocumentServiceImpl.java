@@ -74,9 +74,7 @@ public class DocumentServiceImpl
 	public Page<DocumentDto> find(DocumentSearchDto documentSearchDto, Pageable pageable)
 	{
 		Page<Document> page = documentRepository.findAll(DocumentSpecifications.matchesSearchParam(documentSearchDto), pageable);
-		Page<DocumentDto> pageDto = page.map(this::transform);
-
-		return pageDto;
+		return page.map(this::transform);
 	}
 
 	public DocumentDto find(Long id)

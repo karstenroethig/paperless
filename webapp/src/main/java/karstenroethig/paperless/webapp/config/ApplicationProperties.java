@@ -15,6 +15,6 @@ import lombok.Setter;
 @Setter
 public class ApplicationProperties
 {
-	/** TODO Document me! */
+	/** Directory for storing files */
 	private Path fileDataDirectory = Paths.get("data/files");
 }

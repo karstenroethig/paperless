@@ -70,14 +70,14 @@ public class DocumentTypeController extends AbstractController
 		if (documentType == null)
 			throw new NotFoundException(String.valueOf(id));
 
-		model.addAttribute("documentType", documentType);
+		model.addAttribute(AttributeNames.DOCUMENT_TYPE, documentType);
 		return ViewEnum.DOCUMENT_TYPE_SHOW.getViewName();
 	}
 
 	@GetMapping(value = UrlMappings.ACTION_CREATE)
 	public String create(Model model)
 	{
-		model.addAttribute("documentType", documentTypeService.create());
+		model.addAttribute(AttributeNames.DOCUMENT_TYPE, documentTypeService.create());
 		return ViewEnum.DOCUMENT_TYPE_CREATE.getViewName();
 	}
 
@@ -88,7 +88,7 @@ public class DocumentTypeController extends AbstractController
 		if (documentType == null)
 			throw new NotFoundException(String.valueOf(id));
 
-		model.addAttribute("documentType", documentType);
+		model.addAttribute(AttributeNames.DOCUMENT_TYPE, documentType);
 		return ViewEnum.DOCUMENT_TYPE_EDIT.getViewName();
 	}
 
@@ -122,7 +122,7 @@ public class DocumentTypeController extends AbstractController
 	}
 
 	@PostMapping(value = UrlMappings.ACTION_SAVE)
-	public String save(@ModelAttribute("documentType") @Valid DocumentTypeDto documentType, BindingResult bindingResult,
+	public String save(@ModelAttribute(AttributeNames.DOCUMENT_TYPE) @Valid DocumentTypeDto documentType, BindingResult bindingResult,
 		final RedirectAttributes redirectAttributes, Model model)
 	{
 		if (bindingResult.hasErrors())
@@ -152,7 +152,7 @@ public class DocumentTypeController extends AbstractController
 	}
 
 	@PostMapping(value = UrlMappings.ACTION_UPDATE)
-	public String update(@ModelAttribute("documentType") @Valid DocumentTypeDto documentType, BindingResult bindingResult,
+	public String update(@ModelAttribute(AttributeNames.DOCUMENT_TYPE) @Valid DocumentTypeDto documentType, BindingResult bindingResult,
 		final RedirectAttributes redirectAttributes, Model model)
 	{
 		if (bindingResult.hasErrors())

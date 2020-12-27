@@ -68,14 +68,14 @@ public class TagController extends AbstractController
 		if (tag == null)
 			throw new NotFoundException(String.valueOf(id));
 
-		model.addAttribute("tag", tag);
+		model.addAttribute(AttributeNames.TAG, tag);
 		return ViewEnum.TAG_SHOW.getViewName();
 	}
 
 	@GetMapping(value = UrlMappings.ACTION_CREATE)
 	public String create(Model model)
 	{
-		model.addAttribute("tag", tagService.create());
+		model.addAttribute(AttributeNames.TAG, tagService.create());
 		return ViewEnum.TAG_CREATE.getViewName();
 	}
 
@@ -86,7 +86,7 @@ public class TagController extends AbstractController
 		if (tag == null)
 			throw new NotFoundException(String.valueOf(id));
 
-		model.addAttribute("tag", tag);
+		model.addAttribute(AttributeNames.TAG, tag);
 		return ViewEnum.TAG_EDIT.getViewName();
 	}
 
@@ -108,7 +108,7 @@ public class TagController extends AbstractController
 	}
 
 	@PostMapping(value = UrlMappings.ACTION_SAVE)
-	public String save(@ModelAttribute("tag") @Valid TagDto tag, BindingResult bindingResult,
+	public String save(@ModelAttribute(AttributeNames.TAG) @Valid TagDto tag, BindingResult bindingResult,
 		final RedirectAttributes redirectAttributes, Model model)
 	{
 		if (bindingResult.hasErrors())
@@ -138,7 +138,7 @@ public class TagController extends AbstractController
 	}
 
 	@PostMapping(value = UrlMappings.ACTION_UPDATE)
-	public String update(@ModelAttribute("tag") @Valid TagDto tag, BindingResult bindingResult,
+	public String update(@ModelAttribute(AttributeNames.TAG) @Valid TagDto tag, BindingResult bindingResult,
 		final RedirectAttributes redirectAttributes, Model model)
 	{
 		if (bindingResult.hasErrors())
