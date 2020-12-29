@@ -55,6 +55,9 @@ public class CommentServiceImpl
 	public CommentDto update(CommentDto commentDto)
 	{
 		Comment comment = commentRepository.findById(commentDto.getId()).orElse(null);
+		if (comment == null)
+			return null;
+
 		comment.setText(commentDto.getText());
 		comment.setUpdatedDatetime(LocalDateTime.now());
 

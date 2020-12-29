@@ -82,6 +82,9 @@ public class FileAttachmentServiceImpl
 	public FileAttachmentDto update(FileAttachmentDto fileAttachmentDto)
 	{
 		FileAttachment fileAttachment = fileAttachmentRepository.findById(fileAttachmentDto.getId()).orElse(null);
+		if (fileAttachment == null)
+			return null;
+
 		fileAttachment.setName(fileAttachmentDto.getName());
 		fileAttachment.setUpdatedDatetime(LocalDateTime.now());
 
