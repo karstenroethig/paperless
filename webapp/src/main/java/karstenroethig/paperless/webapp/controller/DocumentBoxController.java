@@ -30,11 +30,11 @@ import karstenroethig.paperless.webapp.controller.util.ViewEnum;
 import karstenroethig.paperless.webapp.model.domain.DocumentBox_;
 import karstenroethig.paperless.webapp.model.dto.DocumentBoxDto;
 import karstenroethig.paperless.webapp.model.dto.DocumentBoxSearchDto;
-import karstenroethig.paperless.webapp.service.exceptions.AlreadyExistsException;
 import karstenroethig.paperless.webapp.service.exceptions.StillInUseException;
 import karstenroethig.paperless.webapp.service.impl.DocumentBoxServiceImpl;
 import karstenroethig.paperless.webapp.util.MessageKeyEnum;
 import karstenroethig.paperless.webapp.util.Messages;
+import karstenroethig.paperless.webapp.util.validation.ValidationResult;
 
 @ComponentScan
 @Controller
@@ -125,26 +125,17 @@ public class DocumentBoxController extends AbstractController
 	public String save(@ModelAttribute(AttributeNames.DOCUMENT_BOX) @Valid DocumentBoxDto documentBox, BindingResult bindingResult,
 		final RedirectAttributes redirectAttributes, Model model)
 	{
-		if (bindingResult.hasErrors())
+		if (!validate(documentBox, bindingResult))
 		{
 			model.addAttribute(AttributeNames.MESSAGES, Messages.createWithError(MessageKeyEnum.DOCUMENT_BOX_SAVE_INVALID));
 			return ViewEnum.DOCUMENT_BOX_CREATE.getViewName();
 		}
 
-		try
+		if (documentBoxService.save(documentBox) != null)
 		{
-			if (documentBoxService.save(documentBox) != null)
-			{
-				redirectAttributes.addFlashAttribute(AttributeNames.MESSAGES,
-						Messages.createWithSuccess(MessageKeyEnum.DOCUMENT_BOX_SAVE_SUCCESS, documentBox.getName()));
-				return UrlMappings.redirect(UrlMappings.CONTROLLER_DOCUMENT_BOX, UrlMappings.ACTION_LIST);
-			}
-		}
-		catch (AlreadyExistsException ex)
-		{
-			bindingResult.rejectValue(ex.getFieldId(), MessageKeyEnum.DOCUMENT_BOX_SAVE_ERROR_EXISTS.getKey());
-			model.addAttribute(AttributeNames.MESSAGES, Messages.createWithError(MessageKeyEnum.DOCUMENT_BOX_SAVE_INVALID));
-			return ViewEnum.DOCUMENT_BOX_CREATE.getViewName();
+			redirectAttributes.addFlashAttribute(AttributeNames.MESSAGES,
+					Messages.createWithSuccess(MessageKeyEnum.DOCUMENT_BOX_SAVE_SUCCESS, documentBox.getName()));
+			return UrlMappings.redirect(UrlMappings.CONTROLLER_DOCUMENT_BOX, UrlMappings.ACTION_LIST);
 		}
 
 		model.addAttribute(AttributeNames.MESSAGES, Messages.createWithError(MessageKeyEnum.DOCUMENT_BOX_SAVE_ERROR));
@@ -155,30 +146,30 @@ public class DocumentBoxController extends AbstractController
 	public String update(@ModelAttribute(AttributeNames.DOCUMENT_BOX) @Valid DocumentBoxDto documentBox, BindingResult bindingResult,
 		final RedirectAttributes redirectAttributes, Model model)
 	{
-		if (bindingResult.hasErrors())
+		if (!validate(documentBox, bindingResult))
 		{
 			model.addAttribute(AttributeNames.MESSAGES, Messages.createWithError(MessageKeyEnum.DOCUMENT_BOX_UPDATE_INVALID));
 			return ViewEnum.DOCUMENT_BOX_EDIT.getViewName();
 		}
 
-		try
+		if (documentBoxService.update(documentBox) != null)
 		{
-			if (documentBoxService.update(documentBox) != null)
-			{
-				redirectAttributes.addFlashAttribute(AttributeNames.MESSAGES,
-						Messages.createWithSuccess(MessageKeyEnum.DOCUMENT_BOX_UPDATE_SUCCESS, documentBox.getName()));
-				return UrlMappings.redirect(UrlMappings.CONTROLLER_DOCUMENT_BOX, UrlMappings.ACTION_LIST);
-			}
-		}
-		catch (AlreadyExistsException ex)
-		{
-			bindingResult.rejectValue(ex.getFieldId(), MessageKeyEnum.DOCUMENT_BOX_SAVE_ERROR_EXISTS.getKey());
-			model.addAttribute(AttributeNames.MESSAGES, Messages.createWithError(MessageKeyEnum.DOCUMENT_BOX_UPDATE_INVALID));
-			return ViewEnum.DOCUMENT_BOX_EDIT.getViewName();
+			redirectAttributes.addFlashAttribute(AttributeNames.MESSAGES,
+					Messages.createWithSuccess(MessageKeyEnum.DOCUMENT_BOX_UPDATE_SUCCESS, documentBox.getName()));
+			return UrlMappings.redirect(UrlMappings.CONTROLLER_DOCUMENT_BOX, UrlMappings.ACTION_LIST);
 		}
 
 		model.addAttribute(AttributeNames.MESSAGES, Messages.createWithError(MessageKeyEnum.DOCUMENT_BOX_UPDATE_ERROR));
 		return ViewEnum.DOCUMENT_BOX_EDIT.getViewName();
+	}
+
+	private boolean validate(DocumentBoxDto documentBox, BindingResult bindingResult)
+	{
+		ValidationResult validationResult = documentBoxService.validate(documentBox);
+		if (validationResult.hasErrors())
+			addValidationMessagesToBindingResult(validationResult.getErrors(), bindingResult);
+
+		return !bindingResult.hasErrors() && !validationResult.hasErrors();
 	}
 
 	@Override

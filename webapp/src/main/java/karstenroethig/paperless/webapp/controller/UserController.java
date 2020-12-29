@@ -28,7 +28,6 @@ import karstenroethig.paperless.webapp.controller.util.AttributeNames;
 import karstenroethig.paperless.webapp.controller.util.UrlMappings;
 import karstenroethig.paperless.webapp.controller.util.ViewEnum;
 import karstenroethig.paperless.webapp.model.dto.UserDto;
-import karstenroethig.paperless.webapp.service.exceptions.AlreadyExistsException;
 import karstenroethig.paperless.webapp.service.impl.UserServiceImpl;
 import karstenroethig.paperless.webapp.util.MessageKeyEnum;
 import karstenroethig.paperless.webapp.util.Messages;
@@ -75,24 +74,15 @@ public class UserController extends AbstractController
 	public String register(@ModelAttribute(AttributeNames.USER) @Valid UserDto user, BindingResult bindingResult,
 		final RedirectAttributes redirectAttributes, Model model)
 	{
-		if (!validate(user, true, bindingResult))
+		if (!validate(user, bindingResult))
 		{
 			model.addAttribute(AttributeNames.MESSAGES, Messages.createWithError(MessageKeyEnum.USER_SAVE_INVALID));
 			addBasicAttributes(model);
 			return ViewEnum.USER_REGISTER.getViewName();
 		}
 
-		try
-		{
-			if (userService.save(user) != null)
-				return ViewEnum.USER_REGISTER_SUCCESS.getViewName();
-		}
-		catch (AlreadyExistsException ex)
-		{
-			bindingResult.rejectValue(ex.getFieldId(), MessageKeyEnum.USER_SAVE_ERROR_EXISTS.getKey());
-			model.addAttribute(AttributeNames.MESSAGES, Messages.createWithError(MessageKeyEnum.USER_SAVE_INVALID));
-			return ViewEnum.USER_REGISTER.getViewName();
-		}
+		if (userService.save(user) != null)
+			return ViewEnum.USER_REGISTER_SUCCESS.getViewName();
 
 		model.addAttribute(AttributeNames.MESSAGES, Messages.createWithError(MessageKeyEnum.USER_SAVE_ERROR));
 		addBasicAttributes(model);
@@ -142,28 +132,18 @@ public class UserController extends AbstractController
 			throw new NotFoundException(username);
 		user.setId(currentUser.getId());
 
-		if (!validate(user, false, bindingResult))
+		if (!validate(user, bindingResult))
 		{
 			model.addAttribute(AttributeNames.MESSAGES, Messages.createWithError(MessageKeyEnum.USER_UPDATE_INVALID));
 			addBasicAttributes(model);
 			return ViewEnum.USER_EDIT.getViewName();
 		}
 
-		try
+		if (userService.update(user) != null)
 		{
-			if (userService.update(user) != null)
-			{
-				redirectAttributes.addFlashAttribute(AttributeNames.MESSAGES,
-						Messages.createWithSuccess(MessageKeyEnum.USER_UPDATE_SUCCESS));
-				return UrlMappings.redirect(UrlMappings.CONTROLLER_USER, "/show");
-			}
-		}
-		catch (AlreadyExistsException ex)
-		{
-			bindingResult.rejectValue(ex.getFieldId(), MessageKeyEnum.USER_SAVE_ERROR_EXISTS.getKey());
-			model.addAttribute(AttributeNames.MESSAGES, Messages.createWithError(MessageKeyEnum.USER_UPDATE_INVALID));
-			addBasicAttributes(model);
-			return ViewEnum.USER_EDIT.getViewName();
+			redirectAttributes.addFlashAttribute(AttributeNames.MESSAGES,
+					Messages.createWithSuccess(MessageKeyEnum.USER_UPDATE_SUCCESS));
+			return UrlMappings.redirect(UrlMappings.CONTROLLER_USER, "/show");
 		}
 
 		model.addAttribute(AttributeNames.MESSAGES, Messages.createWithError(MessageKeyEnum.USER_UPDATE_ERROR));
@@ -188,9 +168,9 @@ public class UserController extends AbstractController
 		return UrlMappings.redirect(UrlMappings.CONTROLLER_USER, "/show");
 	}
 
-	private boolean validate(UserDto user, boolean forInitialCreation, BindingResult bindingResult)
+	private boolean validate(UserDto user, BindingResult bindingResult)
 	{
-		ValidationResult validationResult = userService.validate(user, forInitialCreation);
+		ValidationResult validationResult = userService.validate(user);
 		if (validationResult.hasErrors())
 			addValidationMessagesToBindingResult(validationResult.getErrors(), bindingResult);
 

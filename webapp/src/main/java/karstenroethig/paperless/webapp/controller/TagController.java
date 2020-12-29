@@ -29,10 +29,10 @@ import karstenroethig.paperless.webapp.controller.util.UrlMappings;
 import karstenroethig.paperless.webapp.controller.util.ViewEnum;
 import karstenroethig.paperless.webapp.model.dto.TagDto;
 import karstenroethig.paperless.webapp.model.dto.TagSearchDto;
-import karstenroethig.paperless.webapp.service.exceptions.AlreadyExistsException;
 import karstenroethig.paperless.webapp.service.impl.TagServiceImpl;
 import karstenroethig.paperless.webapp.util.MessageKeyEnum;
 import karstenroethig.paperless.webapp.util.Messages;
+import karstenroethig.paperless.webapp.util.validation.ValidationResult;
 
 @ComponentScan
 @Controller
@@ -111,26 +111,17 @@ public class TagController extends AbstractController
 	public String save(@ModelAttribute(AttributeNames.TAG) @Valid TagDto tag, BindingResult bindingResult,
 		final RedirectAttributes redirectAttributes, Model model)
 	{
-		if (bindingResult.hasErrors())
+		if (!validate(tag, bindingResult))
 		{
 			model.addAttribute(AttributeNames.MESSAGES, Messages.createWithError(MessageKeyEnum.TAG_SAVE_INVALID));
 			return ViewEnum.TAG_CREATE.getViewName();
 		}
 
-		try
+		if (tagService.save(tag) != null)
 		{
-			if (tagService.save(tag) != null)
-			{
-				redirectAttributes.addFlashAttribute(AttributeNames.MESSAGES,
-						Messages.createWithSuccess(MessageKeyEnum.TAG_SAVE_SUCCESS, tag.getName()));
-				return UrlMappings.redirect(UrlMappings.CONTROLLER_TAG, UrlMappings.ACTION_LIST);
-			}
-		}
-		catch (AlreadyExistsException ex)
-		{
-			bindingResult.rejectValue(ex.getFieldId(), MessageKeyEnum.TAG_SAVE_ERROR_EXISTS.getKey());
-			model.addAttribute(AttributeNames.MESSAGES, Messages.createWithError(MessageKeyEnum.TAG_SAVE_INVALID));
-			return ViewEnum.TAG_CREATE.getViewName();
+			redirectAttributes.addFlashAttribute(AttributeNames.MESSAGES,
+					Messages.createWithSuccess(MessageKeyEnum.TAG_SAVE_SUCCESS, tag.getName()));
+			return UrlMappings.redirect(UrlMappings.CONTROLLER_TAG, UrlMappings.ACTION_LIST);
 		}
 
 		model.addAttribute(AttributeNames.MESSAGES, Messages.createWithError(MessageKeyEnum.TAG_SAVE_ERROR));
@@ -141,30 +132,30 @@ public class TagController extends AbstractController
 	public String update(@ModelAttribute(AttributeNames.TAG) @Valid TagDto tag, BindingResult bindingResult,
 		final RedirectAttributes redirectAttributes, Model model)
 	{
-		if (bindingResult.hasErrors())
+		if (!validate(tag, bindingResult))
 		{
 			model.addAttribute(AttributeNames.MESSAGES, Messages.createWithError(MessageKeyEnum.TAG_UPDATE_INVALID));
 			return ViewEnum.TAG_EDIT.getViewName();
 		}
 
-		try
+		if (tagService.update(tag) != null)
 		{
-			if (tagService.update(tag) != null)
-			{
-				redirectAttributes.addFlashAttribute(AttributeNames.MESSAGES,
-						Messages.createWithSuccess(MessageKeyEnum.TAG_UPDATE_SUCCESS, tag.getName()));
-				return UrlMappings.redirect(UrlMappings.CONTROLLER_TAG, UrlMappings.ACTION_LIST);
-			}
-		}
-		catch (AlreadyExistsException ex)
-		{
-			bindingResult.rejectValue(ex.getFieldId(), MessageKeyEnum.TAG_SAVE_ERROR_EXISTS.getKey());
-			model.addAttribute(AttributeNames.MESSAGES, Messages.createWithError(MessageKeyEnum.TAG_UPDATE_INVALID));
-			return ViewEnum.TAG_EDIT.getViewName();
+			redirectAttributes.addFlashAttribute(AttributeNames.MESSAGES,
+					Messages.createWithSuccess(MessageKeyEnum.TAG_UPDATE_SUCCESS, tag.getName()));
+			return UrlMappings.redirect(UrlMappings.CONTROLLER_TAG, UrlMappings.ACTION_LIST);
 		}
 
 		model.addAttribute(AttributeNames.MESSAGES, Messages.createWithError(MessageKeyEnum.TAG_UPDATE_ERROR));
 		return ViewEnum.TAG_EDIT.getViewName();
+	}
+
+	private boolean validate(TagDto tag, BindingResult bindingResult)
+	{
+		ValidationResult validationResult = tagService.validate(tag);
+		if (validationResult.hasErrors())
+			addValidationMessagesToBindingResult(validationResult.getErrors(), bindingResult);
+
+		return !bindingResult.hasErrors() && !validationResult.hasErrors();
 	}
 
 	@Override

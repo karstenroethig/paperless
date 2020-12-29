@@ -17,6 +17,9 @@ import karstenroethig.paperless.webapp.model.dto.DocumentSearchDto;
 import karstenroethig.paperless.webapp.model.dto.TagDto;
 import karstenroethig.paperless.webapp.repository.DocumentRepository;
 import karstenroethig.paperless.webapp.repository.specification.DocumentSpecifications;
+import karstenroethig.paperless.webapp.util.MessageKeyEnum;
+import karstenroethig.paperless.webapp.util.validation.ValidationException;
+import karstenroethig.paperless.webapp.util.validation.ValidationResult;
 
 @Service
 @Transactional
@@ -34,8 +37,30 @@ public class DocumentServiceImpl
 		return new DocumentDto();
 	}
 
+	public ValidationResult validate(DocumentDto document)
+	{
+		ValidationResult result = new ValidationResult();
+
+		if (document == null)
+		{
+			result.addError(MessageKeyEnum.DEFAULT_VALIDATION_OBJECT_CANNOT_BE_EMPTY);
+			return result;
+		}
+
+		return result;
+	}
+
+	private void checkValidation(DocumentDto document)
+	{
+		ValidationResult result = validate(document);
+		if (result.hasErrors())
+			throw new ValidationException(result);
+	}
+
 	public DocumentDto save(DocumentDto documentDto)
 	{
+		checkValidation(documentDto);
+
 		Document document = new Document();
 		document.setCreatedDatetime(LocalDateTime.now());
 		merge(document, documentDto);
@@ -45,7 +70,12 @@ public class DocumentServiceImpl
 
 	public DocumentDto update(DocumentDto documentDto)
 	{
+		checkValidation(documentDto);
+
 		Document document = documentRepository.findById(documentDto.getId()).orElse(null);
+		if (document == null)
+			return null;
+
 		merge(document, documentDto);
 
 		return transform(documentRepository.save(document));

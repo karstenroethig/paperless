@@ -30,11 +30,11 @@ import karstenroethig.paperless.webapp.controller.util.ViewEnum;
 import karstenroethig.paperless.webapp.model.domain.Contact_;
 import karstenroethig.paperless.webapp.model.dto.ContactDto;
 import karstenroethig.paperless.webapp.model.dto.ContactSearchDto;
-import karstenroethig.paperless.webapp.service.exceptions.AlreadyExistsException;
 import karstenroethig.paperless.webapp.service.exceptions.StillInUseException;
 import karstenroethig.paperless.webapp.service.impl.ContactServiceImpl;
 import karstenroethig.paperless.webapp.util.MessageKeyEnum;
 import karstenroethig.paperless.webapp.util.Messages;
+import karstenroethig.paperless.webapp.util.validation.ValidationResult;
 
 @ComponentScan
 @Controller
@@ -125,26 +125,17 @@ public class ContactController extends AbstractController
 	public String save(@ModelAttribute(AttributeNames.CONTACT) @Valid ContactDto contact, BindingResult bindingResult,
 		final RedirectAttributes redirectAttributes, Model model)
 	{
-		if (bindingResult.hasErrors())
+		if (!validate(contact, bindingResult))
 		{
 			model.addAttribute(AttributeNames.MESSAGES, Messages.createWithError(MessageKeyEnum.CONTACT_SAVE_INVALID));
 			return ViewEnum.CONTACT_CREATE.getViewName();
 		}
 
-		try
+		if (contactService.save(contact) != null)
 		{
-			if (contactService.save(contact) != null)
-			{
-				redirectAttributes.addFlashAttribute(AttributeNames.MESSAGES,
-						Messages.createWithSuccess(MessageKeyEnum.CONTACT_SAVE_SUCCESS, contact.getName()));
-				return UrlMappings.redirect(UrlMappings.CONTROLLER_CONTACT, UrlMappings.ACTION_LIST);
-			}
-		}
-		catch (AlreadyExistsException ex)
-		{
-			bindingResult.rejectValue(ex.getFieldId(), MessageKeyEnum.CONTACT_SAVE_ERROR_EXISTS.getKey());
-			model.addAttribute(AttributeNames.MESSAGES, Messages.createWithError(MessageKeyEnum.CONTACT_SAVE_INVALID));
-			return ViewEnum.CONTACT_CREATE.getViewName();
+			redirectAttributes.addFlashAttribute(AttributeNames.MESSAGES,
+					Messages.createWithSuccess(MessageKeyEnum.CONTACT_SAVE_SUCCESS, contact.getName()));
+			return UrlMappings.redirect(UrlMappings.CONTROLLER_CONTACT, UrlMappings.ACTION_LIST);
 		}
 
 		model.addAttribute(AttributeNames.MESSAGES, Messages.createWithError(MessageKeyEnum.CONTACT_SAVE_ERROR));
@@ -155,30 +146,30 @@ public class ContactController extends AbstractController
 	public String update(@ModelAttribute(AttributeNames.CONTACT) @Valid ContactDto contact, BindingResult bindingResult,
 		final RedirectAttributes redirectAttributes, Model model)
 	{
-		if (bindingResult.hasErrors())
+		if (!validate(contact, bindingResult))
 		{
 			model.addAttribute(AttributeNames.MESSAGES, Messages.createWithError(MessageKeyEnum.CONTACT_UPDATE_INVALID));
 			return ViewEnum.CONTACT_EDIT.getViewName();
 		}
 
-		try
+		if (contactService.update(contact) != null)
 		{
-			if (contactService.update(contact) != null)
-			{
-				redirectAttributes.addFlashAttribute(AttributeNames.MESSAGES,
-						Messages.createWithSuccess(MessageKeyEnum.CONTACT_UPDATE_SUCCESS, contact.getName()));
-				return UrlMappings.redirect(UrlMappings.CONTROLLER_CONTACT, UrlMappings.ACTION_LIST);
-			}
-		}
-		catch (AlreadyExistsException ex)
-		{
-			bindingResult.rejectValue(ex.getFieldId(), MessageKeyEnum.CONTACT_SAVE_ERROR_EXISTS.getKey());
-			model.addAttribute(AttributeNames.MESSAGES, Messages.createWithError(MessageKeyEnum.CONTACT_UPDATE_INVALID));
-			return ViewEnum.CONTACT_EDIT.getViewName();
+			redirectAttributes.addFlashAttribute(AttributeNames.MESSAGES,
+					Messages.createWithSuccess(MessageKeyEnum.CONTACT_UPDATE_SUCCESS, contact.getName()));
+			return UrlMappings.redirect(UrlMappings.CONTROLLER_CONTACT, UrlMappings.ACTION_LIST);
 		}
 
 		model.addAttribute(AttributeNames.MESSAGES, Messages.createWithError(MessageKeyEnum.CONTACT_UPDATE_ERROR));
 		return ViewEnum.CONTACT_EDIT.getViewName();
+	}
+
+	private boolean validate(ContactDto contact, BindingResult bindingResult)
+	{
+		ValidationResult validationResult = contactService.validate(contact);
+		if (validationResult.hasErrors())
+			addValidationMessagesToBindingResult(validationResult.getErrors(), bindingResult);
+
+		return !bindingResult.hasErrors() && !validationResult.hasErrors();
 	}
 
 	@Override

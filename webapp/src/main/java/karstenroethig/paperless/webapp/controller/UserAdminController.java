@@ -33,7 +33,6 @@ import karstenroethig.paperless.webapp.model.domain.User_;
 import karstenroethig.paperless.webapp.model.dto.UserDto;
 import karstenroethig.paperless.webapp.model.dto.UserSearchDto;
 import karstenroethig.paperless.webapp.model.dto.UserSearchDto.NewRegisteredSearchTypeEnum;
-import karstenroethig.paperless.webapp.service.exceptions.AlreadyExistsException;
 import karstenroethig.paperless.webapp.service.impl.UserAdminServiceImpl;
 import karstenroethig.paperless.webapp.util.MessageKeyEnum;
 import karstenroethig.paperless.webapp.util.Messages;
@@ -130,28 +129,18 @@ public class UserAdminController extends AbstractController
 	public String save(@ModelAttribute(AttributeNames.USER) @Valid UserDto user, BindingResult bindingResult,
 		final RedirectAttributes redirectAttributes, Model model)
 	{
-		if (!validate(user, true, bindingResult))
+		if (!validate(user, bindingResult))
 		{
 			model.addAttribute(AttributeNames.MESSAGES, Messages.createWithError(MessageKeyEnum.USER_ADMIN_SAVE_INVALID));
 			addBasicAttributes(model);
 			return ViewEnum.USER_ADMIN_CREATE.getViewName();
 		}
 
-		try
+		if (userService.save(user) != null)
 		{
-			if (userService.save(user) != null)
-			{
-				redirectAttributes.addFlashAttribute(AttributeNames.MESSAGES,
-						Messages.createWithSuccess(MessageKeyEnum.USER_ADMIN_SAVE_SUCCESS, user.getUsername()));
-				return UrlMappings.redirect(UrlMappings.CONTROLLER_USER_ADMIN, UrlMappings.ACTION_LIST);
-			}
-		}
-		catch (AlreadyExistsException ex)
-		{
-			bindingResult.rejectValue(ex.getFieldId(), MessageKeyEnum.USER_ADMIN_SAVE_ERROR_EXISTS.getKey());
-			model.addAttribute(AttributeNames.MESSAGES, Messages.createWithError(MessageKeyEnum.USER_ADMIN_SAVE_INVALID));
-			addBasicAttributes(model);
-			return ViewEnum.USER_ADMIN_CREATE.getViewName();
+			redirectAttributes.addFlashAttribute(AttributeNames.MESSAGES,
+					Messages.createWithSuccess(MessageKeyEnum.USER_ADMIN_SAVE_SUCCESS, user.getUsername()));
+			return UrlMappings.redirect(UrlMappings.CONTROLLER_USER_ADMIN, UrlMappings.ACTION_LIST);
 		}
 
 		model.addAttribute(AttributeNames.MESSAGES, Messages.createWithError(MessageKeyEnum.USER_ADMIN_SAVE_ERROR));
@@ -163,28 +152,18 @@ public class UserAdminController extends AbstractController
 	public String update(@ModelAttribute(AttributeNames.USER) @Valid UserDto user, BindingResult bindingResult,
 		final RedirectAttributes redirectAttributes, Model model)
 	{
-		if (!validate(user, false, bindingResult))
+		if (!validate(user, bindingResult))
 		{
 			model.addAttribute(AttributeNames.MESSAGES, Messages.createWithError(MessageKeyEnum.USER_ADMIN_UPDATE_INVALID));
 			addBasicAttributes(model);
 			return ViewEnum.USER_ADMIN_EDIT.getViewName();
 		}
 
-		try
+		if (userService.update(user) != null)
 		{
-			if (userService.update(user) != null)
-			{
-				redirectAttributes.addFlashAttribute(AttributeNames.MESSAGES,
-						Messages.createWithSuccess(MessageKeyEnum.USER_ADMIN_UPDATE_SUCCESS, user.getUsername()));
-				return UrlMappings.redirect(UrlMappings.CONTROLLER_USER_ADMIN, UrlMappings.ACTION_LIST);
-			}
-		}
-		catch (AlreadyExistsException ex)
-		{
-			bindingResult.rejectValue(ex.getFieldId(), MessageKeyEnum.USER_ADMIN_SAVE_ERROR_EXISTS.getKey());
-			model.addAttribute(AttributeNames.MESSAGES, Messages.createWithError(MessageKeyEnum.USER_ADMIN_UPDATE_INVALID));
-			addBasicAttributes(model);
-			return ViewEnum.USER_ADMIN_EDIT.getViewName();
+			redirectAttributes.addFlashAttribute(AttributeNames.MESSAGES,
+					Messages.createWithSuccess(MessageKeyEnum.USER_ADMIN_UPDATE_SUCCESS, user.getUsername()));
+			return UrlMappings.redirect(UrlMappings.CONTROLLER_USER_ADMIN, UrlMappings.ACTION_LIST);
 		}
 
 		model.addAttribute(AttributeNames.MESSAGES, Messages.createWithError(MessageKeyEnum.USER_ADMIN_UPDATE_ERROR));
@@ -192,9 +171,9 @@ public class UserAdminController extends AbstractController
 		return ViewEnum.USER_ADMIN_EDIT.getViewName();
 	}
 
-	private boolean validate(UserDto user, boolean forInitialCreation, BindingResult bindingResult)
+	private boolean validate(UserDto user, BindingResult bindingResult)
 	{
-		ValidationResult validationResult = userService.validate(user, forInitialCreation);
+		ValidationResult validationResult = userService.validate(user);
 		if (validationResult.hasErrors())
 			addValidationMessagesToBindingResult(validationResult.getErrors(), bindingResult);
 

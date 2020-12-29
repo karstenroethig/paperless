@@ -44,6 +44,7 @@ import karstenroethig.paperless.webapp.service.impl.FileAttachmentServiceImpl;
 import karstenroethig.paperless.webapp.service.impl.TagServiceImpl;
 import karstenroethig.paperless.webapp.util.MessageKeyEnum;
 import karstenroethig.paperless.webapp.util.Messages;
+import karstenroethig.paperless.webapp.util.validation.ValidationResult;
 
 @ComponentScan
 @Controller
@@ -175,7 +176,7 @@ public class DocumentController extends AbstractController
 	public String save(@ModelAttribute(AttributeNames.DOCUMENT) @Valid DocumentDto document, BindingResult bindingResult,
 		final RedirectAttributes redirectAttributes, Model model)
 	{
-		if (bindingResult.hasErrors())
+		if (!validate(document, bindingResult))
 		{
 			model.addAttribute(AttributeNames.MESSAGES, Messages.createWithError(MessageKeyEnum.DOCUMENT_SAVE_INVALID));
 			addBasicAttributes(model);
@@ -198,7 +199,7 @@ public class DocumentController extends AbstractController
 	public String update(@ModelAttribute(AttributeNames.DOCUMENT) @Valid DocumentDto document, BindingResult bindingResult,
 		final RedirectAttributes redirectAttributes, Model model)
 	{
-		if (bindingResult.hasErrors())
+		if (!validate(document, bindingResult))
 		{
 			model.addAttribute(AttributeNames.MESSAGES, Messages.createWithError(MessageKeyEnum.DOCUMENT_UPDATE_INVALID));
 			addBasicAttributes(model);
@@ -215,6 +216,15 @@ public class DocumentController extends AbstractController
 		model.addAttribute(AttributeNames.MESSAGES, Messages.createWithError(MessageKeyEnum.DOCUMENT_UPDATE_ERROR));
 		addBasicAttributes(model);
 		return ViewEnum.DOCUMENT_EDIT.getViewName();
+	}
+
+	private boolean validate(DocumentDto document, BindingResult bindingResult)
+	{
+		ValidationResult validationResult = documentService.validate(document);
+		if (validationResult.hasErrors())
+			addValidationMessagesToBindingResult(validationResult.getErrors(), bindingResult);
+
+		return !bindingResult.hasErrors() && !validationResult.hasErrors();
 	}
 
 	private void addBasicAttributes(Model model)

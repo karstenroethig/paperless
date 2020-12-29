@@ -19,8 +19,10 @@ import karstenroethig.paperless.webapp.model.dto.DocumentDto;
 import karstenroethig.paperless.webapp.model.dto.DocumentSearchDto;
 import karstenroethig.paperless.webapp.repository.DocumentBoxRepository;
 import karstenroethig.paperless.webapp.repository.specification.DocumentBoxSpecifications;
-import karstenroethig.paperless.webapp.service.exceptions.AlreadyExistsException;
 import karstenroethig.paperless.webapp.service.exceptions.StillInUseException;
+import karstenroethig.paperless.webapp.util.MessageKeyEnum;
+import karstenroethig.paperless.webapp.util.validation.ValidationException;
+import karstenroethig.paperless.webapp.util.validation.ValidationResult;
 
 @Service
 @Transactional
@@ -39,9 +41,44 @@ public class DocumentBoxServiceImpl
 		return new DocumentBoxDto();
 	}
 
-	public DocumentBoxDto save(DocumentBoxDto documentBoxDto) throws AlreadyExistsException
+	public ValidationResult validate(DocumentBoxDto documentBox)
 	{
-		doesAlreadyExist(null, documentBoxDto.getName());
+		ValidationResult result = new ValidationResult();
+
+		if (documentBox == null)
+		{
+			result.addError(MessageKeyEnum.DEFAULT_VALIDATION_OBJECT_CANNOT_BE_EMPTY);
+			return result;
+		}
+
+		result.add(validateUniqueness(documentBox));
+
+		return result;
+	}
+
+	private void checkValidation(DocumentBoxDto documentBox)
+	{
+		ValidationResult result = validate(documentBox);
+		if (result.hasErrors())
+			throw new ValidationException(result);
+	}
+
+	private ValidationResult validateUniqueness(DocumentBoxDto documentBox)
+	{
+		ValidationResult result = new ValidationResult();
+
+		DocumentBox existing = documentBoxRepository.findOneByNameIgnoreCase(documentBox.getName());
+		if (existing != null
+				&& (documentBox.getId() == null
+				|| !existing.getId().equals(documentBox.getId())))
+			result.addError(MessageKeyEnum.DOCUMENT_BOX_SAVE_ERROR_EXISTS, "name");
+
+		return result;
+	}
+
+	public DocumentBoxDto save(DocumentBoxDto documentBoxDto)
+	{
+		checkValidation(documentBoxDto);
 
 		DocumentBox documentBox = new DocumentBox();
 		merge(documentBox, documentBoxDto);
@@ -49,23 +86,17 @@ public class DocumentBoxServiceImpl
 		return transform(documentBoxRepository.save(documentBox));
 	}
 
-	public DocumentBoxDto update(DocumentBoxDto documentBoxDto) throws AlreadyExistsException
+	public DocumentBoxDto update(DocumentBoxDto documentBoxDto)
 	{
-		doesAlreadyExist(documentBoxDto.getId(), documentBoxDto.getName());
+		checkValidation(documentBoxDto);
 
 		DocumentBox documentBox = documentBoxRepository.findById(documentBoxDto.getId()).orElse(null);
+		if (documentBox == null)
+			return null;
+
 		merge(documentBox, documentBoxDto);
 
 		return transform(documentBoxRepository.save(documentBox));
-	}
-
-	private void doesAlreadyExist(Long id, String name) throws AlreadyExistsException
-	{
-		DocumentBox existing = documentBoxRepository.findOneByNameIgnoreCase(name);
-		if (existing != null
-				&& (id == null
-				|| !existing.getId().equals(id)))
-			throw new AlreadyExistsException("name");
 	}
 
 	public boolean delete(Long id) throws StillInUseException

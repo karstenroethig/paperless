@@ -20,8 +20,10 @@ import karstenroethig.paperless.webapp.model.dto.DocumentSearchDto;
 import karstenroethig.paperless.webapp.model.dto.DocumentSearchDto.ContactSearchTypeEnum;
 import karstenroethig.paperless.webapp.repository.ContactRepository;
 import karstenroethig.paperless.webapp.repository.specification.ContactSpecifications;
-import karstenroethig.paperless.webapp.service.exceptions.AlreadyExistsException;
 import karstenroethig.paperless.webapp.service.exceptions.StillInUseException;
+import karstenroethig.paperless.webapp.util.MessageKeyEnum;
+import karstenroethig.paperless.webapp.util.validation.ValidationException;
+import karstenroethig.paperless.webapp.util.validation.ValidationResult;
 
 @Service
 @Transactional
@@ -40,9 +42,44 @@ public class ContactServiceImpl
 		return new ContactDto();
 	}
 
-	public ContactDto save(ContactDto contactDto) throws AlreadyExistsException
+	public ValidationResult validate(ContactDto contact)
 	{
-		doesAlreadyExist(null, contactDto.getName());
+		ValidationResult result = new ValidationResult();
+
+		if (contact == null)
+		{
+			result.addError(MessageKeyEnum.DEFAULT_VALIDATION_OBJECT_CANNOT_BE_EMPTY);
+			return result;
+		}
+
+		result.add(validateUniqueness(contact));
+
+		return result;
+	}
+
+	private void checkValidation(ContactDto contact)
+	{
+		ValidationResult result = validate(contact);
+		if (result.hasErrors())
+			throw new ValidationException(result);
+	}
+
+	private ValidationResult validateUniqueness(ContactDto contact)
+	{
+		ValidationResult result = new ValidationResult();
+
+		Contact existing = contactRepository.findOneByNameIgnoreCase(contact.getName());
+		if (existing != null
+				&& (contact.getId() == null
+				|| !existing.getId().equals(contact.getId())))
+			result.addError(MessageKeyEnum.CONTACT_SAVE_ERROR_EXISTS, "name");
+
+		return result;
+	}
+
+	public ContactDto save(ContactDto contactDto)
+	{
+		checkValidation(contactDto);
 
 		Contact contact = new Contact();
 		merge(contact, contactDto);
@@ -50,23 +87,17 @@ public class ContactServiceImpl
 		return transform(contactRepository.save(contact));
 	}
 
-	public ContactDto update(ContactDto contactDto) throws AlreadyExistsException
+	public ContactDto update(ContactDto contactDto)
 	{
-		doesAlreadyExist(contactDto.getId(), contactDto.getName());
+		checkValidation(contactDto);
 
 		Contact contact = contactRepository.findById(contactDto.getId()).orElse(null);
+		if (contact == null)
+			return null;
+
 		merge(contact, contactDto);
 
 		return transform(contactRepository.save(contact));
-	}
-
-	private void doesAlreadyExist(Long id, String name) throws AlreadyExistsException
-	{
-		Contact existing = contactRepository.findOneByNameIgnoreCase(name);
-		if (existing != null
-				&& (id == null
-				|| !existing.getId().equals(id)))
-			throw new AlreadyExistsException("name");
 	}
 
 	public boolean delete(Long id) throws StillInUseException

@@ -30,11 +30,11 @@ import karstenroethig.paperless.webapp.controller.util.ViewEnum;
 import karstenroethig.paperless.webapp.model.domain.DocumentType_;
 import karstenroethig.paperless.webapp.model.dto.DocumentTypeDto;
 import karstenroethig.paperless.webapp.model.dto.DocumentTypeSearchDto;
-import karstenroethig.paperless.webapp.service.exceptions.AlreadyExistsException;
 import karstenroethig.paperless.webapp.service.exceptions.StillInUseException;
 import karstenroethig.paperless.webapp.service.impl.DocumentTypeServiceImpl;
 import karstenroethig.paperless.webapp.util.MessageKeyEnum;
 import karstenroethig.paperless.webapp.util.Messages;
+import karstenroethig.paperless.webapp.util.validation.ValidationResult;
 
 @ComponentScan
 @Controller
@@ -125,26 +125,17 @@ public class DocumentTypeController extends AbstractController
 	public String save(@ModelAttribute(AttributeNames.DOCUMENT_TYPE) @Valid DocumentTypeDto documentType, BindingResult bindingResult,
 		final RedirectAttributes redirectAttributes, Model model)
 	{
-		if (bindingResult.hasErrors())
+		if (!validate(documentType, bindingResult))
 		{
 			model.addAttribute(AttributeNames.MESSAGES, Messages.createWithError(MessageKeyEnum.DOCUMENT_TYPE_SAVE_INVALID));
 			return ViewEnum.DOCUMENT_TYPE_CREATE.getViewName();
 		}
 
-		try
+		if (documentTypeService.save(documentType) != null)
 		{
-			if (documentTypeService.save(documentType) != null)
-			{
-				redirectAttributes.addFlashAttribute(AttributeNames.MESSAGES,
-						Messages.createWithSuccess(MessageKeyEnum.DOCUMENT_TYPE_SAVE_SUCCESS, documentType.getName()));
-				return UrlMappings.redirect(UrlMappings.CONTROLLER_DOCUMENT_TYPE, UrlMappings.ACTION_LIST);
-			}
-		}
-		catch (AlreadyExistsException ex)
-		{
-			bindingResult.rejectValue(ex.getFieldId(), MessageKeyEnum.DOCUMENT_TYPE_SAVE_ERROR_EXISTS.getKey());
-			model.addAttribute(AttributeNames.MESSAGES, Messages.createWithError(MessageKeyEnum.DOCUMENT_TYPE_SAVE_INVALID));
-			return ViewEnum.DOCUMENT_TYPE_CREATE.getViewName();
+			redirectAttributes.addFlashAttribute(AttributeNames.MESSAGES,
+					Messages.createWithSuccess(MessageKeyEnum.DOCUMENT_TYPE_SAVE_SUCCESS, documentType.getName()));
+			return UrlMappings.redirect(UrlMappings.CONTROLLER_DOCUMENT_TYPE, UrlMappings.ACTION_LIST);
 		}
 
 		model.addAttribute(AttributeNames.MESSAGES, Messages.createWithError(MessageKeyEnum.DOCUMENT_TYPE_SAVE_ERROR));
@@ -155,30 +146,30 @@ public class DocumentTypeController extends AbstractController
 	public String update(@ModelAttribute(AttributeNames.DOCUMENT_TYPE) @Valid DocumentTypeDto documentType, BindingResult bindingResult,
 		final RedirectAttributes redirectAttributes, Model model)
 	{
-		if (bindingResult.hasErrors())
+		if (!validate(documentType, bindingResult))
 		{
 			model.addAttribute(AttributeNames.MESSAGES, Messages.createWithError(MessageKeyEnum.DOCUMENT_TYPE_UPDATE_INVALID));
 			return ViewEnum.DOCUMENT_TYPE_EDIT.getViewName();
 		}
 
-		try
+		if (documentTypeService.update(documentType) != null)
 		{
-			if (documentTypeService.update(documentType) != null)
-			{
-				redirectAttributes.addFlashAttribute(AttributeNames.MESSAGES,
-						Messages.createWithSuccess(MessageKeyEnum.DOCUMENT_TYPE_UPDATE_SUCCESS, documentType.getName()));
-				return UrlMappings.redirect(UrlMappings.CONTROLLER_DOCUMENT_TYPE, UrlMappings.ACTION_LIST);
-			}
-		}
-		catch (AlreadyExistsException ex)
-		{
-			bindingResult.rejectValue(ex.getFieldId(), MessageKeyEnum.DOCUMENT_TYPE_SAVE_ERROR_EXISTS.getKey());
-			model.addAttribute(AttributeNames.MESSAGES, Messages.createWithError(MessageKeyEnum.DOCUMENT_TYPE_UPDATE_INVALID));
-			return ViewEnum.DOCUMENT_TYPE_EDIT.getViewName();
+			redirectAttributes.addFlashAttribute(AttributeNames.MESSAGES,
+					Messages.createWithSuccess(MessageKeyEnum.DOCUMENT_TYPE_UPDATE_SUCCESS, documentType.getName()));
+			return UrlMappings.redirect(UrlMappings.CONTROLLER_DOCUMENT_TYPE, UrlMappings.ACTION_LIST);
 		}
 
 		model.addAttribute(AttributeNames.MESSAGES, Messages.createWithError(MessageKeyEnum.DOCUMENT_TYPE_UPDATE_ERROR));
 		return ViewEnum.DOCUMENT_TYPE_EDIT.getViewName();
+	}
+
+	private boolean validate(DocumentTypeDto documentType, BindingResult bindingResult)
+	{
+		ValidationResult validationResult = documentTypeService.validate(documentType);
+		if (validationResult.hasErrors())
+			addValidationMessagesToBindingResult(validationResult.getErrors(), bindingResult);
+
+		return !bindingResult.hasErrors() && !validationResult.hasErrors();
 	}
 
 	@Override

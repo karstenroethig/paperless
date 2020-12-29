@@ -23,7 +23,6 @@ import karstenroethig.paperless.webapp.model.dto.UserDto;
 import karstenroethig.paperless.webapp.model.dto.UserSearchDto;
 import karstenroethig.paperless.webapp.repository.AuthorityRepository;
 import karstenroethig.paperless.webapp.repository.specification.UserSpecifications;
-import karstenroethig.paperless.webapp.service.exceptions.AlreadyExistsException;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -167,18 +166,11 @@ public class UserAdminServiceImpl extends UserServiceImpl
 		user.setAuthorities(Authorities.ALL_AUTHORITIES);
 //		user.addAuthority(Authorities.USER);
 
-		try
-		{
-			UserDto savedUser = save(user);
+		UserDto savedUser = save(user);
 
-			if (savedUser != null)
-				log.info("The initial user {} has been created", username);
-			else
-				log.error("An unexpected error occurred while creating the initial user {}.", username);
-		}
-		catch (AlreadyExistsException ex)
-		{
-			log.error("The initial user could not be created because it already exists.", ex);
-		}
+		if (savedUser != null)
+			log.info("The initial user {} has been created", username);
+		else
+			log.error("An unexpected error occurred while creating the initial user {}.", username);
 	}
 }

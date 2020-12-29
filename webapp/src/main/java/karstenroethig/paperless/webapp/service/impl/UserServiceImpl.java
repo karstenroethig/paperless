@@ -12,8 +12,8 @@ import karstenroethig.paperless.webapp.model.domain.Authority;
 import karstenroethig.paperless.webapp.model.domain.User;
 import karstenroethig.paperless.webapp.model.dto.UserDto;
 import karstenroethig.paperless.webapp.repository.UserRepository;
-import karstenroethig.paperless.webapp.service.exceptions.AlreadyExistsException;
 import karstenroethig.paperless.webapp.util.MessageKeyEnum;
+import karstenroethig.paperless.webapp.util.validation.ValidationException;
 import karstenroethig.paperless.webapp.util.validation.ValidationResult;
 
 @Service
@@ -30,11 +30,47 @@ public class UserServiceImpl
 		return new UserDto();
 	}
 
-	public ValidationResult validate(UserDto user, boolean forInitialCreation)
+	public ValidationResult validate(UserDto user)
 	{
 		ValidationResult result = new ValidationResult();
 
-		if (forInitialCreation && StringUtils.isBlank(user.getPassword()))
+		if (user == null)
+		{
+			result.addError(MessageKeyEnum.DEFAULT_VALIDATION_OBJECT_CANNOT_BE_EMPTY);
+			return result;
+		}
+
+		result.add(validateUniqueness(user));
+		result.add(validatePassword(user));
+
+		return result;
+	}
+
+	private void checkValidation(UserDto user)
+	{
+		ValidationResult result = validate(user);
+		if (result.hasErrors())
+			throw new ValidationException(result);
+	}
+
+	private ValidationResult validateUniqueness(UserDto user)
+	{
+		ValidationResult result = new ValidationResult();
+
+		User existing = userRepository.findOneByUsernameIgnoreCase(user.getUsername()).orElse(null);
+		if (existing != null
+				&& (user.getId() == null
+				|| !existing.getId().equals(user.getId())))
+			result.addError(MessageKeyEnum.USER_SAVE_ERROR_EXISTS, "username");
+
+		return result;
+	}
+
+	private ValidationResult validatePassword(UserDto user)
+	{
+		ValidationResult result = new ValidationResult();
+
+		if (user.getId() == null && StringUtils.isBlank(user.getPassword()))
 			result.addError(MessageKeyEnum.USER_SAVE_ERROR_PASSWORD_EMPTY, "password");
 
 		if (StringUtils.isNotBlank(user.getPassword()) && user.getPassword().length() < 5)
@@ -46,9 +82,9 @@ public class UserServiceImpl
 		return result;
 	}
 
-	public UserDto save(UserDto userDto) throws AlreadyExistsException
+	public UserDto save(UserDto userDto)
 	{
-		doesAlreadyExist(null, userDto.getUsername());
+		checkValidation(userDto);
 
 		User user = new User();
 		mergeSave(user, userDto);
@@ -56,23 +92,17 @@ public class UserServiceImpl
 		return transform(userRepository.save(user));
 	}
 
-	public UserDto update(UserDto userDto) throws AlreadyExistsException
+	public UserDto update(UserDto userDto)
 	{
-		doesAlreadyExist(userDto.getId(), userDto.getUsername());
+		checkValidation(userDto);
 
 		User user = userRepository.findById(userDto.getId()).orElse(null);
+		if (user == null)
+			return null;
+
 		mergeUpdate(user, userDto);
 
 		return transform(userRepository.save(user));
-	}
-
-	private void doesAlreadyExist(Long id, String username) throws AlreadyExistsException
-	{
-		User existing = userRepository.findOneByUsernameIgnoreCase(username).orElse(null);
-		if (existing != null
-				&& (id == null
-				|| !existing.getId().equals(id)))
-			throw new AlreadyExistsException("username");
 	}
 
 	public boolean delete(Long id)

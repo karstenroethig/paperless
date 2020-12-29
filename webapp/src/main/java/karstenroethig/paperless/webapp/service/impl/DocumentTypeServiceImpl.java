@@ -19,8 +19,10 @@ import karstenroethig.paperless.webapp.model.dto.DocumentTypeDto;
 import karstenroethig.paperless.webapp.model.dto.DocumentTypeSearchDto;
 import karstenroethig.paperless.webapp.repository.DocumentTypeRepository;
 import karstenroethig.paperless.webapp.repository.specification.DocumentTypeSpecifications;
-import karstenroethig.paperless.webapp.service.exceptions.AlreadyExistsException;
 import karstenroethig.paperless.webapp.service.exceptions.StillInUseException;
+import karstenroethig.paperless.webapp.util.MessageKeyEnum;
+import karstenroethig.paperless.webapp.util.validation.ValidationException;
+import karstenroethig.paperless.webapp.util.validation.ValidationResult;
 
 @Service
 @Transactional
@@ -39,9 +41,44 @@ public class DocumentTypeServiceImpl
 		return new DocumentTypeDto();
 	}
 
-	public DocumentTypeDto save(DocumentTypeDto documentTypeDto) throws AlreadyExistsException
+	public ValidationResult validate(DocumentTypeDto documentType)
 	{
-		doesAlreadyExist(null, documentTypeDto.getName());
+		ValidationResult result = new ValidationResult();
+
+		if (documentType == null)
+		{
+			result.addError(MessageKeyEnum.DEFAULT_VALIDATION_OBJECT_CANNOT_BE_EMPTY);
+			return result;
+		}
+
+		result.add(validateUniqueness(documentType));
+
+		return result;
+	}
+
+	private void checkValidation(DocumentTypeDto documentType)
+	{
+		ValidationResult result = validate(documentType);
+		if (result.hasErrors())
+			throw new ValidationException(result);
+	}
+
+	private ValidationResult validateUniqueness(DocumentTypeDto documentType)
+	{
+		ValidationResult result = new ValidationResult();
+
+		DocumentType existing = documentTypeRepository.findOneByNameIgnoreCase(documentType.getName());
+		if (existing != null
+				&& (documentType.getId() == null
+				|| !existing.getId().equals(documentType.getId())))
+			result.addError(MessageKeyEnum.DOCUMENT_TYPE_SAVE_ERROR_EXISTS, "name");
+
+		return result;
+	}
+
+	public DocumentTypeDto save(DocumentTypeDto documentTypeDto)
+	{
+		checkValidation(documentTypeDto);
 
 		DocumentType documentType = new DocumentType();
 		merge(documentType, documentTypeDto);
@@ -49,23 +86,17 @@ public class DocumentTypeServiceImpl
 		return transform(documentTypeRepository.save(documentType));
 	}
 
-	public DocumentTypeDto update(DocumentTypeDto documentTypeDto) throws AlreadyExistsException
+	public DocumentTypeDto update(DocumentTypeDto documentTypeDto)
 	{
-		doesAlreadyExist(documentTypeDto.getId(), documentTypeDto.getName());
+		checkValidation(documentTypeDto);
 
 		DocumentType documentType = documentTypeRepository.findById(documentTypeDto.getId()).orElse(null);
+		if (documentType == null)
+			return null;
+
 		merge(documentType, documentTypeDto);
 
 		return transform(documentTypeRepository.save(documentType));
-	}
-
-	private void doesAlreadyExist(Long id, String name) throws AlreadyExistsException
-	{
-		DocumentType existing = documentTypeRepository.findOneByNameIgnoreCase(name);
-		if (existing != null
-				&& (id == null
-				|| !existing.getId().equals(id)))
-			throw new AlreadyExistsException("name");
 	}
 
 	public boolean delete(Long id) throws StillInUseException

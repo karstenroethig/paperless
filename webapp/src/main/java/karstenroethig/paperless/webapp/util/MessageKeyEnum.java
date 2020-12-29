@@ -8,6 +8,8 @@ public enum MessageKeyEnum
 	APPLICATION_REVISION("application.revision"),
 	APPLICATION_BUILD_DATE("application.buildDate"),
 
+	DEFAULT_VALIDATION_OBJECT_CANNOT_BE_EMPTY("default.validation.objectCannotBeEmpty"),
+
 	COMMENT_SAVE_INVALID("comment.save.invalid"),
 	COMMENT_SAVE_SUCCESS("comment.save.success"),
 	COMMENT_SAVE_ERROR("comment.save.error"),

@@ -19,7 +19,9 @@ import karstenroethig.paperless.webapp.model.dto.TagSearchDto;
 import karstenroethig.paperless.webapp.model.dto.api.TagUsageApiDto;
 import karstenroethig.paperless.webapp.repository.TagRepository;
 import karstenroethig.paperless.webapp.repository.specification.TagSpecifications;
-import karstenroethig.paperless.webapp.service.exceptions.AlreadyExistsException;
+import karstenroethig.paperless.webapp.util.MessageKeyEnum;
+import karstenroethig.paperless.webapp.util.validation.ValidationException;
+import karstenroethig.paperless.webapp.util.validation.ValidationResult;
 
 @Service
 @Transactional
@@ -36,9 +38,44 @@ public class TagServiceImpl
 		return new TagDto();
 	}
 
-	public TagDto save(TagDto tagDto) throws AlreadyExistsException
+	public ValidationResult validate(TagDto tag)
 	{
-		doesAlreadyExist(null, tagDto.getName());
+		ValidationResult result = new ValidationResult();
+
+		if (tag == null)
+		{
+			result.addError(MessageKeyEnum.DEFAULT_VALIDATION_OBJECT_CANNOT_BE_EMPTY);
+			return result;
+		}
+
+		result.add(validateUniqueness(tag));
+
+		return result;
+	}
+
+	private void checkValidation(TagDto tag)
+	{
+		ValidationResult result = validate(tag);
+		if (result.hasErrors())
+			throw new ValidationException(result);
+	}
+
+	private ValidationResult validateUniqueness(TagDto tag)
+	{
+		ValidationResult result = new ValidationResult();
+
+		Tag existing = tagRepository.findOneByNameIgnoreCase(tag.getName());
+		if (existing != null
+				&& (tag.getId() == null
+				|| !existing.getId().equals(tag.getId())))
+			result.addError(MessageKeyEnum.TAG_SAVE_ERROR_EXISTS, "name");
+
+		return result;
+	}
+
+	public TagDto save(TagDto tagDto)
+	{
+		checkValidation(tagDto);
 
 		Tag tag = new Tag();
 		merge(tag, tagDto);
@@ -46,23 +83,17 @@ public class TagServiceImpl
 		return transform(tagRepository.save(tag));
 	}
 
-	public TagDto update(TagDto tagDto) throws AlreadyExistsException
+	public TagDto update(TagDto tagDto)
 	{
-		doesAlreadyExist(tagDto.getId(), tagDto.getName());
+		checkValidation(tagDto);
 
 		Tag tag = tagRepository.findById(tagDto.getId()).orElse(null);
+		if (tag == null)
+			return null;
+
 		merge(tag, tagDto);
 
 		return transform(tagRepository.save(tag));
-	}
-
-	private void doesAlreadyExist(Long id, String name) throws AlreadyExistsException
-	{
-		Tag existing = tagRepository.findOneByNameIgnoreCase(name);
-		if (existing != null
-				&& (id == null
-				|| !existing.getId().equals(id)))
-			throw new AlreadyExistsException("name");
 	}
 
 	public boolean delete(Long id)
