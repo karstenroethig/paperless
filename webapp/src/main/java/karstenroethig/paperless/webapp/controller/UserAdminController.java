@@ -98,7 +98,7 @@ public class UserAdminController extends AbstractController
 	public String show(@PathVariable("id") Long id, Model model)
 	{
 		UserDto user = userService.find(id);
-		if (user == null)
+		if (user == null || user.isDeleted())
 			throw new NotFoundException(String.valueOf(id));
 
 		model.addAttribute(AttributeNames.USER, user);
@@ -118,7 +118,7 @@ public class UserAdminController extends AbstractController
 	public String edit(@PathVariable("id") Long id, Model model)
 	{
 		UserDto user = userService.find(id);
-		if (user == null)
+		if (user == null || user.isDeleted())
 			throw new NotFoundException(String.valueOf(id));
 
 		model.addAttribute(AttributeNames.USER, user);
@@ -130,7 +130,7 @@ public class UserAdminController extends AbstractController
 	public String delete(@PathVariable("id") Long id, final RedirectAttributes redirectAttributes, Model model)
 	{
 		UserDto user = userService.find(id);
-		if (user == null)
+		if (user == null || user.isDeleted())
 			throw new NotFoundException(String.valueOf(id));
 
 		if (userService.delete(id))
