@@ -64,7 +64,7 @@ public class TagServiceImpl
 	{
 		ValidationResult result = new ValidationResult();
 
-		Tag existing = tagRepository.findOneByNameIgnoreCase(tag.getName());
+		Tag existing = tagRepository.findOneByNameIgnoreCase(tag.getName()).orElse(null);
 		if (existing != null
 				&& (tag.getId() == null
 				|| !existing.getId().equals(tag.getId())))
@@ -178,7 +178,7 @@ public class TagServiceImpl
 
 	private Tag findOrCreateTag(String name)
 	{
-		Tag tag = tagRepository.findOneByNameIgnoreCase(name);
+		Tag tag = tagRepository.findOneByNameIgnoreCase(name).orElse(null);
 
 		if (tag != null)
 			return tag;

@@ -68,7 +68,7 @@ public class ContactServiceImpl
 	{
 		ValidationResult result = new ValidationResult();
 
-		Contact existing = contactRepository.findOneByNameIgnoreCase(contact.getName());
+		Contact existing = contactRepository.findOneByNameIgnoreCase(contact.getName()).orElse(null);
 		if (existing != null
 				&& (contact.getId() == null
 				|| !existing.getId().equals(contact.getId())))

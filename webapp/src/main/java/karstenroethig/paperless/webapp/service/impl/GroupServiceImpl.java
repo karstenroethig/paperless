@@ -66,7 +66,7 @@ public class GroupServiceImpl
 	{
 		ValidationResult result = new ValidationResult();
 
-		Group existing = groupRepository.findOneByNameIgnoreCase(group.getName());
+		Group existing = groupRepository.findOneByNameIgnoreCase(group.getName()).orElse(null);
 		if (existing != null
 				&& (group.getId() == null
 				|| !existing.getId().equals(group.getId())))

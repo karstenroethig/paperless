@@ -67,7 +67,7 @@ public class DocumentBoxServiceImpl
 	{
 		ValidationResult result = new ValidationResult();
 
-		DocumentBox existing = documentBoxRepository.findOneByNameIgnoreCase(documentBox.getName());
+		DocumentBox existing = documentBoxRepository.findOneByNameIgnoreCase(documentBox.getName()).orElse(null);
 		if (existing != null
 				&& (documentBox.getId() == null
 				|| !existing.getId().equals(documentBox.getId())))

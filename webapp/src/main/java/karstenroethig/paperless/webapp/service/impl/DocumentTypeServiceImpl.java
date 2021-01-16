@@ -67,7 +67,7 @@ public class DocumentTypeServiceImpl
 	{
 		ValidationResult result = new ValidationResult();
 
-		DocumentType existing = documentTypeRepository.findOneByNameIgnoreCase(documentType.getName());
+		DocumentType existing = documentTypeRepository.findOneByNameIgnoreCase(documentType.getName()).orElse(null);
 		if (existing != null
 				&& (documentType.getId() == null
 				|| !existing.getId().equals(documentType.getId())))

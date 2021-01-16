@@ -118,7 +118,7 @@ public class UserAdminServiceImpl extends UserServiceImpl
 
 	private Authority findOrCreateAuthority(String name)
 	{
-		Authority authority = authorityRepository.findOneByNameIgnoreCase(name);
+		Authority authority = authorityRepository.findOneByNameIgnoreCase(name).orElse(null);
 
 		if (authority != null)
 			return authority;
