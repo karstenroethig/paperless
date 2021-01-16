@@ -96,9 +96,9 @@ public class Document extends AbstractEntityId
 		tags.add(tag);
 	}
 
-	public void clearTags()
+	public void removeTag(Tag tag)
 	{
-		tags.clear();
+		tags.remove(tag);
 	}
 
 	public void removeFileAttachment(FileAttachment fileAttachment)

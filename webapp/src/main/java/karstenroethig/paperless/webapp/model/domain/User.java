@@ -69,6 +69,11 @@ public class User extends AbstractEntityId
 		this.authorities.remove(authority);
 	}
 
+	public void removeAuthoritiesFromUser()
+	{
+		authorities.clear();
+	}
+
 	public void addGroup(Group group)
 	{
 		this.groups.add(group);
@@ -77,11 +82,6 @@ public class User extends AbstractEntityId
 	public void removeGroup(Group group)
 	{
 		this.groups.remove(group);
-	}
-
-	public void removeAuthoritiesFromUser()
-	{
-		authorities.clear();
 	}
 
 	public void removeGroupsFromUser()

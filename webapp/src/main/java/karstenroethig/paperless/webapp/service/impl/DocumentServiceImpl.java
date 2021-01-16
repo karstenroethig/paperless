@@ -1,7 +1,11 @@
 package karstenroethig.paperless.webapp.service.impl;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -129,9 +133,32 @@ public class DocumentServiceImpl
 		document.setDeletionDate(documentDto.getDeletionDate());
 		document.setArchived(documentDto.isArchived());
 
-		document.clearTags();
-		for (TagDto tagDto : documentDto.getTags())
-			document.addTag(tagService.transform(tagDto));
+		mergeTags(document, documentDto);
+
+		return document;
+	}
+
+	private Document mergeTags(Document document, DocumentDto documentDto)
+	{
+		// delete unassigned tags
+		List<Tag> previousAssignedTags = new ArrayList<>(document.getTags());
+		List<Long> newlyAssignedTagIds = documentDto.getTags().stream().map(TagDto::getId).collect(Collectors.toList());
+		Set<Long> alreadyAssignedTagIds = new HashSet<>();
+
+		for (Tag tag : previousAssignedTags)
+		{
+			if (newlyAssignedTagIds.contains(tag.getId()))
+				alreadyAssignedTagIds.add(tag.getId());
+			else
+				document.removeTag(tag);
+		}
+
+		// add new assigned tags
+		for (TagDto tag : documentDto.getTags())
+		{
+			if (!alreadyAssignedTagIds.contains(tag.getId()))
+				document.addTag(tagService.transform(tag));
+		}
 
 		return document;
 	}
