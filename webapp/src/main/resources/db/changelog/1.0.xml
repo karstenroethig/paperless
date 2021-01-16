@@ -84,6 +84,47 @@
 			referencedTableName="authority" referencedColumnNames="id"
 			constraintName="fk_user_authority__authority_id__authority"/>
 
+		<!-- ================== -->
+		<!-- Table "user_group" -->
+		<!-- ================== -->
+		<createTable tableName="user_group">
+			<column name="id" type="${type.id}" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="name" type="varchar(255)">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+
+		<addUniqueConstraint tableName="user_group" columnNames="name" constraintName="u_user_group__name"/>
+
+		<!-- ========================= -->
+		<!-- Table "user_group_member" -->
+		<!-- ========================= -->
+		<createTable tableName="user_group_member">
+			<column name="id" type="${type.id}" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="user_id" type="${type.idRef}">
+				<constraints nullable="false"/>
+			</column>
+			<column name="group_id" type="${type.idRef}">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+
+		<addUniqueConstraint tableName="user_group_member" columnNames="user_id,group_id" constraintName="u_user_group_member__user_id__group_id"/>
+
+		<addForeignKeyConstraint
+			baseTableName="user_group_member" baseColumnNames="user_id"
+			referencedTableName="user" referencedColumnNames="id"
+			constraintName="fk_user_group_member__user_id__user"/>
+
+		<addForeignKeyConstraint
+			baseTableName="user_group_member" baseColumnNames="group_id"
+			referencedTableName="user_group" referencedColumnNames="id"
+			constraintName="fk_user_group_member__group_id__user_group"/>
+
 		<!-- =============== -->
 		<!-- Table "contact" -->
 		<!-- =============== -->

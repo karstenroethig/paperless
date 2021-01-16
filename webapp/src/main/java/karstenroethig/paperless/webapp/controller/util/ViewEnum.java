@@ -23,6 +23,11 @@ public enum ViewEnum
 	USER_ADMIN_CREATE(ControllerEnum.USER_ADMIN, ActionEnum.CREATE),
 	USER_ADMIN_EDIT(ControllerEnum.USER_ADMIN, ActionEnum.EDIT),
 
+	GROUP_LIST(ControllerEnum.GROUP, ActionEnum.LIST),
+	GROUP_SHOW(ControllerEnum.GROUP, ActionEnum.SHOW),
+	GROUP_CREATE(ControllerEnum.GROUP, ActionEnum.CREATE),
+	GROUP_EDIT(ControllerEnum.GROUP, ActionEnum.EDIT),
+
 	CONTACT_LIST(ControllerEnum.CONTACT, ActionEnum.LIST),
 	CONTACT_SHOW(ControllerEnum.CONTACT, ActionEnum.SHOW),
 	CONTACT_CREATE(ControllerEnum.CONTACT, ActionEnum.CREATE),
@@ -58,6 +63,7 @@ public enum ViewEnum
 		ADMIN,
 		USER_ADMIN("/user-admin"),
 		USER,
+		GROUP,
 		CONTACT,
 		DOCUMENT,
 		DOCUMENT_BOX("/document-box"),

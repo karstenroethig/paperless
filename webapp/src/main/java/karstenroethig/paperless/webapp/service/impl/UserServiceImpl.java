@@ -9,7 +9,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import karstenroethig.paperless.webapp.model.domain.Authority;
+import karstenroethig.paperless.webapp.model.domain.Group;
 import karstenroethig.paperless.webapp.model.domain.User;
+import karstenroethig.paperless.webapp.model.dto.GroupDto;
 import karstenroethig.paperless.webapp.model.dto.UserDto;
 import karstenroethig.paperless.webapp.repository.UserRepository;
 import karstenroethig.paperless.webapp.util.MessageKeyEnum;
@@ -21,6 +23,8 @@ import karstenroethig.paperless.webapp.util.validation.ValidationResult;
 @Transactional
 public class UserServiceImpl
 {
+	@Autowired protected GroupServiceImpl groupService;
+
 	@Autowired private PasswordEncoder passwordEncoder;
 
 	@Autowired protected UserRepository userRepository;
@@ -116,6 +120,10 @@ public class UserServiceImpl
 		user.setFullName(null);
 		user.setEnabled(Boolean.FALSE);
 		user.setDeleted(Boolean.TRUE);
+
+		user.removeAuthoritiesFromUser();
+		user.removeGroupsFromUser();
+
 		userRepository.save(user);
 
 		return true;
@@ -200,6 +208,16 @@ public class UserServiceImpl
 		for (Authority authority : user.getAuthorities())
 		{
 			userDto.addAuthority(authority.getName());
+		}
+
+		for (Group group : user.getGroups())
+		{
+			GroupDto groupDto = new GroupDto();
+
+			groupDto.setId(group.getId());
+			groupDto.setName(group.getName());
+
+			userDto.addGroup(groupDto);
 		}
 
 		return userDto;

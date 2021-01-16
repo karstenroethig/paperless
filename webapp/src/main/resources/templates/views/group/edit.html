@@ -1,0 +1,74 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{layout-admin :: layout-fragment(
+							~{::title},
+							~{::content},
+							null,
+							~{:: #additionalJs},
+							'group'
+							)}">
+<head>
+	<title th:text="#{application.title-pattern(#{application.name}, #{group.label.plural}+' - '+#{group.edit.label})}"></title>
+</head>
+<body>
+
+	<div th:fragment="content">
+
+		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+			<h1 class="h2">
+				<span th:text="#{group.edit.label}">Edit group</span>:
+				<span th:text="${group.name}">[name]</span>
+			</h1>
+		</div>
+
+		<div th:replace="~{fragments/messages :: messages-fragment(${messages})}"></div>
+
+		<form th:object="${group}" th:action="@{/group/update}" action="#" method="post" autocomplete="off">
+			<input type="hidden" th:field="*{id}"/>
+
+			<div class="form-group row">
+				<label class="col-sm-2 col-form-label text-right">
+					<span class="required">*</span> <span th:text="#{group.name.label}">Name</span>
+				</label>
+				<div class="col-sm-10">
+					<input type="text" th:field="*{name}" class="form-control" th:classappend="${#fields.hasErrors('name')} ? is-invalid">
+					<div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:each="err : ${#fields.errors('name')}" th:text="${err}">validation error</div>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label class="col-sm-2 col-form-label text-right">
+					<span th:text="#{group.members.label}">Members</span>
+				</label>
+				<div class="col-sm-10">
+					<select th:field="*{members}" class="form-control members-input" size="4" multiple="multiple">
+						<option th:each="user : ${allUsers}" th:value="${{user}}" th:text="${user.fullName+' ('+user.username+')'}">[user.name]</option>
+					</select>
+					<div class="invalid-feedback" th:if="${#fields.hasErrors('members')}" th:each="err : ${#fields.errors('members')}" th:text="${err}">validation error</div>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<div class="offset-sm-2 col-sm-10">
+					<span class="required">*</span> <span th:text="#{default.form.required}">required</span>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<div class="offset-sm-2 col-sm-10">
+					<input type="submit" class="btn btn-primary" th:value="#{default.button.save.label}" value="Save">
+					<a th:href="@{/group/list}" class="btn btn-outline-secondary" th:text="#{default.button.cancel.label}">Cancel</a>
+				</div>
+			</div>
+
+		</form>
+
+	</div>
+
+	<th:block id="additionalJs">
+		<script th:src="@{/js/group-create.js}"></script>
+	</th:block>
+
+</body>
+</html>

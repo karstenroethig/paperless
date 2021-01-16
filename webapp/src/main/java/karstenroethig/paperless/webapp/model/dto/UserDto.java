@@ -18,7 +18,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = true, exclude = {"username", "password", "repeatPassword", "fullName", "enabled", "locked", "newRegistered", "deleted", "authorities", "sessionAuthorities", "groups"})
 public class UserDto extends AbstractDtoId
 {
 	@NotNull
@@ -47,6 +47,8 @@ public class UserDto extends AbstractDtoId
 
 	private List<String> sessionAuthorities = new ArrayList<>();
 
+	private List<GroupDto> groups = new ArrayList<>();
+
 	public void addAuthority(String authority)
 	{
 		authorities.add(authority);
@@ -72,5 +74,10 @@ public class UserDto extends AbstractDtoId
 		return sessionAuthorities.stream()
 				.filter(Predicate.not(authorities::contains))
 				.collect(Collectors.toList());
+	}
+
+	public void addGroup(GroupDto group)
+	{
+		groups.add(group);
 	}
 }

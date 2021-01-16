@@ -1,5 +1,8 @@
 package karstenroethig.paperless.webapp.model.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -13,14 +16,17 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode(callSuper = true, exclude = {"name", "description", "archived"})
-public class TagDto extends AbstractDtoId
+@EqualsAndHashCode(callSuper = true, exclude = {"name"})
+public class GroupDto extends AbstractDtoId
 {
 	@NotNull
 	@Size(min = 1, max = 255)
 	private String name;
 
-	private String description;
+	private List<UserDto> members = new ArrayList<>();
 
-	private boolean archived = false;
+	public void addMember(UserDto member)
+	{
+		members.add(member);
+	}
 }

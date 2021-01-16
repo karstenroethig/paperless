@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import karstenroethig.paperless.webapp.bean.UserSearchBean;
@@ -30,9 +31,11 @@ import karstenroethig.paperless.webapp.controller.util.AttributeNames;
 import karstenroethig.paperless.webapp.controller.util.UrlMappings;
 import karstenroethig.paperless.webapp.controller.util.ViewEnum;
 import karstenroethig.paperless.webapp.model.domain.User_;
+import karstenroethig.paperless.webapp.model.dto.GroupDto;
 import karstenroethig.paperless.webapp.model.dto.UserDto;
 import karstenroethig.paperless.webapp.model.dto.UserSearchDto;
 import karstenroethig.paperless.webapp.model.dto.UserSearchDto.NewRegisteredSearchTypeEnum;
+import karstenroethig.paperless.webapp.service.impl.GroupServiceImpl;
 import karstenroethig.paperless.webapp.service.impl.UserAdminServiceImpl;
 import karstenroethig.paperless.webapp.util.MessageKeyEnum;
 import karstenroethig.paperless.webapp.util.Messages;
@@ -45,6 +48,7 @@ import karstenroethig.paperless.webapp.util.validation.ValidationResult;
 public class UserAdminController extends AbstractController
 {
 	@Autowired private UserAdminServiceImpl userService;
+	@Autowired private GroupServiceImpl groupService;
 
 	@Autowired private UserSearchBean userSearchBean;
 
@@ -63,7 +67,21 @@ public class UserAdminController extends AbstractController
 	@PostMapping(value = UrlMappings.ACTION_SEARCH)
 	public String search(@ModelAttribute(AttributeNames.SEARCH_PARAMS) UserSearchDto userSearchDto, Model model)
 	{
+		if (userSearchDto.getGroup() != null)
+			userSearchDto.setGroup(groupService.find(userSearchDto.getGroup().getId()));
+
 		userSearchBean.setUserSearchDto(userSearchDto);
+		return UrlMappings.redirect(UrlMappings.CONTROLLER_USER_ADMIN, UrlMappings.ACTION_LIST);
+	}
+
+	@GetMapping(value = UrlMappings.ACTION_SEARCH)
+	public String search(@RequestParam Long groupId, Model model)
+	{
+		GroupDto group = groupService.find(groupId);
+
+		userSearchBean.clear();
+		userSearchBean.getUserSearchDto().setGroup(group);
+
 		return UrlMappings.redirect(UrlMappings.CONTROLLER_USER_ADMIN, UrlMappings.ACTION_LIST);
 	}
 
@@ -183,6 +201,7 @@ public class UserAdminController extends AbstractController
 	private void addBasicAttributes(Model model)
 	{
 		model.addAttribute("allAuthorities", Authorities.ALL_AUTHORITIES);
+		model.addAttribute("allGroups", groupService.findAll());
 	}
 
 	@Override

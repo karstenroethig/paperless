@@ -25,6 +25,8 @@ public class UserSearchDto
 
 	private String name;
 
+	private GroupDto group;
+
 	private EnabledSearchTypeEnum enabledSearchType;
 
 	private LockedSearchTypeEnum lockedSearchType;
@@ -34,6 +36,7 @@ public class UserSearchDto
 	public boolean hasParams()
 	{
 		return StringUtils.isNotBlank(name)
+				|| group != null
 				|| enabledSearchType != null
 				|| lockedSearchType != null
 				|| newRegisteredSearchType != null;

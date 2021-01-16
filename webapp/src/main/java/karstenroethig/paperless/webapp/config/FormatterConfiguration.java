@@ -8,7 +8,9 @@ import karstenroethig.paperless.webapp.controller.formatter.ContactFormatter;
 import karstenroethig.paperless.webapp.controller.formatter.DocumentBoxFormatter;
 import karstenroethig.paperless.webapp.controller.formatter.DocumentFormatter;
 import karstenroethig.paperless.webapp.controller.formatter.DocumentTypeFormatter;
+import karstenroethig.paperless.webapp.controller.formatter.GroupFormatter;
 import karstenroethig.paperless.webapp.controller.formatter.TagFormatter;
+import karstenroethig.paperless.webapp.controller.formatter.UserFormatter;
 
 @Configuration
 public class FormatterConfiguration implements WebMvcConfigurer
@@ -21,5 +23,7 @@ public class FormatterConfiguration implements WebMvcConfigurer
 		formatterRegistry.addFormatter(new DocumentBoxFormatter());
 		formatterRegistry.addFormatter(new DocumentTypeFormatter());
 		formatterRegistry.addFormatter(new TagFormatter());
+		formatterRegistry.addFormatter(new UserFormatter());
+		formatterRegistry.addFormatter(new GroupFormatter());
 	}
 }

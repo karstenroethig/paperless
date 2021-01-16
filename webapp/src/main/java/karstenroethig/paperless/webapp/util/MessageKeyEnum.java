@@ -96,7 +96,17 @@ public enum MessageKeyEnum
 	USER_ADMIN_UPDATE_SUCCESS("userAdmin.update.success"),
 	USER_ADMIN_UPDATE_ERROR("userAdmin.update.error"),
 	USER_ADMIN_DELETE_SUCCESS("userAdmin.delete.success"),
-	USER_ADMIN_DELETE_ERROR("userAdmin.delete.error");
+	USER_ADMIN_DELETE_ERROR("userAdmin.delete.error"),
+
+	GROUP_SAVE_INVALID("group.save.invalid"),
+	GROUP_SAVE_SUCCESS("group.save.success"),
+	GROUP_SAVE_ERROR("group.save.error"),
+	GROUP_SAVE_ERROR_EXISTS("group.save.error.exists"),
+	GROUP_UPDATE_INVALID("group.update.invalid"),
+	GROUP_UPDATE_SUCCESS("group.update.success"),
+	GROUP_UPDATE_ERROR("group.update.error"),
+	GROUP_DELETE_SUCCESS("group.delete.success"),
+	GROUP_DELETE_ERROR("group.delete.error");
 
 	@Getter
 	private String key;

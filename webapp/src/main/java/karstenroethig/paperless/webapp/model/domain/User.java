@@ -51,6 +51,10 @@ public class User extends AbstractEntityId
 	@Column(name = "deleted", nullable = false)
 	private boolean deleted;
 
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "user_group_member", joinColumns = {@JoinColumn(name = "user_id")}, inverseJoinColumns = {@JoinColumn(name = "group_id")})
+	private List<Group> groups = new ArrayList<>();
+
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "user_authority", joinColumns = {@JoinColumn(name = "user_id")}, inverseJoinColumns = {@JoinColumn(name = "authority_id")})
 	private List<Authority> authorities = new ArrayList<>();
@@ -63,5 +67,25 @@ public class User extends AbstractEntityId
 	public void removeAuthority(Authority authority)
 	{
 		this.authorities.remove(authority);
+	}
+
+	public void addGroup(Group group)
+	{
+		this.groups.add(group);
+	}
+
+	public void removeGroup(Group group)
+	{
+		this.groups.remove(group);
+	}
+
+	public void removeAuthoritiesFromUser()
+	{
+		authorities.clear();
+	}
+
+	public void removeGroupsFromUser()
+	{
+		groups.clear();
 	}
 }

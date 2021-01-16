@@ -76,6 +76,15 @@
 			</div>
 		</div>
 
+		<div class="form-group row">
+			<label class="col-sm-2 col-form-label text-right">
+				<span th:text="#{user.groups.label}">Groups</span>
+			</label>
+			<div class="col-sm-10 col-form-label">
+				<div th:each="group : ${user.groups}" th:text="${group.name}">[name]</div>
+			</div>
+		</div>
+
 		<div class="modal fade" id="deleteModal_currentUser" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">

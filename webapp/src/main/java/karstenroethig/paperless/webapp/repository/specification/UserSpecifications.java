@@ -5,12 +5,16 @@ import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.ListJoin;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Subquery;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.jpa.domain.Specification;
 
+import karstenroethig.paperless.webapp.model.domain.AbstractEntityId_;
+import karstenroethig.paperless.webapp.model.domain.Group;
 import karstenroethig.paperless.webapp.model.domain.User;
 import karstenroethig.paperless.webapp.model.domain.User_;
 import karstenroethig.paperless.webapp.model.dto.UserSearchDto;
@@ -32,6 +36,17 @@ public class UserSpecifications
 					restrictions.add(cb.or(
 							cb.like(cb.lower(root.get(User_.username)), "%" + StringUtils.lowerCase(userSearchDto.getName()) + "%"),
 							cb.like(cb.lower(root.get(User_.fullName)), "%" + StringUtils.lowerCase(userSearchDto.getName()) + "%")));
+
+				if (userSearchDto.getGroup() != null && userSearchDto.getGroup().getId() != null)
+				{
+					Subquery<Long> sub = query.subquery(Long.class);
+					Root<Group> subRoot = sub.from(Group.class);
+					ListJoin<User, Group> subGroups = root.join(User_.groups);
+					sub.select(subRoot.get(AbstractEntityId_.id));
+					sub.where(cb.equal(subGroups.get(AbstractEntityId_.id), userSearchDto.getGroup().getId()));
+
+					restrictions.add(cb.exists(sub));
+				}
 
 				if (userSearchDto.getEnabledSearchType() != null)
 				{

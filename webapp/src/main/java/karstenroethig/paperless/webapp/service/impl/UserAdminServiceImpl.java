@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
@@ -17,8 +18,10 @@ import org.springframework.stereotype.Service;
 
 import karstenroethig.paperless.webapp.config.SecurityConfiguration.Authorities;
 import karstenroethig.paperless.webapp.model.domain.Authority;
+import karstenroethig.paperless.webapp.model.domain.Group;
 import karstenroethig.paperless.webapp.model.domain.User;
 import karstenroethig.paperless.webapp.model.domain.User_;
+import karstenroethig.paperless.webapp.model.dto.GroupDto;
 import karstenroethig.paperless.webapp.model.dto.UserDto;
 import karstenroethig.paperless.webapp.model.dto.UserSearchDto;
 import karstenroethig.paperless.webapp.repository.AuthorityRepository;
@@ -66,6 +69,7 @@ public class UserAdminServiceImpl extends UserServiceImpl
 		user.setDeleted(Boolean.FALSE);
 
 		mergeAuthorities(user, userDto);
+		mergeGroups(user, userDto);
 
 		return user;
 	}
@@ -84,6 +88,7 @@ public class UserAdminServiceImpl extends UserServiceImpl
 		user.setNewRegisterd(Boolean.FALSE);
 
 		mergeAuthorities(user, userDto);
+		mergeGroups(user, userDto);
 
 		return user;
 	}
@@ -122,6 +127,31 @@ public class UserAdminServiceImpl extends UserServiceImpl
 		authority.setName(name);
 
 		return authorityRepository.save(authority);
+	}
+
+	private User mergeGroups(User user, UserDto userDto)
+	{
+		// delete unassigned groups
+		List<Group> previousAssignedGroups = new ArrayList<>(user.getGroups());
+		List<Long> newlyAssignedGroupIds = userDto.getGroups().stream().map(GroupDto::getId).collect(Collectors.toList());
+		Set<Long> alreadyAssignedGroupIds = new HashSet<>();
+
+		for (Group group : previousAssignedGroups)
+		{
+			if (newlyAssignedGroupIds.contains(group.getId()))
+				alreadyAssignedGroupIds.add(group.getId());
+			else
+				user.removeGroup(group);
+		}
+
+		// add new assigned groups
+		for (GroupDto group : userDto.getGroups())
+		{
+			if (!alreadyAssignedGroupIds.contains(group.getId()))
+				user.addGroup(groupService.transform(group));
+		}
+
+		return user;
 	}
 
 	public void incrementFailedLoginAttempts(String username)

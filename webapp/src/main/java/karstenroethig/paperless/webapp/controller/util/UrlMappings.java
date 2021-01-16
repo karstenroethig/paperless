@@ -16,6 +16,7 @@ public class UrlMappings
 
 	public static final String CONTROLLER_USER = "/user";
 	public static final String CONTROLLER_USER_ADMIN = "/user-admin";
+	public static final String CONTROLLER_GROUP = "/group";
 
 	public static final String CONTROLLER_COMMENT = "/comment";
 	public static final String CONTROLLER_CONTACT = "/contact";
