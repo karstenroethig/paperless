@@ -19,7 +19,6 @@ import karstenroethig.paperless.webapp.model.dto.DocumentTypeDto;
 import karstenroethig.paperless.webapp.model.dto.DocumentTypeSearchDto;
 import karstenroethig.paperless.webapp.repository.DocumentTypeRepository;
 import karstenroethig.paperless.webapp.repository.specification.DocumentTypeSpecifications;
-import karstenroethig.paperless.webapp.service.exceptions.StillInUseException;
 import karstenroethig.paperless.webapp.util.MessageKeyEnum;
 import karstenroethig.paperless.webapp.util.validation.ValidationException;
 import karstenroethig.paperless.webapp.util.validation.ValidationResult;
@@ -71,7 +70,7 @@ public class DocumentTypeServiceImpl
 		if (existing != null
 				&& (documentType.getId() == null
 				|| !existing.getId().equals(documentType.getId())))
-			result.addError(MessageKeyEnum.DOCUMENT_TYPE_SAVE_ERROR_EXISTS, "name");
+			result.addError("name", MessageKeyEnum.DOCUMENT_TYPE_SAVE_ERROR_EXISTS_NAME, "name");
 
 		return result;
 	}
@@ -99,17 +98,39 @@ public class DocumentTypeServiceImpl
 		return transform(documentTypeRepository.save(documentType));
 	}
 
-	public boolean delete(Long id) throws StillInUseException
+	public ValidationResult validateDelete(DocumentTypeDto documentType)
 	{
-		DocumentType documentType = documentTypeRepository.findById(id).orElse(null);
+		ValidationResult result = new ValidationResult();
+
 		if (documentType == null)
-			return false;
+		{
+			result.addError(MessageKeyEnum.DEFAULT_VALIDATION_OBJECT_CANNOT_BE_EMPTY);
+			return result;
+		}
 
 		DocumentSearchDto documentSearch = new DocumentSearchDto();
-		documentSearch.setDocumentType(transform(documentType));
+		documentSearch.setDocumentType(documentType);
 		Page<DocumentDto> resultsPage = documentService.find(documentSearch, PageRequest.of(0, 1));
 		if (resultsPage.hasContent())
-			throw new StillInUseException(resultsPage.getTotalElements());
+			result.addError(MessageKeyEnum.DOCUMENT_TYPE_DELETE_INVALID_STILL_IN_USE_BY_DOCUMENTS, resultsPage.getTotalElements());
+
+		return result;
+	}
+
+	private void checkValidationDelete(DocumentTypeDto documentType)
+	{
+		ValidationResult result = validateDelete(documentType);
+		if (result.hasErrors())
+			throw new ValidationException(result);
+	}
+
+	public boolean delete(DocumentTypeDto documentTypeDto)
+	{
+		checkValidationDelete(documentTypeDto);
+
+		DocumentType documentType = documentTypeRepository.findById(documentTypeDto.getId()).orElse(null);
+		if (documentType == null)
+			return false;
 
 		documentTypeRepository.delete(documentType);
 		return true;

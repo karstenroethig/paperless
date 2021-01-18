@@ -20,7 +20,6 @@ import karstenroethig.paperless.webapp.model.dto.DocumentSearchDto;
 import karstenroethig.paperless.webapp.model.dto.DocumentSearchDto.ContactSearchTypeEnum;
 import karstenroethig.paperless.webapp.repository.ContactRepository;
 import karstenroethig.paperless.webapp.repository.specification.ContactSpecifications;
-import karstenroethig.paperless.webapp.service.exceptions.StillInUseException;
 import karstenroethig.paperless.webapp.util.MessageKeyEnum;
 import karstenroethig.paperless.webapp.util.validation.ValidationException;
 import karstenroethig.paperless.webapp.util.validation.ValidationResult;
@@ -72,7 +71,7 @@ public class ContactServiceImpl
 		if (existing != null
 				&& (contact.getId() == null
 				|| !existing.getId().equals(contact.getId())))
-			result.addError(MessageKeyEnum.CONTACT_SAVE_ERROR_EXISTS, "name");
+			result.addError("name", MessageKeyEnum.CONTACT_SAVE_ERROR_EXISTS_NAME);
 
 		return result;
 	}
@@ -100,18 +99,40 @@ public class ContactServiceImpl
 		return transform(contactRepository.save(contact));
 	}
 
-	public boolean delete(Long id) throws StillInUseException
+	public ValidationResult validateDelete(ContactDto contact)
 	{
-		Contact contact = contactRepository.findById(id).orElse(null);
+		ValidationResult result = new ValidationResult();
+
 		if (contact == null)
-			return false;
+		{
+			result.addError(MessageKeyEnum.DEFAULT_VALIDATION_OBJECT_CANNOT_BE_EMPTY);
+			return result;
+		}
 
 		DocumentSearchDto documentSearch = new DocumentSearchDto();
-		documentSearch.setContact(transform(contact));
+		documentSearch.setContact(contact);
 		documentSearch.setContactSearchType(ContactSearchTypeEnum.SENDER_OR_RECEIVER);
 		Page<DocumentDto> resultsPage = documentService.find(documentSearch, PageRequest.of(0, 1));
 		if (resultsPage.hasContent())
-			throw new StillInUseException(resultsPage.getTotalElements());
+			result.addError(MessageKeyEnum.CONTACT_DELETE_INVALID_STILL_IN_USE_BY_DOCUMENTS, resultsPage.getTotalElements());
+
+		return result;
+	}
+
+	private void checkValidationDelete(ContactDto contact)
+	{
+		ValidationResult result = validateDelete(contact);
+		if (result.hasErrors())
+			throw new ValidationException(result);
+	}
+
+	public boolean delete(ContactDto contactDto)
+	{
+		checkValidationDelete(contactDto);
+
+		Contact contact = contactRepository.findById(contactDto.getId()).orElse(null);
+		if (contact == null)
+			return false;
 
 		contactRepository.delete(contact);
 		return true;

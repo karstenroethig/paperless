@@ -30,7 +30,6 @@ import karstenroethig.paperless.webapp.controller.util.ViewEnum;
 import karstenroethig.paperless.webapp.model.domain.Contact_;
 import karstenroethig.paperless.webapp.model.dto.ContactDto;
 import karstenroethig.paperless.webapp.model.dto.ContactSearchDto;
-import karstenroethig.paperless.webapp.service.exceptions.StillInUseException;
 import karstenroethig.paperless.webapp.service.impl.ContactServiceImpl;
 import karstenroethig.paperless.webapp.util.MessageKeyEnum;
 import karstenroethig.paperless.webapp.util.Messages;
@@ -99,23 +98,20 @@ public class ContactController extends AbstractController
 		if (contact == null)
 			throw new NotFoundException(String.valueOf(id));
 
-		try
+		ValidationResult validationResult = contactService.validateDelete(contact);
+		if (validationResult.hasErrors())
 		{
-			if (contactService.delete(id))
-			{
-				redirectAttributes.addFlashAttribute(AttributeNames.MESSAGES,
-						Messages.createWithSuccess(MessageKeyEnum.CONTACT_DELETE_SUCCESS, contact.getName()));
-			}
-			else
-			{
-				redirectAttributes.addFlashAttribute(AttributeNames.MESSAGES,
-						Messages.createWithError(MessageKeyEnum.CONTACT_DELETE_ERROR, contact.getName()));
-			}
+			addValidationMessagesToRedirectAttributes(MessageKeyEnum.CONTACT_DELETE_INVALID, validationResult.getErrors(), redirectAttributes);
 		}
-		catch (StillInUseException ex)
+		else if (contactService.delete(contact))
 		{
 			redirectAttributes.addFlashAttribute(AttributeNames.MESSAGES,
-					Messages.createWithError(MessageKeyEnum.CONTACT_DELETE_ERROR_STILL_IN_USE, ex.getCount()));
+					Messages.createWithSuccess(MessageKeyEnum.CONTACT_DELETE_SUCCESS, contact.getName()));
+		}
+		else
+		{
+			redirectAttributes.addFlashAttribute(AttributeNames.MESSAGES,
+					Messages.createWithError(MessageKeyEnum.CONTACT_DELETE_ERROR, contact.getName()));
 		}
 
 		return UrlMappings.redirect(UrlMappings.CONTROLLER_CONTACT, UrlMappings.ACTION_LIST);

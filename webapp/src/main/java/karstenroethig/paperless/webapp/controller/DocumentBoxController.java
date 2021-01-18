@@ -30,7 +30,6 @@ import karstenroethig.paperless.webapp.controller.util.ViewEnum;
 import karstenroethig.paperless.webapp.model.domain.DocumentBox_;
 import karstenroethig.paperless.webapp.model.dto.DocumentBoxDto;
 import karstenroethig.paperless.webapp.model.dto.DocumentBoxSearchDto;
-import karstenroethig.paperless.webapp.service.exceptions.StillInUseException;
 import karstenroethig.paperless.webapp.service.impl.DocumentBoxServiceImpl;
 import karstenroethig.paperless.webapp.util.MessageKeyEnum;
 import karstenroethig.paperless.webapp.util.Messages;
@@ -99,23 +98,20 @@ public class DocumentBoxController extends AbstractController
 		if (documentBox == null)
 			throw new NotFoundException(String.valueOf(id));
 
-		try
+		ValidationResult validationResult = documentBoxService.validateDelete(documentBox);
+		if (validationResult.hasErrors())
 		{
-			if (documentBoxService.delete(id))
-			{
-				redirectAttributes.addFlashAttribute(AttributeNames.MESSAGES,
-						Messages.createWithSuccess(MessageKeyEnum.DOCUMENT_BOX_DELETE_SUCCESS, documentBox.getName()));
-			}
-			else
-			{
-				redirectAttributes.addFlashAttribute(AttributeNames.MESSAGES,
-						Messages.createWithError(MessageKeyEnum.DOCUMENT_BOX_DELETE_ERROR, documentBox.getName()));
-			}
+			addValidationMessagesToRedirectAttributes(MessageKeyEnum.DOCUMENT_BOX_DELETE_INVALID, validationResult.getErrors(), redirectAttributes);
 		}
-		catch (StillInUseException ex)
+		else if (documentBoxService.delete(documentBox))
 		{
 			redirectAttributes.addFlashAttribute(AttributeNames.MESSAGES,
-					Messages.createWithError(MessageKeyEnum.DOCUMENT_BOX_DELETE_ERROR_STILL_IN_USE, ex.getCount()));
+					Messages.createWithSuccess(MessageKeyEnum.DOCUMENT_BOX_DELETE_SUCCESS, documentBox.getName()));
+		}
+		else
+		{
+			redirectAttributes.addFlashAttribute(AttributeNames.MESSAGES,
+					Messages.createWithError(MessageKeyEnum.DOCUMENT_BOX_DELETE_ERROR, documentBox.getName()));
 		}
 
 		return UrlMappings.redirect(UrlMappings.CONTROLLER_DOCUMENT_BOX, UrlMappings.ACTION_LIST);

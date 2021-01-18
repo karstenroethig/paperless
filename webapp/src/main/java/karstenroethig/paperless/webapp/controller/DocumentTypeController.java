@@ -30,7 +30,6 @@ import karstenroethig.paperless.webapp.controller.util.ViewEnum;
 import karstenroethig.paperless.webapp.model.domain.DocumentType_;
 import karstenroethig.paperless.webapp.model.dto.DocumentTypeDto;
 import karstenroethig.paperless.webapp.model.dto.DocumentTypeSearchDto;
-import karstenroethig.paperless.webapp.service.exceptions.StillInUseException;
 import karstenroethig.paperless.webapp.service.impl.DocumentTypeServiceImpl;
 import karstenroethig.paperless.webapp.util.MessageKeyEnum;
 import karstenroethig.paperless.webapp.util.Messages;
@@ -99,23 +98,20 @@ public class DocumentTypeController extends AbstractController
 		if (documentType == null)
 			throw new NotFoundException(String.valueOf(id));
 
-		try
+		ValidationResult validationResult = documentTypeService.validateDelete(documentType);
+		if (validationResult.hasErrors())
 		{
-			if (documentTypeService.delete(id))
-			{
-				redirectAttributes.addFlashAttribute(AttributeNames.MESSAGES,
-						Messages.createWithSuccess(MessageKeyEnum.DOCUMENT_TYPE_DELETE_SUCCESS, documentType.getName()));
-			}
-			else
-			{
-				redirectAttributes.addFlashAttribute(AttributeNames.MESSAGES,
-						Messages.createWithError(MessageKeyEnum.DOCUMENT_TYPE_DELETE_ERROR, documentType.getName()));
-			}
+			addValidationMessagesToRedirectAttributes(MessageKeyEnum.DOCUMENT_TYPE_DELETE_INVALID, validationResult.getErrors(), redirectAttributes);
 		}
-		catch (StillInUseException ex)
+		else if (documentTypeService.delete(documentType))
 		{
 			redirectAttributes.addFlashAttribute(AttributeNames.MESSAGES,
-					Messages.createWithError(MessageKeyEnum.DOCUMENT_TYPE_DELETE_ERROR_STILL_IN_USE, ex.getCount()));
+					Messages.createWithSuccess(MessageKeyEnum.DOCUMENT_TYPE_DELETE_SUCCESS, documentType.getName()));
+		}
+		else
+		{
+			redirectAttributes.addFlashAttribute(AttributeNames.MESSAGES,
+					Messages.createWithError(MessageKeyEnum.DOCUMENT_TYPE_DELETE_ERROR, documentType.getName()));
 		}
 
 		return UrlMappings.redirect(UrlMappings.CONTROLLER_DOCUMENT_TYPE, UrlMappings.ACTION_LIST);

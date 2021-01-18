@@ -65,7 +65,7 @@ public class UserServiceImpl
 		if (existing != null
 				&& (user.getId() == null
 				|| !existing.getId().equals(user.getId())))
-			result.addError(MessageKeyEnum.USER_SAVE_ERROR_EXISTS, "username");
+			result.addError("username", MessageKeyEnum.USER_SAVE_ERROR_EXISTS_USERNAME);
 
 		return result;
 	}
@@ -75,13 +75,13 @@ public class UserServiceImpl
 		ValidationResult result = new ValidationResult();
 
 		if (user.getId() == null && StringUtils.isBlank(user.getPassword()))
-			result.addError(MessageKeyEnum.USER_SAVE_ERROR_PASSWORD_EMPTY, "password");
+			result.addError("password", MessageKeyEnum.USER_SAVE_ERROR_PASSWORD_EMPTY);
 
 		if (StringUtils.isNotBlank(user.getPassword()) && user.getPassword().length() < 5)
-			result.addError(MessageKeyEnum.USER_SAVE_ERROR_PASSWORD_MIN_LENGTH, "password");
+			result.addError("password", MessageKeyEnum.USER_SAVE_ERROR_PASSWORD_MIN_LENGTH);
 
 		if (!StringUtils.equals(user.getPassword(), user.getRepeatPassword()))
-			result.addError(MessageKeyEnum.USER_SAVE_ERROR_REPEAT_PASSWORD_NOT_EQUAL, "repeatPassword");
+			result.addError("repeatPassword", MessageKeyEnum.USER_SAVE_ERROR_REPEAT_PASSWORD_NOT_EQUAL);
 
 		return result;
 	}

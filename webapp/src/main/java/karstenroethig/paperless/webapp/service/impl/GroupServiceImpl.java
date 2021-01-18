@@ -70,7 +70,7 @@ public class GroupServiceImpl
 		if (existing != null
 				&& (group.getId() == null
 				|| !existing.getId().equals(group.getId())))
-			result.addError(MessageKeyEnum.GROUP_SAVE_ERROR_EXISTS, "name");
+			result.addError("name", MessageKeyEnum.GROUP_SAVE_ERROR_EXISTS_NAME);
 
 		return result;
 	}

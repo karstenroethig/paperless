@@ -1,11 +1,9 @@
 package karstenroethig.paperless.webapp.util.validation;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
+import io.micrometer.core.instrument.util.StringUtils;
 import karstenroethig.paperless.webapp.util.MessageKeyEnum;
 import lombok.Getter;
 
@@ -26,14 +24,14 @@ public class ValidationResult
 		return !errors.isEmpty();
 	}
 
-	public void addError(MessageKeyEnum messageKey)
+	public void addError(MessageKeyEnum messageKey, Object... params)
 	{
-		errors.add(new ValidationMessage(ValidationState.ERROR, messageKey));
+		errors.add(new ValidationMessage(ValidationState.ERROR, messageKey, params));
 	}
 
-	public void addError(MessageKeyEnum messageKey, String ... propertyIds)
+	public void addError(String propertyId, MessageKeyEnum messageKey, Object... params)
 	{
-		addMessage(errors, ValidationState.ERROR, messageKey, propertyIds);
+		addMessage(errors, propertyId, ValidationState.ERROR, messageKey, params);
 	}
 
 	public boolean hasWarnings()
@@ -41,14 +39,14 @@ public class ValidationResult
 		return !warnings.isEmpty();
 	}
 
-	public void addWarning(MessageKeyEnum messageKey)
+	public void addWarning(MessageKeyEnum messageKey, Object... params)
 	{
-		warnings.add(new ValidationMessage(ValidationState.WARNING, messageKey));
+		warnings.add(new ValidationMessage(ValidationState.WARNING, messageKey, params));
 	}
 
-	public void addWarning(MessageKeyEnum messageKey, String ... propertyIds)
+	public void addWarning(String propertyId, MessageKeyEnum messageKey, Object... params)
 	{
-		addMessage(warnings, ValidationState.WARNING, messageKey, propertyIds);
+		addMessage(warnings, propertyId, ValidationState.WARNING, messageKey, params);
 	}
 
 	public boolean hasInfos()
@@ -56,26 +54,25 @@ public class ValidationResult
 		return !infos.isEmpty();
 	}
 
-	public void addInfo(MessageKeyEnum messageKey)
+	public void addInfo(MessageKeyEnum messageKey, Object... params)
 	{
-		infos.add(new ValidationMessage(ValidationState.INFO, messageKey));
+		infos.add(new ValidationMessage(ValidationState.INFO, messageKey, params));
 	}
 
-	public void addInfo(MessageKeyEnum messageKey, String ... propertyIds)
+	public void addInfo(String propertyId, MessageKeyEnum messageKey, Object... params)
 	{
-		addMessage(infos, ValidationState.INFO, messageKey, propertyIds);
+		addMessage(infos, propertyId, ValidationState.INFO, messageKey, params);
 	}
 
-	private void addMessage(List<ValidationMessage> list, ValidationState state, MessageKeyEnum messageKey, String ... propertyIds)
+	private void addMessage(List<ValidationMessage> list, String propertyId, ValidationState state, MessageKeyEnum messageKey, Object... params)
 	{
-		if (propertyIds != null)
+		if (StringUtils.isNotBlank(propertyId))
 		{
-			Set<String> propertyIdSet = Arrays.stream(propertyIds).collect(Collectors.toSet());
-			list.add(new PropertyValidationMessage(state, messageKey, propertyIdSet));
+			list.add(new PropertyValidationMessage(propertyId, state, messageKey, params));
 		}
 		else
 		{
-			list.add(new ValidationMessage(state, messageKey));
+			list.add(new ValidationMessage(state, messageKey, params));
 		}
 	}
 

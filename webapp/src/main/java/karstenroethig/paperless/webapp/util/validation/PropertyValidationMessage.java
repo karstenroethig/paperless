@@ -1,23 +1,16 @@
 package karstenroethig.paperless.webapp.util.validation;
 
-import java.util.Set;
-
 import karstenroethig.paperless.webapp.util.MessageKeyEnum;
 import lombok.Getter;
 
 @Getter
 public class PropertyValidationMessage extends ValidationMessage
 {
-	private Set<String> propertyIds;
+	private String propertyId;
 
-	public PropertyValidationMessage(ValidationState state, MessageKeyEnum key, Set<String> propertyIds)
+	public PropertyValidationMessage(String propertyId, ValidationState state, MessageKeyEnum key, Object... params)
 	{
-		super(state, key);
-		this.propertyIds = propertyIds;
-	}
-
-	public boolean hasPropertyIds()
-	{
-		return propertyIds != null && !propertyIds.isEmpty();
+		super(state, key, params);
+		this.propertyId = propertyId;
 	}
 }

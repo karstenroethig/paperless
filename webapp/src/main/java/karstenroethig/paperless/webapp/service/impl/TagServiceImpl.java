@@ -68,7 +68,7 @@ public class TagServiceImpl
 		if (existing != null
 				&& (tag.getId() == null
 				|| !existing.getId().equals(tag.getId())))
-			result.addError(MessageKeyEnum.TAG_SAVE_ERROR_EXISTS, "name");
+			result.addError("name", MessageKeyEnum.TAG_SAVE_ERROR_EXISTS_NAME);
 
 		return result;
 	}

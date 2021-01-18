@@ -19,7 +19,6 @@ import karstenroethig.paperless.webapp.model.dto.DocumentDto;
 import karstenroethig.paperless.webapp.model.dto.DocumentSearchDto;
 import karstenroethig.paperless.webapp.repository.DocumentBoxRepository;
 import karstenroethig.paperless.webapp.repository.specification.DocumentBoxSpecifications;
-import karstenroethig.paperless.webapp.service.exceptions.StillInUseException;
 import karstenroethig.paperless.webapp.util.MessageKeyEnum;
 import karstenroethig.paperless.webapp.util.validation.ValidationException;
 import karstenroethig.paperless.webapp.util.validation.ValidationResult;
@@ -71,7 +70,7 @@ public class DocumentBoxServiceImpl
 		if (existing != null
 				&& (documentBox.getId() == null
 				|| !existing.getId().equals(documentBox.getId())))
-			result.addError(MessageKeyEnum.DOCUMENT_BOX_SAVE_ERROR_EXISTS, "name");
+			result.addError("name", MessageKeyEnum.DOCUMENT_BOX_SAVE_ERROR_EXISTS_NAME);
 
 		return result;
 	}
@@ -99,17 +98,39 @@ public class DocumentBoxServiceImpl
 		return transform(documentBoxRepository.save(documentBox));
 	}
 
-	public boolean delete(Long id) throws StillInUseException
+	public ValidationResult validateDelete(DocumentBoxDto documentBox)
 	{
-		DocumentBox documentBox = documentBoxRepository.findById(id).orElse(null);
+		ValidationResult result = new ValidationResult();
+
 		if (documentBox == null)
-			return false;
+		{
+			result.addError(MessageKeyEnum.DEFAULT_VALIDATION_OBJECT_CANNOT_BE_EMPTY);
+			return result;
+		}
 
 		DocumentSearchDto documentSearch = new DocumentSearchDto();
-		documentSearch.setDocumentBox(transform(documentBox));
+		documentSearch.setDocumentBox(documentBox);
 		Page<DocumentDto> resultsPage = documentService.find(documentSearch, PageRequest.of(0, 1));
 		if (resultsPage.hasContent())
-			throw new StillInUseException(resultsPage.getTotalElements());
+			result.addError(MessageKeyEnum.DOCUMENT_BOX_DELETE_INVALID_STILL_IN_USE_BY_DOCUMENTS, resultsPage.getTotalElements());
+
+		return result;
+	}
+
+	private void checkValidationDelete(DocumentBoxDto documentBox)
+	{
+		ValidationResult result = validateDelete(documentBox);
+		if (result.hasErrors())
+			throw new ValidationException(result);
+	}
+
+	public boolean delete(DocumentBoxDto documentBoxDto)
+	{
+		checkValidationDelete(documentBoxDto);
+
+		DocumentBox documentBox = documentBoxRepository.findById(documentBoxDto.getId()).orElse(null);
+		if (documentBox == null)
+			return false;
 
 		documentBoxRepository.delete(documentBox);
 		return true;

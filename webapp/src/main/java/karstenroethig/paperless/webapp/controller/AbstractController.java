@@ -13,12 +13,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import karstenroethig.paperless.webapp.controller.exceptions.ForbiddenException;
 import karstenroethig.paperless.webapp.controller.exceptions.NotFoundException;
 import karstenroethig.paperless.webapp.controller.util.AttributeNames;
+import karstenroethig.paperless.webapp.util.MessageKeyEnum;
+import karstenroethig.paperless.webapp.util.Messages;
 import karstenroethig.paperless.webapp.util.validation.PropertyValidationMessage;
 import karstenroethig.paperless.webapp.util.validation.ValidationMessage;
+import karstenroethig.paperless.webapp.util.validation.ValidationState;
 
 public abstract class AbstractController
 {
@@ -58,15 +62,29 @@ public abstract class AbstractController
 			{
 				PropertyValidationMessage propertyMessage = (PropertyValidationMessage)message;
 
-				if (propertyMessage.hasPropertyIds())
-				{
-					for (String propertyId : propertyMessage.getPropertyIds())
-					{
-						bindingResult.rejectValue(propertyId, propertyMessage.getKey().getKey());
-					}
-				}
+				bindingResult.rejectValue(propertyMessage.getPropertyId(), propertyMessage.getKey().getKey());
 			}
 		}
+	}
+
+	protected void addValidationMessagesToRedirectAttributes(MessageKeyEnum firstMessage, List<ValidationMessage> validationMessages, RedirectAttributes redirectAttributes)
+	{
+		if (validationMessages == null || validationMessages.isEmpty())
+			return;
+
+		Messages messages = firstMessage != null ? Messages.createWithError(firstMessage) : new Messages();
+
+		for (ValidationMessage validationMessage : validationMessages)
+		{
+			if (validationMessage.getState() == ValidationState.ERROR)
+				messages.addError(validationMessage.getKey(), validationMessage.getParams());
+			else if (validationMessage.getState() == ValidationState.WARNING)
+				messages.addWarning(validationMessage.getKey(), validationMessage.getParams());
+			else if (validationMessage.getState() == ValidationState.INFO)
+				messages.addInfo(validationMessage.getKey(), validationMessage.getParams());
+		}
+
+		redirectAttributes.addFlashAttribute(AttributeNames.MESSAGES, messages);
 	}
 
 	@ExceptionHandler(ForbiddenException.class)
