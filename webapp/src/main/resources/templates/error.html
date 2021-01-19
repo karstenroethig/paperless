@@ -19,7 +19,10 @@
 			<h1 class="h2"><span th:text="#{error.xxx.label}">Error</span></h1>
 		</div>
 
-		<p th:text="#{error.xxx.text}">An unexpected condition was encountered.</p>
+		<p>
+			<span th:text="#{error.xxx.text}">An unexpected condition was encountered:</span>
+			<strong><span th:text="${error}">[error]</span> (<span th:text="${status}">[status]</span>)</strong>
+		</p>
 		<p>
 			<span th:text="#{error.xxx.text.support}">If the problem persists, contact Support and provide the following timestamp:</span>
 			<strong th:text="${#dates.format(#dates.createNow(), #messages.msg('default.dateTimeHHmmssFormat'))}"></strong>
