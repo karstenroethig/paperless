@@ -17,6 +17,7 @@ import karstenroethig.paperless.webapp.model.domain.AbstractEntityId_;
 import karstenroethig.paperless.webapp.model.domain.Group;
 import karstenroethig.paperless.webapp.model.domain.User;
 import karstenroethig.paperless.webapp.model.domain.User_;
+import karstenroethig.paperless.webapp.model.dto.GroupDto;
 import karstenroethig.paperless.webapp.model.dto.UserSearchDto;
 import karstenroethig.paperless.webapp.model.dto.UserSearchDto.EnabledSearchTypeEnum;
 import karstenroethig.paperless.webapp.model.dto.UserSearchDto.LockedSearchTypeEnum;
@@ -32,53 +33,80 @@ public class UserSpecifications
 			{
 				List<Predicate> restrictions = new ArrayList<>();
 
-				if (StringUtils.isNotBlank(userSearchDto.getName()))
-					restrictions.add(cb.or(
-							cb.like(cb.lower(root.get(User_.username)), "%" + StringUtils.lowerCase(userSearchDto.getName()) + "%"),
-							cb.like(cb.lower(root.get(User_.fullName)), "%" + StringUtils.lowerCase(userSearchDto.getName()) + "%")));
-
-				if (userSearchDto.getGroup() != null && userSearchDto.getGroup().getId() != null)
-				{
-					Subquery<Long> sub = query.subquery(Long.class);
-					Root<Group> subRoot = sub.from(Group.class);
-					ListJoin<User, Group> subGroups = root.join(User_.groups);
-					sub.select(subRoot.get(AbstractEntityId_.id));
-					sub.where(cb.equal(subGroups.get(AbstractEntityId_.id), userSearchDto.getGroup().getId()));
-
-					restrictions.add(cb.exists(sub));
-				}
-
-				if (userSearchDto.getEnabledSearchType() != null)
-				{
-					if (userSearchDto.getEnabledSearchType() == EnabledSearchTypeEnum.ENABLED)
-						restrictions.add(cb.equal(root.get(User_.enabled), Boolean.TRUE));
-					else if (userSearchDto.getEnabledSearchType() == EnabledSearchTypeEnum.DISABLED)
-						restrictions.add(cb.equal(root.get(User_.enabled), Boolean.FALSE));
-					else
-						throw new IllegalArgumentException("unknown search type " + userSearchDto.getEnabledSearchType().name());
-				}
-
-				if (userSearchDto.getLockedSearchType() != null)
-				{
-					if (userSearchDto.getLockedSearchType() == LockedSearchTypeEnum.LOCKED)
-						restrictions.add(cb.equal(root.get(User_.locked), Boolean.TRUE));
-					else if (userSearchDto.getLockedSearchType() == LockedSearchTypeEnum.UNLOCKED)
-						restrictions.add(cb.equal(root.get(User_.locked), Boolean.FALSE));
-					else
-						throw new IllegalArgumentException("unknown search type " + userSearchDto.getLockedSearchType().name());
-				}
-
-				if (userSearchDto.getNewRegisteredSearchType() != null)
-				{
-					if (userSearchDto.getNewRegisteredSearchType() == NewRegisteredSearchTypeEnum.NEW_REGISTERED)
-						restrictions.add(cb.equal(root.get(User_.newRegisterd), Boolean.TRUE));
-					else
-						throw new IllegalArgumentException("unknown search type " + userSearchDto.getNewRegisteredSearchType().name());
-				}
-
-				restrictions.add(cb.equal(root.get(User_.deleted), Boolean.FALSE));
+				addRestrictionsForName(root, cb, restrictions, userSearchDto.getName());
+				addRestrictionsForGroup(root, query, cb, restrictions, userSearchDto.getGroup());
+				addRestrictionsForEnabled(root, cb, restrictions, userSearchDto.getEnabledSearchType());
+				addRestrictionsForLocked(root, cb, restrictions, userSearchDto.getLockedSearchType());
+				addRestrictionsForNewRegistered(root, cb, restrictions, userSearchDto.getNewRegisteredSearchType());
+				addRestrictionsForDeleted(root, cb, restrictions);
 
 				return cb.and(restrictions.toArray(new Predicate[] {}));
 			};
+	}
+
+	private static void addRestrictionsForName(Root<User> root, CriteriaBuilder cb, List<Predicate> restrictions, String name)
+	{
+		if (StringUtils.isBlank(name))
+			return;
+
+		restrictions.add(cb.or(
+				cb.like(cb.lower(root.get(User_.username)), "%" + StringUtils.lowerCase(name) + "%"),
+				cb.like(cb.lower(root.get(User_.fullName)), "%" + StringUtils.lowerCase(name) + "%")));
+	}
+
+	private static void addRestrictionsForGroup(Root<User> root, CriteriaQuery<?> query, CriteriaBuilder cb, List<Predicate> restrictions, GroupDto group)
+	{
+		if (group == null || group.getId() == null)
+			return;
+
+		Subquery<Long> sub = query.subquery(Long.class);
+		Root<Group> subRoot = sub.from(Group.class);
+		ListJoin<User, Group> subGroups = root.join(User_.groups);
+		sub.select(subRoot.get(AbstractEntityId_.id));
+		sub.where(cb.equal(subGroups.get(AbstractEntityId_.id), group.getId()));
+
+		restrictions.add(cb.exists(sub));
+	}
+
+	private static void addRestrictionsForEnabled(Root<User> root, CriteriaBuilder cb, List<Predicate> restrictions, EnabledSearchTypeEnum enabledSearchType)
+	{
+		if (enabledSearchType == null)
+			return;
+
+		if (enabledSearchType == EnabledSearchTypeEnum.ENABLED)
+			restrictions.add(cb.equal(root.get(User_.enabled), Boolean.TRUE));
+		else if (enabledSearchType == EnabledSearchTypeEnum.DISABLED)
+			restrictions.add(cb.equal(root.get(User_.enabled), Boolean.FALSE));
+		else
+			throw new IllegalArgumentException("unknown enabled search type " + enabledSearchType.name());
+	}
+
+	private static void addRestrictionsForLocked(Root<User> root, CriteriaBuilder cb, List<Predicate> restrictions, LockedSearchTypeEnum lockedSearchType)
+	{
+		if (lockedSearchType == null)
+			return;
+
+		if (lockedSearchType == LockedSearchTypeEnum.LOCKED)
+			restrictions.add(cb.equal(root.get(User_.locked), Boolean.TRUE));
+		else if (lockedSearchType == LockedSearchTypeEnum.UNLOCKED)
+			restrictions.add(cb.equal(root.get(User_.locked), Boolean.FALSE));
+		else
+			throw new IllegalArgumentException("unknown locked search type " + lockedSearchType.name());
+	}
+
+	private static void addRestrictionsForNewRegistered(Root<User> root, CriteriaBuilder cb, List<Predicate> restrictions, NewRegisteredSearchTypeEnum newRegisteredSearchType)
+	{
+		if (newRegisteredSearchType == null)
+			return;
+
+		if (newRegisteredSearchType == NewRegisteredSearchTypeEnum.NEW_REGISTERED)
+			restrictions.add(cb.equal(root.get(User_.newRegisterd), Boolean.TRUE));
+		else
+			throw new IllegalArgumentException("unknown new registered search type " + newRegisteredSearchType.name());
+	}
+
+	private static void addRestrictionsForDeleted(Root<User> root, CriteriaBuilder cb, List<Predicate> restrictions)
+	{
+		restrictions.add(cb.equal(root.get(User_.deleted), Boolean.FALSE));
 	}
 }
