@@ -229,10 +229,10 @@ public class DocumentController extends AbstractController
 
 	private void addBasicAttributes(Model model)
 	{
-		model.addAttribute("allContacts", contactService.findAll());
-		model.addAttribute("allDocumentBoxes", documentBoxService.findAll());
-		model.addAttribute("allDocumentTypes", documentTypeService.findAll());
-		model.addAttribute("allTags", tagService.findAll());
+		model.addAttribute("allContacts", contactService.findAllUnarchived());
+		model.addAttribute("allDocumentBoxes", documentBoxService.findAllUnarchived());
+		model.addAttribute("allDocumentTypes", documentTypeService.findAllUnarchived());
+		model.addAttribute("allTags", tagService.findAllUnarchived());
 	}
 
 	@Override

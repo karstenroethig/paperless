@@ -1,0 +1,108 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{layout-admin :: layout-fragment(
+							~{::title},
+							~{::content},
+							null,
+							~{:: #additionalJs},
+							'backup'
+							)}">
+<head>
+	<title th:text="#{application.title-pattern(#{application.name}, #{admin.section.backupAdministration.backup.label})}"></title>
+</head>
+<body>
+
+	<div th:fragment="content">
+
+		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+			<h1 class="h2">Backup settings</h1>
+			<div class="btn-toolbar mb-2 mb-md-0">
+				<div class="btn-group mr-2">
+					<a href="" class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#backupNowModal">Backup now</a>
+				</div>
+			</div>
+		</div>
+
+		<div th:replace="~{fragments/messages :: messages-fragment(${messages})}"></div>
+
+		<div class="card border-secondary mb-3" th:if="${backupInfo.running}">
+			<div class="card-body">
+				<h4 class="card-title">Create paperless backup</h4>
+				<div class="progress mb-2">
+					<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" th:aria-valuenow="${backupInfo.calcProgressPercentage()}" aria-valuemin="0" aria-valuemax="100" th:style="${'width: '+backupInfo.calcProgressPercentage()+'%;'}"></div>
+				</div>
+				<p class="card-text" th:text="${#messages.msg(backupInfo.taskMessageKey.key, backupInfo.taskWorked, backupInfo.taskTotalWork)}">Importing data: Stored 3923 of 4328 database values ...</p>
+				<p class="card-text text-muted" th:text="${#messages.msg('backup.progress.percentageLine', backupInfo.calcProgressPercentage(), dateUtils.secondsFromDateTimeUntilNow(backupInfo.startedDatetime))}">90% complete. 41 seconds elapsed.</p>
+				<p class="card-text text-muted" th:text="${#messages.msg('backup.progress.startedLine', #temporals.format(backupInfo.startedDatetime, #messages.msg('default.dateTimeHHmmssFormat')))}">Started 2021-02-27 21:32:42.</p>
+				<a th:href="@{/backup}" class="btn btn-sm btn-outline-secondary">Refresh</a>
+			</div>
+		</div>
+
+		<div class="form-group row">
+			<label class="col-sm-2 text-right">Perform backups</label>
+			<div class="col-sm-10">
+				<span th:if="${backupSettings.enabled}">Enabled</span>
+				<span th:if="${!backupSettings.enabled}">Disabled</span>
+			</div>
+		</div>
+
+		<div class="form-group row">
+			<label class="col-sm-2 text-right">Schedule</label>
+			<div class="col-sm-10" th:text="${backupSettings.schedule}">[schedule]</div>
+		</div>
+
+		<div class="form-group row">
+			<label class="col-sm-2 text-right">Backup directory</label>
+			<div class="col-sm-10" th:text="${backupSettings.backupDirectory}">[backupDirectory]</div>
+		</div>
+
+		<div class="form-group row">
+			<label class="col-sm-2 text-right">Backup file prefix</label>
+			<div class="col-sm-10" th:text="${backupSettings.backupFilePrefix}">[backupFilePrefix]</div>
+		</div>
+
+		<div class="form-group row">
+			<label class="col-sm-2 text-right">Backup file date pattern</label>
+			<div class="col-sm-10" th:text="${backupSettings.backupFileDatePattern}">[backupFileDatePattern]</div>
+		</div>
+
+		<div class="form-group row">
+			<label class="col-sm-2 text-right">Backup filename (sample)</label>
+			<div class="col-sm-10" th:text="${backupSettings.backupFilePrefix + #dates.format(#dates.createNow(), backupSettings.backupFileDatePattern) + '.zip'}">[sample]</div>
+		</div>
+
+		<div class="modal fade" id="backupNowModal" tabindex="-1" role="dialog" aria-labelledby="backupNowModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="backupNowModalLabel" th:text="#{backup.now.popup.title}">Backup now</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<span th:text="#{backup.now.popup.question}">Are you sure you want to create a current backup now?</span>
+					</div>
+					<div class="modal-footer">
+						<a th:href="@{/backup/now}" class="btn btn-outline-secondary">Backup now</a>
+						<button type="button" class="btn btn-outline-secondary" data-dismiss="modal" th:text="#{default.button.cancel.label}">Cancel</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script th:inline="javascript">
+			/*<![CDATA[*/
+			var automaticRefresh = /*[[${backupInfo.running}]]*/ false;
+			/*]]>*/
+		</script>
+
+	</div>
+
+	<th:block id="additionalJs">
+		<script th:src="@{/js/backup-index.js}"></script>
+	</th:block>
+
+</body>
+</html>

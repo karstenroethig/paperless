@@ -18,6 +18,8 @@ public class UrlMappings
 	public static final String CONTROLLER_USER_ADMIN = "/user-admin";
 	public static final String CONTROLLER_GROUP = "/group";
 
+	public static final String CONTROLLER_BACKUP = "/backup";
+
 	public static final String CONTROLLER_COMMENT = "/comment";
 	public static final String CONTROLLER_CONTACT = "/contact";
 	public static final String CONTROLLER_DOCUMENT = "/document";

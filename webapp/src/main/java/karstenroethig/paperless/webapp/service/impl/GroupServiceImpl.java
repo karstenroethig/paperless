@@ -108,7 +108,12 @@ public class GroupServiceImpl
 		return true;
 	}
 
-	public Page<GroupDto> find(Pageable pageable)
+	public long count()
+	{
+		return groupRepository.count();
+	}
+
+	public Page<GroupDto> findAll(Pageable pageable)
 	{
 		Page<Group> page = groupRepository.findAll(pageable);
 		return page.map(this::transform);
@@ -116,7 +121,7 @@ public class GroupServiceImpl
 
 	public List<GroupDto> findAll()
 	{
-		Page<GroupDto> pageDto = find(ALL_ELEMENTS_PAGE_REQUEST);
+		Page<GroupDto> pageDto = findAll(ALL_ELEMENTS_PAGE_REQUEST);
 		return pageDto.getContent();
 	}
 

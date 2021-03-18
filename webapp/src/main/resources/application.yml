@@ -64,3 +64,9 @@ spring:
 
 app:
   fileDataDirectory: target/data/files
+  backup:
+    enabled: true
+    schedule: 0 0 1 * * *
+    backupDirectory: target/backups
+    backupFilePrefix: backup_
+    backupFileDatePattern: yyyy-MM-dd_HH-mm

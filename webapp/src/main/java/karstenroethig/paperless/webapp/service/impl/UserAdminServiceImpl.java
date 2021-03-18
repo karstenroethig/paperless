@@ -42,9 +42,20 @@ public class UserAdminServiceImpl extends UserServiceImpl
 
 	@Autowired AuthorityRepository authorityRepository;
 
+	public long count()
+	{
+		return userRepository.count();
+	}
+
 	public Page<UserDto> find(UserSearchDto userSearchDto, Pageable pageable)
 	{
 		Page<User> page = userRepository.findAll(UserSpecifications.matchesSearchParam(userSearchDto), pageable);
+		return page.map(this::transform);
+	}
+
+	public Page<UserDto> findAll(Pageable pageable)
+	{
+		Page<User> page = userRepository.findAll(pageable);
 		return page.map(this::transform);
 	}
 

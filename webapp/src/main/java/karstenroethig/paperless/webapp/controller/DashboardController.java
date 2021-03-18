@@ -54,9 +54,9 @@ public class DashboardController
 		Page<UserDto> newRegisteredUserPage = userService.find(userSearch, PageRequest.of(0, 1, Sort.by(User_.USERNAME)));
 		long numberOfNewRegisteredUsers = newRegisteredUserPage.getTotalElements();
 
-		boolean hasNoDocumentTypes = documentTypeService.findAll().isEmpty();
-		boolean hasNoDocumentBoxes = documentBoxService.findAll().isEmpty();
-		boolean hasNoContacts = contactService.findAll().isEmpty();
+		boolean hasNoDocumentTypes = documentTypeService.findAllUnarchived().isEmpty();
+		boolean hasNoDocumentBoxes = documentBoxService.findAllUnarchived().isEmpty();
+		boolean hasNoContacts = contactService.findAllUnarchived().isEmpty();
 
 		boolean showAdminCard = numberOfNewRegisteredUsers > 0
 				|| hasNoDocumentTypes

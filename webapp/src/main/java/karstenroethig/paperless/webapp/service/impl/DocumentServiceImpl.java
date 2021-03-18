@@ -105,9 +105,20 @@ public class DocumentServiceImpl
 		documentRepository.save(document);
 	}
 
+	public long count()
+	{
+		return documentRepository.count();
+	}
+
 	public Page<DocumentDto> find(DocumentSearchDto documentSearchDto, Pageable pageable)
 	{
 		Page<Document> page = documentRepository.findAll(DocumentSpecifications.matchesSearchParam(documentSearchDto), pageable);
+		return page.map(this::transform);
+	}
+
+	public Page<DocumentDto> findAll(Pageable pageable)
+	{
+		Page<Document> page = documentRepository.findAll(pageable);
 		return page.map(this::transform);
 	}
 

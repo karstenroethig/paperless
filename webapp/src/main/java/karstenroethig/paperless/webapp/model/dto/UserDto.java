@@ -31,6 +31,8 @@ public class UserDto extends AbstractDtoId
 	@Size(max = 255)
 	private String repeatPassword;
 
+	private String hashedPassword;
+
 	@NotNull
 	@Size(min = 1, max = 255)
 	private String fullName;

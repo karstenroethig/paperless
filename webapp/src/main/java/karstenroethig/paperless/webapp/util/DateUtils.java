@@ -16,6 +16,11 @@ public class DateUtils
 		return date.until(LocalDate.now(), ChronoUnit.DAYS);
 	}
 
+	public static long secondsFromDateTimeUntilNow(LocalDateTime datetime)
+	{
+		return datetime.until(LocalDateTime.now(), ChronoUnit.SECONDS);
+	}
+
 	public static Date asDate(LocalDate localDate)
 	{
 		return Date.from(localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());

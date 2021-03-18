@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import lombok.Getter;
 
@@ -38,9 +39,12 @@ public enum FileIconEnum
 
 	public static FileIconEnum findFileIcon(String filename)
 	{
+		String extension = FilenameUtils.getExtension(filename);
+		extension = StringUtils.lowerCase(extension);
+
 		for (FileIconEnum fileIcon : values())
 		{
-			if (fileIcon.fileExtensions.contains(FilenameUtils.getExtension(filename)))
+			if (fileIcon.fileExtensions.contains(extension))
 				return fileIcon;
 		}
 

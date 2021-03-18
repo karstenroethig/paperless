@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+	<xsd:element name="paperless">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="documents"     minOccurs="0" maxOccurs="1"/>
+				<xsd:element ref="contacts"      minOccurs="0" maxOccurs="1"/>
+				<xsd:element ref="documentBoxes" minOccurs="0" maxOccurs="1"/>
+				<xsd:element ref="documentTypes" minOccurs="0" maxOccurs="1"/>
+				<xsd:element ref="groups"        minOccurs="0" maxOccurs="1"/>
+				<xsd:element ref="tags"          minOccurs="0" maxOccurs="1"/>
+				<xsd:element ref="users"         minOccurs="0" maxOccurs="1"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="documents">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="document" type="document" minOccurs="0" maxOccurs="unbounded"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="authorities">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="authority" type="authority" minOccurs="0" maxOccurs="unbounded"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="comments">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="comment" type="comment" minOccurs="0" maxOccurs="unbounded"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="contacts">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="contact" type="contact" minOccurs="0" maxOccurs="unbounded"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="documentBoxes">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="documentBox" type="documentBox" minOccurs="0" maxOccurs="unbounded"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="documentTypes">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="documentType" type="documentType" minOccurs="0" maxOccurs="unbounded"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="fileAttachments">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="fileAttachment" type="fileAttachment" minOccurs="0" maxOccurs="unbounded"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="groups">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="group" type="group" minOccurs="0" maxOccurs="unbounded"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="tags">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="tag" type="tag" minOccurs="0" maxOccurs="unbounded"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="users">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="user" type="user" minOccurs="0" maxOccurs="unbounded"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:complexType name="document">
+		<xsd:sequence>
+			<xsd:element name="documentType"   type="documentType" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="sender"         type="contact"      minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="receiver"       type="contact"      minOccurs="0" maxOccurs="1"/>
+			<xsd:element ref="tags"                                minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="documentBox"    type="documentBox"  minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="description"    type="xsd:string"   minOccurs="0" maxOccurs="1"/>
+			<xsd:element ref="comments"                            minOccurs="0" maxOccurs="1"/>
+			<xsd:element ref="fileAttachments"                     minOccurs="0" maxOccurs="1"/>
+		</xsd:sequence>
+		<xsd:attribute name="id"              type="xsd:long"     use="optional"/>
+		<xsd:attribute name="title"           type="xsd:string"   use="required"/>
+		<xsd:attribute name="dateOfIssue"     type="xsd:date"     use="optional"/>
+		<xsd:attribute name="createdDatetime" type="xsd:dateTime" use="optional"/>
+		<xsd:attribute name="updatedDatetime" type="xsd:dateTime" use="optional"/>
+		<xsd:attribute name="reviewDate"      type="xsd:date"     use="optional"/>
+		<xsd:attribute name="deletionDate"    type="xsd:date"     use="optional"/>
+		<xsd:attribute name="archived"        type="xsd:boolean"  use="optional"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="authority">
+		<xsd:attribute name="name" type="xsd:string" use="optional"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="comment">
+		<xsd:sequence>
+			<xsd:element name="text" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+		</xsd:sequence>
+		<xsd:attribute name="id"              type="xsd:long"     use="optional"/>
+		<xsd:attribute name="createdDatetime" type="xsd:dateTime" use="optional"/>
+		<xsd:attribute name="updatedDatetime" type="xsd:dateTime" use="optional"/>
+		<xsd:attribute name="deleted"         type="xsd:boolean"  use="optional"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="contact">
+		<xsd:attribute name="id"       type="xsd:long"    use="optional"/>
+		<xsd:attribute name="name"     type="xsd:string"  use="optional"/>
+		<xsd:attribute name="archived" type="xsd:boolean" use="optional"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="documentBox">
+		<xsd:sequence>
+			<xsd:element name="description" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+		</xsd:sequence>
+		<xsd:attribute name="id"       type="xsd:long"    use="optional"/>
+		<xsd:attribute name="name"     type="xsd:string"  use="optional"/>
+		<xsd:attribute name="archived" type="xsd:boolean" use="optional"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="documentType">
+		<xsd:sequence>
+			<xsd:element name="description" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+		</xsd:sequence>
+		<xsd:attribute name="id"       type="xsd:long"    use="optional"/>
+		<xsd:attribute name="name"     type="xsd:string"  use="optional"/>
+		<xsd:attribute name="archived" type="xsd:boolean" use="optional"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="fileAttachment">
+		<xsd:attribute name="id"              type="xsd:long"     use="optional"/>
+		<xsd:attribute name="name"            type="xsd:string"   use="optional"/>
+		<xsd:attribute name="contentType"     type="xsd:string"   use="optional"/>
+		<xsd:attribute name="createdDatetime" type="xsd:dateTime" use="optional"/>
+		<xsd:attribute name="updatedDatetime" type="xsd:dateTime" use="optional"/>
+		<xsd:attribute name="pathToFile"      type="xsd:string"   use="optional"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="group">
+		<xsd:attribute name="id"       type="xsd:long"    use="optional"/>
+		<xsd:attribute name="name"     type="xsd:string"  use="optional"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="tag">
+		<xsd:sequence>
+			<xsd:element name="description" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+		</xsd:sequence>
+		<xsd:attribute name="id"       type="xsd:long"    use="optional"/>
+		<xsd:attribute name="name"     type="xsd:string"  use="optional"/>
+		<xsd:attribute name="archived" type="xsd:boolean" use="optional"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="user">
+		<xsd:sequence>
+			<xsd:element ref="authorities" minOccurs="0" maxOccurs="1"/>
+			<xsd:element ref="groups"      minOccurs="0" maxOccurs="1"/>
+		</xsd:sequence>
+		<xsd:attribute name="id"                  type="xsd:long"    use="optional"/>
+		<xsd:attribute name="username"            type="xsd:string"  use="optional"/>
+		<xsd:attribute name="hashedPassword"      type="xsd:string"  use="optional"/>
+		<xsd:attribute name="fullName"            type="xsd:string"  use="optional"/>
+		<xsd:attribute name="enabled"             type="xsd:boolean" use="optional"/>
+		<xsd:attribute name="locked"              type="xsd:boolean" use="optional"/>
+		<xsd:attribute name="failedLoginAttempts" type="xsd:integer" use="optional"/>
+		<xsd:attribute name="newRegistered"       type="xsd:boolean" use="optional"/>
+		<xsd:attribute name="deleted"             type="xsd:boolean" use="optional"/>
+	</xsd:complexType>
+
+</xsd:schema>

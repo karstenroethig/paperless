@@ -136,16 +136,27 @@ public class DocumentBoxServiceImpl
 		return true;
 	}
 
+	public long count()
+	{
+		return documentBoxRepository.count();
+	}
+
 	public Page<DocumentBoxDto> find(DocumentBoxSearchDto documentBoxSearchDto, Pageable pageable)
 	{
 		Page<DocumentBox> page = documentBoxRepository.findAll(DocumentBoxSpecifications.matchesSearchParam(documentBoxSearchDto), pageable);
 		return page.map(this::transform);
 	}
 
-	public List<DocumentBoxDto> findAll()
+	public List<DocumentBoxDto> findAllUnarchived()
 	{
 		Page<DocumentBoxDto> pageDto = find(EMPTY_SEACH_PARAMS, ALL_ELEMENTS_PAGE_REQUEST);
 		return pageDto.getContent();
+	}
+
+	public Page<DocumentBoxDto> findAll(Pageable pageable)
+	{
+		Page<DocumentBox> page = documentBoxRepository.findAll(pageable);
+		return page.map(this::transform);
 	}
 
 	public DocumentBoxDto find(Long id)

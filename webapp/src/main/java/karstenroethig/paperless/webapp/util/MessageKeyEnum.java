@@ -80,6 +80,18 @@ public enum MessageKeyEnum
 	TAG_DELETE_SUCCESS("tag.delete.success"),
 	TAG_DELETE_ERROR("tag.delete.error"),
 
+	BACKUP_NOW_SUCCESS("backup.now.success"),
+	BACKUP_NOW_ERROR("backup.now.error"),
+
+	BACKUP_TASK_INITIALIZE("backup.task.initialize"),
+	BACKUP_TASK_EXPORT_CONTACTS("backup.task.exportContacts"),
+	BACKUP_TASK_EXPORT_DOCUMENT_BOXES("backup.task.exportDocumentBoxes"),
+	BACKUP_TASK_EXPORT_DOCUMENT_TYPES("backup.task.exportDocumentTypes"),
+	BACKUP_TASK_EXPORT_TAGS("backup.task.exportTags"),
+	BACKUP_TASK_EXPORT_GROUPS("backup.task.exportGroups"),
+	BACKUP_TASK_EXPORT_USERS("backup.task.exportUsers"),
+	BACKUP_TASK_EXPORT_DOCUMENTS("backup.task.exportDocuments"),
+
 	USER_SAVE_INVALID("user.save.invalid"),
 	USER_SAVE_ERROR("user.save.error"),
 	USER_SAVE_ERROR_EXISTS_USERNAME("user.save.error.exists.username"),

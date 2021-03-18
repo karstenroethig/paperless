@@ -138,16 +138,27 @@ public class ContactServiceImpl
 		return true;
 	}
 
+	public long count()
+	{
+		return contactRepository.count();
+	}
+
 	public Page<ContactDto> find(ContactSearchDto contactSearchDto, Pageable pageable)
 	{
 		Page<Contact> page = contactRepository.findAll(ContactSpecifications.matchesSearchParam(contactSearchDto), pageable);
 		return page.map(this::transform);
 	}
 
-	public List<ContactDto> findAll()
+	public List<ContactDto> findAllUnarchived()
 	{
 		Page<ContactDto> pageDto = find(EMPTY_SEACH_PARAMS, ALL_ELEMENTS_PAGE_REQUEST);
 		return pageDto.getContent();
+	}
+
+	public Page<ContactDto> findAll(Pageable pageable)
+	{
+		Page<Contact> page = contactRepository.findAll(pageable);
+		return page.map(this::transform);
 	}
 
 	public ContactDto find(Long id)

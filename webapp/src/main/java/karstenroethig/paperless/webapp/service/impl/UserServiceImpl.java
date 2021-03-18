@@ -199,6 +199,7 @@ public class UserServiceImpl
 
 		userDto.setId(user.getId());
 		userDto.setUsername(user.getUsername());
+		userDto.setHashedPassword(user.getHashedPassword());
 		userDto.setFullName(user.getFullName());
 		userDto.setEnabled(user.isEnabled());
 		userDto.setLocked(user.isLocked());

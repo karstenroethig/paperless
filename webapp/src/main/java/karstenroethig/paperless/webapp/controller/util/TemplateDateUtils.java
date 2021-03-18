@@ -21,6 +21,11 @@ public class TemplateDateUtils
 		return DateUtils.daysFromDateUntilNow(date);
 	}
 
+	public long secondsFromDateTimeUntilNow(LocalDateTime datetime)
+	{
+		return DateUtils.secondsFromDateTimeUntilNow(datetime);
+	}
+
 	public String prettyFormatDuration(LocalDateTime dateTime)
 	{
 		if (dateTime == null)

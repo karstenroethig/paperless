@@ -57,6 +57,23 @@
 					</a>
 				</li>
 			</ul>
+			<h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted" sec:authorize="hasRole('ADMIN')">
+				<span th:text="#{admin.section.backupAdministration.label}">Backup administration</span>
+			</h6>
+			<ul class="nav flex-column" sec:authorize="hasRole('ADMIN')">
+				<li class="nav-item" th:classappend="${#strings.equals(menu,'backup')} ? active">
+					<a class="nav-link" th:href="@{/backup}">
+						<i class="fas fa-file-export"></i>
+						<span th:text="#{admin.section.backupAdministration.backup.label}">Backup</span>
+					</a>
+				</li>
+				<li class="nav-item" th:classappend="${#strings.equals(menu,'restore')} ? active">
+					<a class="nav-link" th:href="@{/backup/restore}">
+						<i class="fas fa-file-import"></i>
+						<span th:text="#{admin.section.backupAdministration.restore.label}">Restore</span>
+					</a>
+				</li>
+			</ul>
 		</div>
 	</nav>
 

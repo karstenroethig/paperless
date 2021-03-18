@@ -124,7 +124,7 @@ public class FileStorageServiceImpl
 
 	private Path createAndGetStorageArchiveIfItDoesNotExist(String storageKey) throws IOException
 	{
-		Path fileDataDirectory = cretaeAndGetFileDataDirectory();
+		Path fileDataDirectory = createAndGetFileDataDirectory();
 		String storageArchiveFilename = buildStorageFilename(storageKey);
 		Path storageArchivePath = fileDataDirectory.resolve(storageArchiveFilename);
 
@@ -144,7 +144,7 @@ public class FileStorageServiceImpl
 		return storageArchivePath;
 	}
 
-	private Path cretaeAndGetFileDataDirectory() throws IOException
+	private Path createAndGetFileDataDirectory() throws IOException
 	{
 		Path fileDataDirectory = applicationProperties.getFileDataDirectory();
 		if (!Files.exists(fileDataDirectory))

@@ -45,7 +45,7 @@ public class GroupController extends AbstractController
 	@GetMapping(value = UrlMappings.ACTION_LIST)
 	public String list(Model model, @PageableDefault(size = 20, sort = Group_.NAME) Pageable pageable)
 	{
-		Page<GroupDto> resultsPage = groupService.find(pageable);
+		Page<GroupDto> resultsPage = groupService.findAll(pageable);
 		addPagingAttributes(model, resultsPage);
 
 		return ViewEnum.GROUP_LIST.getViewName();

@@ -106,16 +106,27 @@ public class TagServiceImpl
 		return true;
 	}
 
+	public long count()
+	{
+		return tagRepository.count();
+	}
+
 	public Page<TagDto> find(TagSearchDto tagSearchDto, Pageable pageable)
 	{
 		Page<Tag> page = tagRepository.findAll(TagSpecifications.matchesSearchParam(tagSearchDto), pageable);
 		return page.map(this::transform);
 	}
 
-	public List<TagDto> findAll()
+	public List<TagDto> findAllUnarchived()
 	{
 		Page<TagDto> pageDto = find(EMPTY_SEACH_PARAMS, ALL_ELEMENTS_PAGE_REQUEST);
 		return pageDto.getContent();
+	}
+
+	public Page<TagDto> findAll(Pageable pageable)
+	{
+		Page<Tag> page = tagRepository.findAll(pageable);
+		return page.map(this::transform);
 	}
 
 	public TagDto find(Long id)
