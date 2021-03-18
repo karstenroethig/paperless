@@ -46,7 +46,7 @@ public class TagController extends AbstractController
 	@GetMapping(value = UrlMappings.ACTION_LIST)
 	public String list(Model model, @PageableDefault(size = 20, sort = "name") Pageable pageable)
 	{
-		Page<TagDto> resultsPage = tagService.find(tagSearchBean.getTagSearchDto(), pageable);
+		Page<TagDto> resultsPage = tagService.findBySearchParams(tagSearchBean.getTagSearchDto(), pageable);
 		addPagingAttributes(model, resultsPage);
 
 		model.addAttribute(AttributeNames.SEARCH_PARAMS, tagSearchBean.getTagSearchDto());

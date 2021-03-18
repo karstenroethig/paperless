@@ -110,7 +110,7 @@ public class DocumentBoxServiceImpl
 
 		DocumentSearchDto documentSearch = new DocumentSearchDto();
 		documentSearch.setDocumentBox(documentBox);
-		Page<DocumentDto> resultsPage = documentService.find(documentSearch, PageRequest.of(0, 1));
+		Page<DocumentDto> resultsPage = documentService.findBySearchParams(documentSearch, PageRequest.of(0, 1));
 		if (resultsPage.hasContent())
 			result.addError(MessageKeyEnum.DOCUMENT_BOX_DELETE_INVALID_STILL_IN_USE_BY_DOCUMENTS, resultsPage.getTotalElements());
 
@@ -141,7 +141,7 @@ public class DocumentBoxServiceImpl
 		return documentBoxRepository.count();
 	}
 
-	public Page<DocumentBoxDto> find(DocumentBoxSearchDto documentBoxSearchDto, Pageable pageable)
+	public Page<DocumentBoxDto> findBySearchParams(DocumentBoxSearchDto documentBoxSearchDto, Pageable pageable)
 	{
 		Page<DocumentBox> page = documentBoxRepository.findAll(DocumentBoxSpecifications.matchesSearchParam(documentBoxSearchDto), pageable);
 		return page.map(this::transform);
@@ -149,7 +149,7 @@ public class DocumentBoxServiceImpl
 
 	public List<DocumentBoxDto> findAllUnarchived()
 	{
-		Page<DocumentBoxDto> pageDto = find(EMPTY_SEACH_PARAMS, ALL_ELEMENTS_PAGE_REQUEST);
+		Page<DocumentBoxDto> pageDto = findBySearchParams(EMPTY_SEACH_PARAMS, ALL_ELEMENTS_PAGE_REQUEST);
 		return pageDto.getContent();
 	}
 

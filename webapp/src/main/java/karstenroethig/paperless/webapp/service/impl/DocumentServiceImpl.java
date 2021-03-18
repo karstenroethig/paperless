@@ -110,7 +110,7 @@ public class DocumentServiceImpl
 		return documentRepository.count();
 	}
 
-	public Page<DocumentDto> find(DocumentSearchDto documentSearchDto, Pageable pageable)
+	public Page<DocumentDto> findBySearchParams(DocumentSearchDto documentSearchDto, Pageable pageable)
 	{
 		Page<Document> page = documentRepository.findAll(DocumentSpecifications.matchesSearchParam(documentSearchDto), pageable);
 		return page.map(this::transform);

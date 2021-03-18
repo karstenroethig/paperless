@@ -47,7 +47,7 @@ public class UserAdminServiceImpl extends UserServiceImpl
 		return userRepository.count();
 	}
 
-	public Page<UserDto> find(UserSearchDto userSearchDto, Pageable pageable)
+	public Page<UserDto> findBySearchParams(UserSearchDto userSearchDto, Pageable pageable)
 	{
 		Page<User> page = userRepository.findAll(UserSpecifications.matchesSearchParam(userSearchDto), pageable);
 		return page.map(this::transform);
@@ -61,7 +61,7 @@ public class UserAdminServiceImpl extends UserServiceImpl
 
 	public List<UserDto> findAll()
 	{
-		Page<UserDto> pageDto = find(EMPTY_SEACH_PARAMS, ALL_ELEMENTS_PAGE_REQUEST);
+		Page<UserDto> pageDto = findBySearchParams(EMPTY_SEACH_PARAMS, ALL_ELEMENTS_PAGE_REQUEST);
 		return pageDto.getContent();
 	}
 

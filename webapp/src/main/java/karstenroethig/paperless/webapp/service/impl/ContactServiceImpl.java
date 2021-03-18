@@ -112,7 +112,7 @@ public class ContactServiceImpl
 		DocumentSearchDto documentSearch = new DocumentSearchDto();
 		documentSearch.setContact(contact);
 		documentSearch.setContactSearchType(ContactSearchTypeEnum.SENDER_OR_RECEIVER);
-		Page<DocumentDto> resultsPage = documentService.find(documentSearch, PageRequest.of(0, 1));
+		Page<DocumentDto> resultsPage = documentService.findBySearchParams(documentSearch, PageRequest.of(0, 1));
 		if (resultsPage.hasContent())
 			result.addError(MessageKeyEnum.CONTACT_DELETE_INVALID_STILL_IN_USE_BY_DOCUMENTS, resultsPage.getTotalElements());
 
@@ -143,7 +143,7 @@ public class ContactServiceImpl
 		return contactRepository.count();
 	}
 
-	public Page<ContactDto> find(ContactSearchDto contactSearchDto, Pageable pageable)
+	public Page<ContactDto> findBySearchParams(ContactSearchDto contactSearchDto, Pageable pageable)
 	{
 		Page<Contact> page = contactRepository.findAll(ContactSpecifications.matchesSearchParam(contactSearchDto), pageable);
 		return page.map(this::transform);
@@ -151,7 +151,7 @@ public class ContactServiceImpl
 
 	public List<ContactDto> findAllUnarchived()
 	{
-		Page<ContactDto> pageDto = find(EMPTY_SEACH_PARAMS, ALL_ELEMENTS_PAGE_REQUEST);
+		Page<ContactDto> pageDto = findBySearchParams(EMPTY_SEACH_PARAMS, ALL_ELEMENTS_PAGE_REQUEST);
 		return pageDto.getContent();
 	}
 

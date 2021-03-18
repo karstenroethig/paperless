@@ -47,7 +47,7 @@ public class ContactController extends AbstractController
 	@GetMapping(value = UrlMappings.ACTION_LIST)
 	public String list(Model model, @PageableDefault(size = 20, sort = Contact_.NAME) Pageable pageable)
 	{
-		Page<ContactDto> resultsPage = contactService.find(contactSearchBean.getContactSearchDto(), pageable);
+		Page<ContactDto> resultsPage = contactService.findBySearchParams(contactSearchBean.getContactSearchDto(), pageable);
 		addPagingAttributes(model, resultsPage);
 
 		model.addAttribute(AttributeNames.SEARCH_PARAMS, contactSearchBean.getContactSearchDto());

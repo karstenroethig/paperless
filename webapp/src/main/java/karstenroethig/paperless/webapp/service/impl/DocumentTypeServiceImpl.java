@@ -110,7 +110,7 @@ public class DocumentTypeServiceImpl
 
 		DocumentSearchDto documentSearch = new DocumentSearchDto();
 		documentSearch.setDocumentType(documentType);
-		Page<DocumentDto> resultsPage = documentService.find(documentSearch, PageRequest.of(0, 1));
+		Page<DocumentDto> resultsPage = documentService.findBySearchParams(documentSearch, PageRequest.of(0, 1));
 		if (resultsPage.hasContent())
 			result.addError(MessageKeyEnum.DOCUMENT_TYPE_DELETE_INVALID_STILL_IN_USE_BY_DOCUMENTS, resultsPage.getTotalElements());
 
@@ -141,7 +141,7 @@ public class DocumentTypeServiceImpl
 		return documentTypeRepository.count();
 	}
 
-	public Page<DocumentTypeDto> find(DocumentTypeSearchDto documentTypeSearchDto, Pageable pageable)
+	public Page<DocumentTypeDto> findBySearchParams(DocumentTypeSearchDto documentTypeSearchDto, Pageable pageable)
 	{
 		Page<DocumentType> page = documentTypeRepository.findAll(DocumentTypeSpecifications.matchesSearchParam(documentTypeSearchDto), pageable);
 		return page.map(this::transform);
@@ -149,7 +149,7 @@ public class DocumentTypeServiceImpl
 
 	public List<DocumentTypeDto> findAllUnarchived()
 	{
-		Page<DocumentTypeDto> pageDto = find(EMPTY_SEACH_PARAMS, ALL_ELEMENTS_PAGE_REQUEST);
+		Page<DocumentTypeDto> pageDto = findBySearchParams(EMPTY_SEACH_PARAMS, ALL_ELEMENTS_PAGE_REQUEST);
 		return pageDto.getContent();
 	}
 

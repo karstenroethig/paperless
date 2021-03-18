@@ -55,7 +55,7 @@ public class UserAdminController extends AbstractController
 	@GetMapping(value = UrlMappings.ACTION_LIST)
 	public String list(Model model, @PageableDefault(size = 20, sort = User_.USERNAME) Pageable pageable)
 	{
-		Page<UserDto> resultsPage = userService.find(userSearchBean.getUserSearchDto(), pageable);
+		Page<UserDto> resultsPage = userService.findBySearchParams(userSearchBean.getUserSearchDto(), pageable);
 		addPagingAttributes(model, resultsPage);
 
 		model.addAttribute(AttributeNames.SEARCH_PARAMS, userSearchBean.getUserSearchDto());

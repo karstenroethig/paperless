@@ -111,7 +111,7 @@ public class TagServiceImpl
 		return tagRepository.count();
 	}
 
-	public Page<TagDto> find(TagSearchDto tagSearchDto, Pageable pageable)
+	public Page<TagDto> findBySearchParams(TagSearchDto tagSearchDto, Pageable pageable)
 	{
 		Page<Tag> page = tagRepository.findAll(TagSpecifications.matchesSearchParam(tagSearchDto), pageable);
 		return page.map(this::transform);
@@ -119,7 +119,7 @@ public class TagServiceImpl
 
 	public List<TagDto> findAllUnarchived()
 	{
-		Page<TagDto> pageDto = find(EMPTY_SEACH_PARAMS, ALL_ELEMENTS_PAGE_REQUEST);
+		Page<TagDto> pageDto = findBySearchParams(EMPTY_SEACH_PARAMS, ALL_ELEMENTS_PAGE_REQUEST);
 		return pageDto.getContent();
 	}
 

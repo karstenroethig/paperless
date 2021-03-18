@@ -47,7 +47,7 @@ public class DocumentTypeController extends AbstractController
 	@GetMapping(value = UrlMappings.ACTION_LIST)
 	public String list(Model model, @PageableDefault(size = 20, sort = DocumentType_.NAME) Pageable pageable)
 	{
-		Page<DocumentTypeDto> resultsPage = documentTypeService.find(documentTypeSearchBean.getDocumentTypeSearchDto(), pageable);
+		Page<DocumentTypeDto> resultsPage = documentTypeService.findBySearchParams(documentTypeSearchBean.getDocumentTypeSearchDto(), pageable);
 		addPagingAttributes(model, resultsPage);
 
 		model.addAttribute(AttributeNames.SEARCH_PARAMS, documentTypeSearchBean.getDocumentTypeSearchDto());

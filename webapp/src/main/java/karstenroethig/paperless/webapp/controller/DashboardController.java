@@ -51,7 +51,7 @@ public class DashboardController
 		UserSearchDto userSearch = new UserSearchDto();
 		userSearch.setNewRegisteredSearchType(NewRegisteredSearchTypeEnum.NEW_REGISTERED);
 
-		Page<UserDto> newRegisteredUserPage = userService.find(userSearch, PageRequest.of(0, 1, Sort.by(User_.USERNAME)));
+		Page<UserDto> newRegisteredUserPage = userService.findBySearchParams(userSearch, PageRequest.of(0, 1, Sort.by(User_.USERNAME)));
 		long numberOfNewRegisteredUsers = newRegisteredUserPage.getTotalElements();
 
 		boolean hasNoDocumentTypes = documentTypeService.findAllUnarchived().isEmpty();
@@ -75,7 +75,7 @@ public class DashboardController
 		DocumentSearchDto documentSearch = new DocumentSearchDto();
 		documentSearch.setReviewDateTo(LocalDate.now());
 
-		Page<DocumentDto> documentReviewPage = documentService.find(documentSearch, PageRequest.of(0, 10, Sort.by(Document_.REVIEW_DATE)));
+		Page<DocumentDto> documentReviewPage = documentService.findBySearchParams(documentSearch, PageRequest.of(0, 10, Sort.by(Document_.REVIEW_DATE)));
 		model.addAttribute("documentReviewPage", documentReviewPage);
 	}
 
@@ -84,7 +84,7 @@ public class DashboardController
 		DocumentSearchDto documentSearch = new DocumentSearchDto();
 		documentSearch.setDeletionDateTo(LocalDate.now());
 
-		Page<DocumentDto> documentDeletionPage = documentService.find(documentSearch, PageRequest.of(0, 10, Sort.by(Document_.DELETION_DATE)));
+		Page<DocumentDto> documentDeletionPage = documentService.findBySearchParams(documentSearch, PageRequest.of(0, 10, Sort.by(Document_.DELETION_DATE)));
 		model.addAttribute("documentDeletionPage", documentDeletionPage);
 	}
 }
