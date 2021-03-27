@@ -44,7 +44,6 @@
 				<exclude>**/bin/run.conf</exclude>
 				<exclude>**/bin/run.conf.bat</exclude>
 				<exclude>**/bin/systemd/service.service</exclude>
-				<exclude>**/config/application.yml</exclude>
 			</excludes>
 			<outputDirectory></outputDirectory>
 			<filtered>true</filtered>
@@ -60,10 +59,19 @@
 			<filtered>false</filtered>
 		</fileSet>
 
-		<!-- create an empty temp directory -->
+		<!-- create an empty backups directory -->
 		<fileSet>
 			<directory>.</directory>
-			<outputDirectory>temp</outputDirectory>
+			<outputDirectory>backups</outputDirectory>
+			<excludes>
+				<exclude>*/**</exclude>
+			</excludes>
+		</fileSet>
+
+		<!-- create an empty data directory -->
+		<fileSet>
+			<directory>.</directory>
+			<outputDirectory>data</outputDirectory>
 			<excludes>
 				<exclude>*/**</exclude>
 			</excludes>
@@ -73,6 +81,15 @@
 		<fileSet>
 			<directory>.</directory>
 			<outputDirectory>log</outputDirectory>
+			<excludes>
+				<exclude>*/**</exclude>
+			</excludes>
+		</fileSet>
+
+		<!-- create an empty temp directory -->
+		<fileSet>
+			<directory>.</directory>
+			<outputDirectory>temp</outputDirectory>
 			<excludes>
 				<exclude>*/**</exclude>
 			</excludes>
@@ -99,12 +116,6 @@
 			<source>${basedir}/src/main/assembly/dist/bin/systemd/service.service</source>
 			<outputDirectory>bin/systemd</outputDirectory>
 			<destName>${dist.service.id}.service</destName>
-			<filtered>true</filtered>
-		</file>
-		<file>
-			<source>${basedir}/src/main/assembly/dist/config/application.yml</source>
-			<outputDirectory>config</outputDirectory>
-			<destName>application.yml.example</destName>
 			<filtered>true</filtered>
 		</file>
 

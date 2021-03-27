@@ -3,31 +3,45 @@
 #  - options: https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 #
 
-server:
-  port: 8080
-  #contextPath: /wodsapp
-  # Necessary setting for reverse proxy (see https://docs.spring.io/spring-boot/docs/current/reference/html/howto-embedded-servlet-containers.html#howto-use-tomcat-behind-a-proxy-server)
-  use-forward-headers: true
-
-tomcat:
-  ajp:
-    enabled: false
-    port: 8009
-
 spring:
 
   jpa:
-    databasePlatform: org.hibernate.dialect.MySQL5Dialect
+    databasePlatform: org.hibernate.dialect.H2Dialect
+    #databasePlatform: org.hibernate.dialect.MySQL5Dialect
+    #databasePlatform: org.hibernate.dialect.MariaDBDialect
 
   datasource:
-    url: jdbc:mysql://localhost/paperless_test?useSSL=false
-    username: paperless_test_user
-    password: paperless_test_password
-    # Connection Pooling (siehe https://github.com/brettwooldridge/HikariCP#configuration-knobs-baby)
-    hikari:
-      connectionTimeout: 30000
-      idleTimeout: 30000
-      maxLifetime: 2000000
-      minimumIdle: 3
-      maximumPoolSize: 5
-      poolName: SpringBootHikariCP
+    url: jdbc:h2:mem:paperless-db
+    #url: jdbc:h2:file:./data/paperless-db
+    #url: jdbc:mysql://localhost/paperless?useSSL=false
+    #url: jdbc:mariadb://localhost/paperless?useSSL=false
+    username: paperless_user
+    password: paperless_password
+#    # Connection Pooling (see https://github.com/brettwooldridge/HikariCP#configuration-knobs-baby)
+#    hikari:
+#      connectionTimeout: 30000
+#      idleTimeout: 30000
+#      maxLifetime: 2000000
+#      minimumIdle: 3
+#      maximumPoolSize: 5
+#      poolName: SpringBootHikariCP
+
+#  servlet:
+#    multipart:
+#      max-file-size: 50MB
+#      max-request-size: 50MB
+
+server:
+#  port: 8080
+#  #contextPath: /paperless
+  # Necessary setting for reverse proxy (see https://docs.spring.io/spring-boot/docs/current/reference/html/howto-embedded-servlet-containers.html#howto-use-tomcat-behind-a-proxy-server)
+  use-forward-headers: true
+
+#app:
+#  fileDataDirectory: data/files
+#  backup:
+#    enabled: true
+#    schedule: 0 0 1 * * *
+#    backupDirectory: backups
+#    backupFilePrefix: backup_
+#    backupFileDatePattern: yyyy-MM-dd_HH-mm

@@ -52,6 +52,6 @@ echo.
 
 "%JAVA%" %JAVA_OPTS% ^
 	-Djava.io.tmpdir=%APP_HOME%\temp\ ^
-	-Dlogging.config=%APP_HOME%\config\logback-spring.xml -Dlogging.path=%APP_HOME%\logs ^
+	-Dlogging.config=%APP_HOME%\config\logback.xml ^
 	-jar %APP_HOME%\lib\${app.name.id}.jar ^
 	--spring.config.additional-location=%APP_HOME%\config\
