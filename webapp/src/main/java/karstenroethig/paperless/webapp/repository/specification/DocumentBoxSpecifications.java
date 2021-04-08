@@ -12,7 +12,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 import karstenroethig.paperless.webapp.model.domain.DocumentBox;
 import karstenroethig.paperless.webapp.model.domain.DocumentBox_;
-import karstenroethig.paperless.webapp.model.dto.DocumentBoxSearchDto;
+import karstenroethig.paperless.webapp.model.dto.search.DocumentBoxSearchDto;
 
 public class DocumentBoxSpecifications
 {

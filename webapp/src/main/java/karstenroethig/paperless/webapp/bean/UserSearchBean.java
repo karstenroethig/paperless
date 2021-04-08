@@ -7,7 +7,7 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
-import karstenroethig.paperless.webapp.model.dto.UserSearchDto;
+import karstenroethig.paperless.webapp.model.dto.search.UserSearchDto;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -28,7 +28,7 @@ import karstenroethig.paperless.webapp.controller.util.AttributeNames;
 import karstenroethig.paperless.webapp.controller.util.UrlMappings;
 import karstenroethig.paperless.webapp.controller.util.ViewEnum;
 import karstenroethig.paperless.webapp.model.dto.TagDto;
-import karstenroethig.paperless.webapp.model.dto.TagSearchDto;
+import karstenroethig.paperless.webapp.model.dto.search.TagSearchDto;
 import karstenroethig.paperless.webapp.service.impl.TagServiceImpl;
 import karstenroethig.paperless.webapp.util.MessageKeyEnum;
 import karstenroethig.paperless.webapp.util.Messages;

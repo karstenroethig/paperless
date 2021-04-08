@@ -12,7 +12,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 import karstenroethig.paperless.webapp.model.domain.Tag;
 import karstenroethig.paperless.webapp.model.domain.Tag_;
-import karstenroethig.paperless.webapp.model.dto.TagSearchDto;
+import karstenroethig.paperless.webapp.model.dto.search.TagSearchDto;
 
 public class TagSpecifications
 {

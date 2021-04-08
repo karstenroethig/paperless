@@ -1,4 +1,4 @@
-package karstenroethig.paperless.webapp.model.dto;
+package karstenroethig.paperless.webapp.model.dto.search;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -8,6 +8,10 @@ import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import karstenroethig.paperless.webapp.model.dto.ContactDto;
+import karstenroethig.paperless.webapp.model.dto.DocumentBoxDto;
+import karstenroethig.paperless.webapp.model.dto.DocumentTypeDto;
+import karstenroethig.paperless.webapp.model.dto.TagDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

@@ -1,4 +1,4 @@
-package karstenroethig.paperless.webapp.model.dto;
+package karstenroethig.paperless.webapp.model.dto.backup;
 
 import java.time.LocalDateTime;
 

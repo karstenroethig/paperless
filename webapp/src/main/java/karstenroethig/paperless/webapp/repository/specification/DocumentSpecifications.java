@@ -20,10 +20,10 @@ import karstenroethig.paperless.webapp.model.domain.Document_;
 import karstenroethig.paperless.webapp.model.domain.Tag;
 import karstenroethig.paperless.webapp.model.dto.ContactDto;
 import karstenroethig.paperless.webapp.model.dto.DocumentBoxDto;
-import karstenroethig.paperless.webapp.model.dto.DocumentSearchDto;
-import karstenroethig.paperless.webapp.model.dto.DocumentSearchDto.ContactSearchTypeEnum;
 import karstenroethig.paperless.webapp.model.dto.DocumentTypeDto;
 import karstenroethig.paperless.webapp.model.dto.TagDto;
+import karstenroethig.paperless.webapp.model.dto.search.DocumentSearchDto;
+import karstenroethig.paperless.webapp.model.dto.search.DocumentSearchDto.ContactSearchTypeEnum;
 
 public class DocumentSpecifications
 {

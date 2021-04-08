@@ -4,10 +4,10 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+@Getter
+@Setter
 @EqualsAndHashCode
 public abstract class AbstractDtoId
 {
-	@Getter
-	@Setter
 	protected Long id;
 }

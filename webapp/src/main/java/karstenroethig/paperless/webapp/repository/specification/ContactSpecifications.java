@@ -12,7 +12,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 import karstenroethig.paperless.webapp.model.domain.Contact;
 import karstenroethig.paperless.webapp.model.domain.Contact_;
-import karstenroethig.paperless.webapp.model.dto.ContactSearchDto;
+import karstenroethig.paperless.webapp.model.dto.search.ContactSearchDto;
 
 public class ContactSpecifications
 {

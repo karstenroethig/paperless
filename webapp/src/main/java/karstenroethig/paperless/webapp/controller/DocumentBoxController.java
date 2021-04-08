@@ -29,7 +29,7 @@ import karstenroethig.paperless.webapp.controller.util.UrlMappings;
 import karstenroethig.paperless.webapp.controller.util.ViewEnum;
 import karstenroethig.paperless.webapp.model.domain.DocumentBox_;
 import karstenroethig.paperless.webapp.model.dto.DocumentBoxDto;
-import karstenroethig.paperless.webapp.model.dto.DocumentBoxSearchDto;
+import karstenroethig.paperless.webapp.model.dto.search.DocumentBoxSearchDto;
 import karstenroethig.paperless.webapp.service.impl.DocumentBoxServiceImpl;
 import karstenroethig.paperless.webapp.util.MessageKeyEnum;
 import karstenroethig.paperless.webapp.util.Messages;

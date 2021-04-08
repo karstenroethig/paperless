@@ -1,4 +1,4 @@
-package karstenroethig.paperless.webapp.model.dto;
+package karstenroethig.paperless.webapp.model.dto.search;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -6,6 +6,7 @@ import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 
+import karstenroethig.paperless.webapp.model.dto.GroupDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

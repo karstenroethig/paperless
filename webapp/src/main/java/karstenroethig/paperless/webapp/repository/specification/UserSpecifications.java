@@ -18,10 +18,10 @@ import karstenroethig.paperless.webapp.model.domain.Group;
 import karstenroethig.paperless.webapp.model.domain.User;
 import karstenroethig.paperless.webapp.model.domain.User_;
 import karstenroethig.paperless.webapp.model.dto.GroupDto;
-import karstenroethig.paperless.webapp.model.dto.UserSearchDto;
-import karstenroethig.paperless.webapp.model.dto.UserSearchDto.EnabledSearchTypeEnum;
-import karstenroethig.paperless.webapp.model.dto.UserSearchDto.LockedSearchTypeEnum;
-import karstenroethig.paperless.webapp.model.dto.UserSearchDto.NewRegisteredSearchTypeEnum;
+import karstenroethig.paperless.webapp.model.dto.search.UserSearchDto;
+import karstenroethig.paperless.webapp.model.dto.search.UserSearchDto.EnabledSearchTypeEnum;
+import karstenroethig.paperless.webapp.model.dto.search.UserSearchDto.LockedSearchTypeEnum;
+import karstenroethig.paperless.webapp.model.dto.search.UserSearchDto.NewRegisteredSearchTypeEnum;
 
 public class UserSpecifications
 {

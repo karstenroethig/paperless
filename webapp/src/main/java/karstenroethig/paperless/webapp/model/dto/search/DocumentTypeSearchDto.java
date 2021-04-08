@@ -1,4 +1,4 @@
-package karstenroethig.paperless.webapp.model.dto;
+package karstenroethig.paperless.webapp.model.dto.search;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,6 +9,6 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class DocumentBoxSearchDto extends AbstractArchivedSearchDto
+public class DocumentTypeSearchDto extends AbstractArchivedSearchDto
 {
 }

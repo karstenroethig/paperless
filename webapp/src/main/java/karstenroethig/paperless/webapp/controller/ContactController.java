@@ -29,7 +29,7 @@ import karstenroethig.paperless.webapp.controller.util.UrlMappings;
 import karstenroethig.paperless.webapp.controller.util.ViewEnum;
 import karstenroethig.paperless.webapp.model.domain.Contact_;
 import karstenroethig.paperless.webapp.model.dto.ContactDto;
-import karstenroethig.paperless.webapp.model.dto.ContactSearchDto;
+import karstenroethig.paperless.webapp.model.dto.search.ContactSearchDto;
 import karstenroethig.paperless.webapp.service.impl.ContactServiceImpl;
 import karstenroethig.paperless.webapp.util.MessageKeyEnum;
 import karstenroethig.paperless.webapp.util.Messages;

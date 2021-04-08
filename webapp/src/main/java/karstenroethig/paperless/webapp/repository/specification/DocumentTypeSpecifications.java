@@ -12,7 +12,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 import karstenroethig.paperless.webapp.model.domain.DocumentType;
 import karstenroethig.paperless.webapp.model.domain.DocumentType_;
-import karstenroethig.paperless.webapp.model.dto.DocumentTypeSearchDto;
+import karstenroethig.paperless.webapp.model.dto.search.DocumentTypeSearchDto;
 
 public class DocumentTypeSpecifications
 {
