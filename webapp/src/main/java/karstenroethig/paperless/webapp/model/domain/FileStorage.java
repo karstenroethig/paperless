@@ -26,7 +26,7 @@ import lombok.ToString;
 )
 public class FileStorage extends AbstractEntityId
 {
-	@Column(name = "key", length = 255, nullable = false)
+	@Column(name = "key", length = 191, nullable = false)
 	private String key;
 
 	@Column(name = "file_size", nullable = false)

@@ -27,13 +27,13 @@ import lombok.ToString;
 @Table(name = "user")
 public class User extends AbstractEntityId
 {
-	@Column(name = "username", length = 255, nullable = true)
+	@Column(name = "username", length = 191, nullable = true)
 	private String username;
 
-	@Column(name = "hashed_password", length = 255, nullable = true)
+	@Column(name = "hashed_password", length = 191, nullable = true)
 	private String hashedPassword;
 
-	@Column(name = "full_name", length = 255, nullable = true)
+	@Column(name = "full_name", length = 191, nullable = true)
 	private String fullName;
 
 	@Column(name = "enabled", nullable = false)

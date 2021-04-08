@@ -20,7 +20,7 @@ import lombok.ToString;
 public class GroupDto extends AbstractDtoId
 {
 	@NotNull
-	@Size(min = 1, max = 255)
+	@Size(min = 1, max = 191)
 	private String name;
 
 	private List<UserDto> members = new ArrayList<>();

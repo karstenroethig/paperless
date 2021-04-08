@@ -31,23 +31,23 @@ public class FileAttachment extends AbstractEntityId
 	@ManyToOne
 	private FileStorage fileStorage;
 
-	@Column(name = "key", length = 255, nullable = false)
+	@Column(name = "key", length = 191, nullable = false)
 	private String key;
 
 	@ManyToOne
 	@JoinColumn(name = "document_id")
 	private Document document;
 
-	@Column(name = "name", length = 255, nullable = false)
+	@Column(name = "name", length = 191, nullable = false)
 	private String name;
 
 	@Column(name = "file_size", nullable = false)
 	private Long size;
 
-	@Column(name = "content_type", length = 255, nullable = true)
+	@Column(name = "content_type", length = 191, nullable = true)
 	private String contentType;
 
-	@Column(name = "hash", length = 255, nullable = false)
+	@Column(name = "hash", length = 191, nullable = false)
 	private String hash;
 
 	@Column(name = "created_datetime", nullable = false)

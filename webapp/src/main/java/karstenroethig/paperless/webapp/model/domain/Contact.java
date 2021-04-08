@@ -20,7 +20,7 @@ import lombok.ToString;
 @Table(name = "contact")
 public class Contact extends AbstractEntityId
 {
-	@Column(name = "name", length = 255, nullable = false)
+	@Column(name = "name", length = 191, nullable = false)
 	private String name;
 
 	@Column(name = "archived", nullable = false)

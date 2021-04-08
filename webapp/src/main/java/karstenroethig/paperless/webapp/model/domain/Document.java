@@ -36,7 +36,7 @@ import lombok.ToString;
 @Table(name = "document")
 public class Document extends AbstractEntityId
 {
-	@Column(name = "title", length = 255, nullable = false)
+	@Column(name = "title", length = 191, nullable = false)
 	private String title;
 
 	@ManyToOne(optional = true)

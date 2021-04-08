@@ -22,19 +22,19 @@ import lombok.ToString;
 public class UserDto extends AbstractDtoId
 {
 	@NotNull
-	@Size(min = 1, max = 255)
+	@Size(min = 1, max = 191)
 	private String username;
 
-	@Size(max = 255)
+	@Size(max = 191)
 	private String password;
 
-	@Size(max = 255)
+	@Size(max = 191)
 	private String repeatPassword;
 
 	private String hashedPassword;
 
 	@NotNull
-	@Size(min = 1, max = 255)
+	@Size(min = 1, max = 191)
 	private String fullName;
 
 	private boolean enabled = false;

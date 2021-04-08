@@ -26,7 +26,7 @@ import lombok.ToString;
 @Table(name = "user_group")
 public class Group extends AbstractEntityId
 {
-	@Column(name = "name", length = 255, nullable = false)
+	@Column(name = "name", length = 191, nullable = false)
 	private String name;
 
 	@ManyToMany(mappedBy = "groups", fetch = FetchType.LAZY)
