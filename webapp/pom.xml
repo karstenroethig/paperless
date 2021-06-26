@@ -235,6 +235,7 @@
 				<artifactId>jaxb2-maven-plugin</artifactId>
 				<executions>
 					<execution>
+						<id>codegen-backup</id>
 						<phase>generate-sources</phase>
 						<goals>
 							<goal>xjc</goal>
@@ -242,6 +243,7 @@
 						<configuration>
 							<xjbSources>
 								<xjbSource>xsd/global.xjb</xjbSource>
+								<xjbSource>xsd/backup.xjb</xjbSource>
 							</xjbSources>
 							<sources>
 								<source>xsd/backup.xsd</source>

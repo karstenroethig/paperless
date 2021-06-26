@@ -66,7 +66,7 @@ spring:
 
   h2:
     console:
-      enabled: false
+      enabled: false # accessible via http://localhost:8080/h2-console
 
   thymeleaf:
     # Reload templates without restarting the container

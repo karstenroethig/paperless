@@ -1,0 +1,68 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{layout-admin :: layout-fragment(
+							~{::title},
+							~{::content},
+							null,
+							~{:: #additionalJs},
+							'restore'
+							)}">
+<head>
+	<title th:text="#{application.title-pattern(#{application.name}, #{admin.section.backupAdministration.restore.label})}"></title>
+</head>
+<body>
+
+	<div th:fragment="content">
+
+		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+			<h1 class="h2">Restore paperless data from backup</h1>
+		</div>
+
+		<div th:replace="~{fragments/messages :: messages-fragment(${messages})}"></div>
+
+		<div class="card border-secondary mb-3" th:if="${restoreInfo.running}">
+			<div class="card-body">
+				<h4 class="card-title">Restoring paperless backup</h4>
+				<div class="progress mb-2">
+					<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" th:aria-valuenow="${restoreInfo.calcProgressPercentage()}" aria-valuemin="0" aria-valuemax="100" th:style="${'width: '+restoreInfo.calcProgressPercentage()+'%;'}"></div>
+				</div>
+				<p class="card-text" th:text="${#messages.msg(restoreInfo.taskMessageKey.key, restoreInfo.taskWorked, restoreInfo.taskTotalWork)}">Importing data: Stored 3923 of 4328 database values ...</p>
+				<p class="card-text text-muted" th:text="${#messages.msg('backup.progress.percentageLine', restoreInfo.calcProgressPercentage(), dateUtils.secondsFromDateTimeUntilNow(restoreInfo.startedDatetime))}">90% complete. 41 seconds elapsed.</p>
+				<p class="card-text text-muted" th:text="${#messages.msg('backup.progress.startedLine', #temporals.format(restoreInfo.startedDatetime, #messages.msg('default.dateTimeHHmmssFormat')))}">Started 2021-02-27 21:32:42.</p>
+				<a th:href="@{/backup/restore-status}" class="btn btn-sm btn-outline-secondary">Refresh</a>
+			</div>
+		</div>
+
+		<div th:if="${restoreInfo.running==false && restoreInfo.error==false}">
+			<p>The restore of the data was successful.</p>
+			<p>Click here to log in again: <a th:href="@{/login}">To the login</a></p>
+		</div>
+
+		<div th:if="${restoreInfo.running==false && restoreInfo.error==true}">
+			<div class="alert alert-danger alert-dismissible fade show" role="alert">
+				<span>The restoration of the data was aborted with an error.</span>
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<h2>Errors:</h2>
+			<ul class="list-group list-group-flush">
+				<li th:each="errorMessage : ${restoreInfo.errorMessages}" th:text="${errorMessage}" class="list-group-item">[errorMessage]</li>
+			</ul>
+		</div>
+
+		<script th:inline="javascript">
+			/*<![CDATA[*/
+			var automaticRefresh = /*[[${restoreInfo.running}]]*/ false;
+			/*]]>*/
+		</script>
+
+	</div>
+
+	<th:block id="additionalJs">
+		<script th:src="@{/js/backup-restore-status.js}"></script>
+	</th:block>
+
+</body>
+</html>
