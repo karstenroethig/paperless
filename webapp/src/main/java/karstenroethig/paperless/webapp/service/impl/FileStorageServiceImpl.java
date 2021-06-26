@@ -87,6 +87,15 @@ public class FileStorageServiceImpl
 		subtractAndSaveFilesize(fileStorage.getId(), fileSize);
 	}
 
+	protected Path resolvePathToStorageArchive(String storageKey) throws IOException
+	{
+		Path fileDataDirectory = createAndGetFileDataDirectory();
+		String storageArchiveFilename = buildStorageFilename(storageKey);
+		Path storageArchivePath = fileDataDirectory.resolve(storageArchiveFilename);
+
+		return storageArchivePath;
+	}
+
 	protected FileStorage transform(FileStorageDto fileStorageDto)
 	{
 		if (fileStorageDto == null || fileStorageDto.getStorageId() == null)
@@ -124,9 +133,7 @@ public class FileStorageServiceImpl
 
 	private Path createAndGetStorageArchiveIfItDoesNotExist(String storageKey) throws IOException
 	{
-		Path fileDataDirectory = createAndGetFileDataDirectory();
-		String storageArchiveFilename = buildStorageFilename(storageKey);
-		Path storageArchivePath = fileDataDirectory.resolve(storageArchiveFilename);
+		Path storageArchivePath = resolvePathToStorageArchive(storageKey);
 
 		if (!Files.exists(storageArchivePath))
 		{

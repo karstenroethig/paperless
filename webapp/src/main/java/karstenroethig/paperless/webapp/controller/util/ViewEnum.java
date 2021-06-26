@@ -30,6 +30,7 @@ public enum ViewEnum
 
 	BACKUP_INDEX(ControllerEnum.BACKUP, "/index"),
 	BACKUP_RESTORE(ControllerEnum.BACKUP, "/restore"),
+	BACKUP_RESTORE_STATUS(ControllerEnum.BACKUP, "/restore-status"),
 
 	CONTACT_LIST(ControllerEnum.CONTACT, ActionEnum.LIST),
 	CONTACT_SHOW(ControllerEnum.CONTACT, ActionEnum.SHOW),

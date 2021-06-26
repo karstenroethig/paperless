@@ -30,10 +30,10 @@ public class BackupInitializerServiceImpl
 		if (backupService.blockBackupProcess())
 		{
 			backupService.performBackupAsync();
-			return Boolean.TRUE;
+			return true;
 		}
 
 		log.warn("The requested creation of a backup was ignored because a backup process is currently running.");
-		return Boolean.FALSE;
+		return false;
 	}
 }

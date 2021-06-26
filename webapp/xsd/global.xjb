@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<jaxb:bindings version="2.0"
-	xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+<jxb:bindings version="2.0"
+	xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
 	xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	jaxb:extensionBindingPrefixes="xjc">
- 
-	<jaxb:globalBindings>
+	jxb:extensionBindingPrefixes="xjc">
+
+	<jxb:globalBindings>
 		<xjc:simple/>
 		<xjc:serializable uid="1"/>
 		<xjc:javaType xmlType="xs:integer"  name="java.lang.Integer"       adapter="karstenroethig.paperless.webapp.util.jaxb.adapters.IntegerAdapter"/>
 		<xjc:javaType xmlType="xs:long"     name="java.lang.Long"          adapter="karstenroethig.paperless.webapp.util.jaxb.adapters.LongAdapter"/>
 		<xjc:javaType xmlType="xs:date"     name="java.time.LocalDate"     adapter="karstenroethig.paperless.webapp.util.jaxb.adapters.LocalDateAdapter"/>
 		<xjc:javaType xmlType="xs:dateTime" name="java.time.LocalDateTime" adapter="karstenroethig.paperless.webapp.util.jaxb.adapters.LocalDateTimeAdapter"/>
-	</jaxb:globalBindings>
-</jaxb:bindings>
+	</jxb:globalBindings>
+
+</jxb:bindings>
