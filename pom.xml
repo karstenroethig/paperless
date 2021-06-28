@@ -71,7 +71,7 @@
 				<!-- http://selectize.github.io/selectize.js -->
 				<groupId>org.webjars</groupId>
 				<artifactId>selectize.js</artifactId>
-				<version>0.12.6</version>
+				<version>0.13.2</version>
 			</dependency>
 			<dependency>
 				<!-- https://summernote.org/ -->
