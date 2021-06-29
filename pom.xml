@@ -60,7 +60,7 @@
 			<dependency>
 				<groupId>org.webjars</groupId>
 				<artifactId>bootstrap</artifactId>
-				<version>4.3.1</version>
+				<version>5.0.1</version>
 			</dependency>
 			<dependency>
 				<groupId>org.webjars</groupId>
@@ -99,7 +99,7 @@
 			<dependency>
 				<groupId>commons-codec</groupId>
 				<artifactId>commons-codec</artifactId>
-				<version>1.13</version>
+				<version>1.15</version>
 			</dependency>
 
 			<!-- prettytime (see https://www.ocpsoft.org/prettytime/) -->
