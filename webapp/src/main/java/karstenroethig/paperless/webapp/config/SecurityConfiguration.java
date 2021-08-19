@@ -76,7 +76,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 					"/register",
 					"/register-success",
 					"/logout-success",
-					"/actuator/health")
+					"/actuator/health",
+					"/backup/restore-status")
 				.permitAll()
 			.antMatchers(
 					"/admin/**",
