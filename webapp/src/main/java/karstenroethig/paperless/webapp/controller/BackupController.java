@@ -1,10 +1,13 @@
 package karstenroethig.paperless.webapp.controller;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -71,7 +74,7 @@ public class BackupController extends AbstractController
 
 	@PostMapping(value = "/restore")
 	public String restore(@ModelAttribute("restore") @Valid RestoreDto restore, BindingResult bindingResult,
-		final RedirectAttributes redirectAttributes, Model model)
+		final RedirectAttributes redirectAttributes, Model model, HttpServletRequest request)
 	{
 		ValidationResult validationResult = restoreService.validate(restore);
 		if (validationResult.hasErrors())
@@ -85,6 +88,11 @@ public class BackupController extends AbstractController
 
 		if (restoreInitializerService.performRestore(restore))
 		{
+			HttpSession session= request.getSession(false);
+			SecurityContextHolder.clearContext();
+			if(session != null)
+				session.invalidate();
+
 			redirectAttributes.addFlashAttribute(AttributeNames.MESSAGES, Messages.createWithSuccess(MessageKeyEnum.RESTORE_EXECUTE_SUCCESS));
 			return UrlMappings.redirect(UrlMappings.CONTROLLER_BACKUP, "/restore-status");
 		}
@@ -93,13 +101,5 @@ public class BackupController extends AbstractController
 			model.addAttribute(AttributeNames.MESSAGES, Messages.createWithError(MessageKeyEnum.RESTORE_EXECUTE_ERROR));
 			return ViewEnum.BACKUP_RESTORE.getViewName();
 		}
-	}
-
-	@GetMapping(value = "/restore-status")
-	public String restoreStatus(Model model)
-	{
-		model.addAttribute("restoreInfo", restoreService.getRestoreInfo());
-
-		return ViewEnum.BACKUP_RESTORE_STATUS.getViewName();
 	}
 }
