@@ -102,6 +102,12 @@ public enum MessageKeyEnum
 	RESTORE_TASK_INITIALIZE("restore.task.initialize"),
 	RESTORE_TASK_RESET_DATABASE("restore.task.resetDatabase"),
 	RESTORE_TASK_IMPORT_CONTACTS("restore.task.importContacts"),
+	RESTORE_TASK_IMPORT_DOCUMENT_BOXES("restore.task.importDocumentBoxes"),
+	RESTORE_TASK_IMPORT_DOCUMENT_TYPES("restore.task.importDocumentTypes"),
+	RESTORE_TASK_IMPORT_TAGS("restore.task.importTags"),
+	RESTORE_TASK_IMPORT_GROUPS("restore.task.importGroups"),
+	RESTORE_TASK_IMPORT_USERS("restore.task.importUsers"),
+	RESTORE_TASK_IMPORT_DOCUMENTS("restore.task.importDocuments"),
 
 	USER_SAVE_INVALID("user.save.invalid"),
 	USER_SAVE_ERROR("user.save.error"),

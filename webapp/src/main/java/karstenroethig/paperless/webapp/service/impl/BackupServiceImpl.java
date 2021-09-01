@@ -46,9 +46,9 @@ import karstenroethig.paperless.webapp.model.dto.backup.BackupInfoDto;
 import karstenroethig.paperless.webapp.model.jaxb.backup.AuthorityXml;
 import karstenroethig.paperless.webapp.model.jaxb.backup.CommentXml;
 import karstenroethig.paperless.webapp.model.jaxb.backup.ContactXml;
-import karstenroethig.paperless.webapp.model.jaxb.backup.DocumentXml;
 import karstenroethig.paperless.webapp.model.jaxb.backup.DocumentBoxXml;
 import karstenroethig.paperless.webapp.model.jaxb.backup.DocumentTypeXml;
+import karstenroethig.paperless.webapp.model.jaxb.backup.DocumentXml;
 import karstenroethig.paperless.webapp.model.jaxb.backup.FileAttachmentXml;
 import karstenroethig.paperless.webapp.model.jaxb.backup.GroupXml;
 import karstenroethig.paperless.webapp.model.jaxb.backup.ObjectFactory;
@@ -223,7 +223,7 @@ public class BackupServiceImpl
 		contact.setId(contactDto.getId());
 		contact.setName(contactDto.getName());
 
-		if (full)
+		if (full && contactDto.isArchived())
 		{
 			contact.setArchived(contactDto.isArchived());
 		}
@@ -280,7 +280,9 @@ public class BackupServiceImpl
 		if (full)
 		{
 			documentBox.setDescription(documentBoxDto.getDescription());
-			documentBox.setArchived(documentBoxDto.isArchived());
+
+			if (documentBoxDto.isArchived())
+				documentBox.setArchived(documentBoxDto.isArchived());
 		}
 
 		return documentBox;
@@ -335,7 +337,9 @@ public class BackupServiceImpl
 		if (full)
 		{
 			documentType.setDescription(documentTypeDto.getDescription());
-			documentType.setArchived(documentTypeDto.isArchived());
+
+			if (documentTypeDto.isArchived())
+				documentType.setArchived(documentTypeDto.isArchived());
 		}
 
 		return documentType;
@@ -407,7 +411,9 @@ public class BackupServiceImpl
 		if (full)
 		{
 			tag.setDescription(tagDto.getDescription());
-			tag.setArchived(tagDto.isArchived());
+
+			if (tagDto.isArchived())
+				tag.setArchived(tagDto.isArchived());
 		}
 
 		return tag;
@@ -505,9 +511,19 @@ public class BackupServiceImpl
 				user.setHashedPassword(userDto.getHashedPassword());
 				user.setFullName(userDto.getFullName());
 				user.setEnabled(userDto.isEnabled());
-				user.setLocked(userDto.isLocked());
-				user.setNewRegistered(userDto.isNewRegistered());
-				user.setDeleted(userDto.isDeleted());
+
+				if (userDto.isLocked())
+					user.setLocked(userDto.isLocked());
+
+				if (userDto.getFailedLoginAttempts() > 0)
+					user.setFailedLoginAttempts(userDto.getFailedLoginAttempts());
+
+				if (userDto.isNewRegistered())
+					user.setNewRegistered(userDto.isNewRegistered());
+
+				if (userDto.isDeleted())
+					user.setDeleted(userDto.isDeleted());
+
 				user.setAuthorities(convertAuthorities(userDto.getAuthorities()));
 				user.setGroups(convertGroups(userDto.getGroups()));
 				users.add(user);

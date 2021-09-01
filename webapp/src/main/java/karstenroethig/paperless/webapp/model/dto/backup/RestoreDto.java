@@ -18,5 +18,5 @@ public class RestoreDto
 {
 	@NotNull
 	@Size(min = 1)
-	private String filePath = "/Users/karsten/develop/workspaces/paperless-workspace/paperless/webapp/target/backups/backup_2021-05-02_12-36.zip";
+	private String filePath;
 }

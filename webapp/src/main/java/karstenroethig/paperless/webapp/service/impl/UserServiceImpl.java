@@ -203,6 +203,7 @@ public class UserServiceImpl
 		userDto.setFullName(user.getFullName());
 		userDto.setEnabled(user.isEnabled());
 		userDto.setLocked(user.isLocked());
+		userDto.setFailedLoginAttempts(user.getFailedLoginAttempts());
 		userDto.setNewRegistered(user.isNewRegisterd());
 		userDto.setDeleted(user.isDeleted());
 

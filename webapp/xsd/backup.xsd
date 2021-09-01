@@ -107,75 +107,75 @@
 			<xs:element ref="comments"                            minOccurs="0" maxOccurs="1"/>
 			<xs:element ref="fileAttachments"                     minOccurs="0" maxOccurs="1"/>
 		</xs:sequence>
-		<xs:attribute name="id"              type="xs:long"     use="optional"/>
+		<xs:attribute name="id"              type="xs:long"     use="required"/>
 		<xs:attribute name="title"           type="xs:string"   use="required"/>
+		<xs:attribute name="createdDatetime" type="xs:dateTime" use="required"/>
+		<xs:attribute name="updatedDatetime" type="xs:dateTime" use="required"/>
 		<xs:attribute name="dateOfIssue"     type="xs:date"     use="optional"/>
-		<xs:attribute name="createdDatetime" type="xs:dateTime" use="optional"/>
-		<xs:attribute name="updatedDatetime" type="xs:dateTime" use="optional"/>
 		<xs:attribute name="reviewDate"      type="xs:date"     use="optional"/>
 		<xs:attribute name="deletionDate"    type="xs:date"     use="optional"/>
-		<xs:attribute name="archived"        type="xs:boolean"  use="optional"/>
+		<xs:attribute name="archived"        type="xs:boolean"  use="optional" default="false"/>
 	</xs:complexType>
 
 	<xs:complexType name="authority">
-		<xs:attribute name="name" type="xs:string" use="optional"/>
+		<xs:attribute name="name" type="xs:string" use="required"/>
 	</xs:complexType>
 
 	<xs:complexType name="comment">
 		<xs:sequence>
 			<xs:element name="text" type="xs:string" minOccurs="0" maxOccurs="1"/>
 		</xs:sequence>
-		<xs:attribute name="id"              type="xs:long"     use="optional"/>
-		<xs:attribute name="createdDatetime" type="xs:dateTime" use="optional"/>
+		<xs:attribute name="id"              type="xs:long"     use="required"/>
+		<xs:attribute name="createdDatetime" type="xs:dateTime" use="required"/>
 		<xs:attribute name="updatedDatetime" type="xs:dateTime" use="optional"/>
-		<xs:attribute name="deleted"         type="xs:boolean"  use="optional"/>
+		<xs:attribute name="deleted"         type="xs:boolean"  use="optional" default="false"/>
 	</xs:complexType>
 
 	<xs:complexType name="contact">
-		<xs:attribute name="id"       type="xs:long"    use="optional"/>
-		<xs:attribute name="name"     type="xs:string"  use="optional"/>
-		<xs:attribute name="archived" type="xs:boolean" use="optional"/>
+		<xs:attribute name="id"       type="xs:long"    use="required"/>
+		<xs:attribute name="name"     type="xs:string"  use="required"/>
+		<xs:attribute name="archived" type="xs:boolean" use="optional" default="false"/>
 	</xs:complexType>
 
 	<xs:complexType name="documentBox">
 		<xs:sequence>
 			<xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1"/>
 		</xs:sequence>
-		<xs:attribute name="id"       type="xs:long"    use="optional"/>
-		<xs:attribute name="name"     type="xs:string"  use="optional"/>
-		<xs:attribute name="archived" type="xs:boolean" use="optional"/>
+		<xs:attribute name="id"       type="xs:long"    use="required"/>
+		<xs:attribute name="name"     type="xs:string"  use="required"/>
+		<xs:attribute name="archived" type="xs:boolean" use="optional" default="false"/>
 	</xs:complexType>
 
 	<xs:complexType name="documentType">
 		<xs:sequence>
 			<xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1"/>
 		</xs:sequence>
-		<xs:attribute name="id"       type="xs:long"    use="optional"/>
-		<xs:attribute name="name"     type="xs:string"  use="optional"/>
-		<xs:attribute name="archived" type="xs:boolean" use="optional"/>
+		<xs:attribute name="id"       type="xs:long"    use="required"/>
+		<xs:attribute name="name"     type="xs:string"  use="required"/>
+		<xs:attribute name="archived" type="xs:boolean" use="optional" default="false"/>
 	</xs:complexType>
 
 	<xs:complexType name="fileAttachment">
-		<xs:attribute name="id"              type="xs:long"     use="optional"/>
-		<xs:attribute name="name"            type="xs:string"   use="optional"/>
-		<xs:attribute name="contentType"     type="xs:string"   use="optional"/>
-		<xs:attribute name="createdDatetime" type="xs:dateTime" use="optional"/>
-		<xs:attribute name="updatedDatetime" type="xs:dateTime" use="optional"/>
-		<xs:attribute name="pathToFile"      type="xs:string"   use="optional"/>
+		<xs:attribute name="id"              type="xs:long"     use="required"/>
+		<xs:attribute name="name"            type="xs:string"   use="required"/>
+		<xs:attribute name="contentType"     type="xs:string"   use="required"/>
+		<xs:attribute name="createdDatetime" type="xs:dateTime" use="required"/>
+		<xs:attribute name="updatedDatetime" type="xs:dateTime" use="required"/>
+		<xs:attribute name="pathToFile"      type="xs:string"   use="required"/>
 	</xs:complexType>
 
 	<xs:complexType name="group">
-		<xs:attribute name="id"       type="xs:long"    use="optional"/>
-		<xs:attribute name="name"     type="xs:string"  use="optional"/>
+		<xs:attribute name="id"       type="xs:long"   use="required"/>
+		<xs:attribute name="name"     type="xs:string" use="required"/>
 	</xs:complexType>
 
 	<xs:complexType name="tag">
 		<xs:sequence>
 			<xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1"/>
 		</xs:sequence>
-		<xs:attribute name="id"       type="xs:long"    use="optional"/>
-		<xs:attribute name="name"     type="xs:string"  use="optional"/>
-		<xs:attribute name="archived" type="xs:boolean" use="optional"/>
+		<xs:attribute name="id"       type="xs:long"    use="required"/>
+		<xs:attribute name="name"     type="xs:string"  use="required"/>
+		<xs:attribute name="archived" type="xs:boolean" use="optional" default="false"/>
 	</xs:complexType>
 
 	<xs:complexType name="user">
@@ -183,15 +183,15 @@
 			<xs:element ref="authorities" minOccurs="0" maxOccurs="1"/>
 			<xs:element ref="groups"      minOccurs="0" maxOccurs="1"/>
 		</xs:sequence>
-		<xs:attribute name="id"                  type="xs:long"    use="optional"/>
+		<xs:attribute name="id"                  type="xs:long"    use="required"/>
 		<xs:attribute name="username"            type="xs:string"  use="optional"/>
 		<xs:attribute name="hashedPassword"      type="xs:string"  use="optional"/>
 		<xs:attribute name="fullName"            type="xs:string"  use="optional"/>
 		<xs:attribute name="enabled"             type="xs:boolean" use="optional"/>
-		<xs:attribute name="locked"              type="xs:boolean" use="optional"/>
-		<xs:attribute name="failedLoginAttempts" type="xs:integer" use="optional"/>
-		<xs:attribute name="newRegistered"       type="xs:boolean" use="optional"/>
-		<xs:attribute name="deleted"             type="xs:boolean" use="optional"/>
+		<xs:attribute name="locked"              type="xs:boolean" use="optional" default="false"/>
+		<xs:attribute name="failedLoginAttempts" type="xs:integer" use="optional" default="0"/>
+		<xs:attribute name="newRegistered"       type="xs:boolean" use="optional" default="false"/>
+		<xs:attribute name="deleted"             type="xs:boolean" use="optional" default="false"/>
 	</xs:complexType>
 
 </xs:schema>

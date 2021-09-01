@@ -63,13 +63,9 @@ public class FileAttachmentServiceImpl
 			fileAttachment.setName(resolveFileNameFromMultipartFile(uploadFile));
 			fileAttachment.setSize(uploadFile.getSize());
 			fileAttachment.setContentType(uploadFile.getContentType());
+			fileAttachment.setHash(generateFileHash(uploadFile));
 			fileAttachment.setCreatedDatetime(LocalDateTime.now());
 			fileAttachment.setUpdatedDatetime(LocalDateTime.now());
-
-			try (InputStream inputStream = uploadFile.getInputStream())
-			{
-				fileAttachment.setHash(DigestUtils.md5Hex(inputStream));
-			}
 
 			savedFiles.add(transform(fileAttachmentRepository.save(fileAttachment)));
 		}
@@ -155,5 +151,18 @@ public class FileAttachmentServiceImpl
 		if (StringUtils.contains(originalFilename, "\\"))
 			return StringUtils.substringAfterLast(originalFilename, "\\");
 		return originalFilename;
+	}
+
+	public String generateFileHash(MultipartFile multipartFile) throws IOException
+	{
+		try (InputStream inputStream = multipartFile.getInputStream())
+		{
+			return generateFileHash(inputStream);
+		}
+	}
+
+	public String generateFileHash(InputStream inputStream) throws IOException
+	{
+		return DigestUtils.md5Hex(inputStream);
 	}
 }

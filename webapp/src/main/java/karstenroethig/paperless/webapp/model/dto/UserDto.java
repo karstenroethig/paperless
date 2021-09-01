@@ -41,6 +41,8 @@ public class UserDto extends AbstractDtoId
 
 	private boolean locked = false;
 
+	private Integer failedLoginAttempts;
+
 	private boolean newRegistered = false;
 
 	private boolean deleted = false;
