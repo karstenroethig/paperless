@@ -43,18 +43,18 @@ import karstenroethig.paperless.webapp.model.dto.GroupDto;
 import karstenroethig.paperless.webapp.model.dto.TagDto;
 import karstenroethig.paperless.webapp.model.dto.UserDto;
 import karstenroethig.paperless.webapp.model.dto.backup.BackupInfoDto;
-import karstenroethig.paperless.webapp.model.jaxb.backup.Authority;
-import karstenroethig.paperless.webapp.model.jaxb.backup.Comment;
-import karstenroethig.paperless.webapp.model.jaxb.backup.Contact;
-import karstenroethig.paperless.webapp.model.jaxb.backup.Document;
-import karstenroethig.paperless.webapp.model.jaxb.backup.DocumentBox;
-import karstenroethig.paperless.webapp.model.jaxb.backup.DocumentType;
-import karstenroethig.paperless.webapp.model.jaxb.backup.FileAttachment;
-import karstenroethig.paperless.webapp.model.jaxb.backup.Group;
+import karstenroethig.paperless.webapp.model.jaxb.backup.AuthorityXml;
+import karstenroethig.paperless.webapp.model.jaxb.backup.CommentXml;
+import karstenroethig.paperless.webapp.model.jaxb.backup.ContactXml;
+import karstenroethig.paperless.webapp.model.jaxb.backup.DocumentBoxXml;
+import karstenroethig.paperless.webapp.model.jaxb.backup.DocumentTypeXml;
+import karstenroethig.paperless.webapp.model.jaxb.backup.DocumentXml;
+import karstenroethig.paperless.webapp.model.jaxb.backup.FileAttachmentXml;
+import karstenroethig.paperless.webapp.model.jaxb.backup.GroupXml;
 import karstenroethig.paperless.webapp.model.jaxb.backup.ObjectFactory;
-import karstenroethig.paperless.webapp.model.jaxb.backup.Paperless;
-import karstenroethig.paperless.webapp.model.jaxb.backup.Tag;
-import karstenroethig.paperless.webapp.model.jaxb.backup.User;
+import karstenroethig.paperless.webapp.model.jaxb.backup.PaperlessXml;
+import karstenroethig.paperless.webapp.model.jaxb.backup.TagXml;
+import karstenroethig.paperless.webapp.model.jaxb.backup.UserXml;
 import karstenroethig.paperless.webapp.util.MessageKeyEnum;
 import lombok.extern.slf4j.Slf4j;
 
@@ -106,7 +106,7 @@ public class BackupServiceImpl
 
 			backupArchivePath = createBackupArchive();
 
-			Paperless paperless = PAPERLESS_BACKUP_OBJECT_FACTORY.createPaperless();
+			PaperlessXml paperless = PAPERLESS_BACKUP_OBJECT_FACTORY.createPaperlessXml();
 			paperless.setContacts(convertContacts());
 			paperless.setDocumentBoxes(convertDocumentBoxes());
 			paperless.setDocumentTypes(convertDocumentTypes());
@@ -177,11 +177,11 @@ public class BackupServiceImpl
 		return backupArchivePath;
 	}
 
-	private List<Contact> convertContacts()
+	private List<ContactXml> convertContacts()
 	{
 		backupInfo.beginTask(MessageKeyEnum.BACKUP_TASK_EXPORT_CONTACTS, (int)contactService.count());
 
-		List<Contact> contacts = null;
+		List<ContactXml> contacts = null;
 
 		Pageable pageRequest = PageRequest.of(0, 50, Direction.ASC, AbstractEntityId_.ID);
 
@@ -197,7 +197,7 @@ public class BackupServiceImpl
 
 			for (ContactDto contactDto : page.getContent())
 			{
-				Contact contact = convertContact(contactDto, true);
+				ContactXml contact = convertContact(contactDto, true);
 				if (contact != null)
 					contacts.add(contact);
 
@@ -214,16 +214,16 @@ public class BackupServiceImpl
 		return contacts;
 	}
 
-	private Contact convertContact(ContactDto contactDto, boolean full)
+	private ContactXml convertContact(ContactDto contactDto, boolean full)
 	{
 		if (contactDto == null)
 			return null;
 
-		Contact contact = PAPERLESS_BACKUP_OBJECT_FACTORY.createContact();
+		ContactXml contact = PAPERLESS_BACKUP_OBJECT_FACTORY.createContactXml();
 		contact.setId(contactDto.getId());
 		contact.setName(contactDto.getName());
 
-		if (full)
+		if (full && contactDto.isArchived())
 		{
 			contact.setArchived(contactDto.isArchived());
 		}
@@ -231,11 +231,11 @@ public class BackupServiceImpl
 		return contact;
 	}
 
-	private List<DocumentBox> convertDocumentBoxes()
+	private List<DocumentBoxXml> convertDocumentBoxes()
 	{
 		backupInfo.beginTask(MessageKeyEnum.BACKUP_TASK_EXPORT_DOCUMENT_BOXES, (int)documentBoxService.count());
 
-		List<DocumentBox> documentBoxes = null;
+		List<DocumentBoxXml> documentBoxes = null;
 
 		Pageable pageRequest = PageRequest.of(0, 50, Direction.ASC, AbstractEntityId_.ID);
 
@@ -251,7 +251,7 @@ public class BackupServiceImpl
 
 			for (DocumentBoxDto documentBoxDto : page.getContent())
 			{
-				DocumentBox documentBox = convertDocumentBox(documentBoxDto, true);
+				DocumentBoxXml documentBox = convertDocumentBox(documentBoxDto, true);
 				if (documentBox != null)
 					documentBoxes.add(documentBox);
 
@@ -268,29 +268,31 @@ public class BackupServiceImpl
 		return documentBoxes;
 	}
 
-	private DocumentBox convertDocumentBox(DocumentBoxDto documentBoxDto, boolean full)
+	private DocumentBoxXml convertDocumentBox(DocumentBoxDto documentBoxDto, boolean full)
 	{
 		if (documentBoxDto == null)
 			return null;
 
-		DocumentBox documentBox = PAPERLESS_BACKUP_OBJECT_FACTORY.createDocumentBox();
+		DocumentBoxXml documentBox = PAPERLESS_BACKUP_OBJECT_FACTORY.createDocumentBoxXml();
 		documentBox.setId(documentBoxDto.getId());
 		documentBox.setName(documentBoxDto.getName());
 
 		if (full)
 		{
 			documentBox.setDescription(documentBoxDto.getDescription());
-			documentBox.setArchived(documentBoxDto.isArchived());
+
+			if (documentBoxDto.isArchived())
+				documentBox.setArchived(documentBoxDto.isArchived());
 		}
 
 		return documentBox;
 	}
 
-	private List<DocumentType> convertDocumentTypes()
+	private List<DocumentTypeXml> convertDocumentTypes()
 	{
 		backupInfo.beginTask(MessageKeyEnum.BACKUP_TASK_EXPORT_DOCUMENT_TYPES, (int)documentTypeService.count());
 
-		List<DocumentType> documentTypes = null;
+		List<DocumentTypeXml> documentTypes = null;
 
 		Pageable pageRequest = PageRequest.of(0, 50, Direction.ASC, AbstractEntityId_.ID);
 
@@ -306,7 +308,7 @@ public class BackupServiceImpl
 
 			for (DocumentTypeDto documentTypeDto : page.getContent())
 			{
-				DocumentType documentType = convertDocumentType(documentTypeDto, true);
+				DocumentTypeXml documentType = convertDocumentType(documentTypeDto, true);
 				if (documentType != null)
 					documentTypes.add(documentType);
 
@@ -323,29 +325,31 @@ public class BackupServiceImpl
 		return documentTypes;
 	}
 
-	private DocumentType convertDocumentType(DocumentTypeDto documentTypeDto, boolean full)
+	private DocumentTypeXml convertDocumentType(DocumentTypeDto documentTypeDto, boolean full)
 	{
 		if (documentTypeDto == null)
 			return null;
 
-		DocumentType documentType = PAPERLESS_BACKUP_OBJECT_FACTORY.createDocumentType();
+		DocumentTypeXml documentType = PAPERLESS_BACKUP_OBJECT_FACTORY.createDocumentTypeXml();
 		documentType.setId(documentTypeDto.getId());
 		documentType.setName(documentTypeDto.getName());
 
 		if (full)
 		{
 			documentType.setDescription(documentTypeDto.getDescription());
-			documentType.setArchived(documentTypeDto.isArchived());
+
+			if (documentTypeDto.isArchived())
+				documentType.setArchived(documentTypeDto.isArchived());
 		}
 
 		return documentType;
 	}
 
-	private List<Tag> convertTags()
+	private List<TagXml> convertTags()
 	{
 		backupInfo.beginTask(MessageKeyEnum.BACKUP_TASK_EXPORT_TAGS, (int)tagService.count());
 
-		List<Tag> tags = null;
+		List<TagXml> tags = null;
 
 		Pageable pageRequest = PageRequest.of(0, 50, Direction.ASC, AbstractEntityId_.ID);
 
@@ -361,7 +365,7 @@ public class BackupServiceImpl
 
 			for (TagDto tagDto : page.getContent())
 			{
-				Tag tag = convertTag(tagDto, true);
+				TagXml tag = convertTag(tagDto, true);
 				if (tag != null)
 					tags.add(tag);
 
@@ -378,16 +382,16 @@ public class BackupServiceImpl
 		return tags;
 	}
 
-	private List<Tag> convertTags(List<TagDto> tagsDto)
+	private List<TagXml> convertTags(List<TagDto> tagsDto)
 	{
 		if (tagsDto == null || tagsDto.isEmpty())
 			return null;
 
-		List<Tag> tags = new ArrayList<>();
+		List<TagXml> tags = new ArrayList<>();
 
 		for (TagDto tagDto : tagsDto)
 		{
-			Tag tag = convertTag(tagDto, false);
+			TagXml tag = convertTag(tagDto, false);
 			if (tag != null)
 				tags.add(tag);
 		}
@@ -395,29 +399,31 @@ public class BackupServiceImpl
 		return tags;
 	}
 
-	private Tag convertTag(TagDto tagDto, boolean full)
+	private TagXml convertTag(TagDto tagDto, boolean full)
 	{
 		if (tagDto == null)
 			return null;
 
-		Tag tag = PAPERLESS_BACKUP_OBJECT_FACTORY.createTag();
+		TagXml tag = PAPERLESS_BACKUP_OBJECT_FACTORY.createTagXml();
 		tag.setId(tagDto.getId());
 		tag.setName(tagDto.getName());
 
 		if (full)
 		{
 			tag.setDescription(tagDto.getDescription());
-			tag.setArchived(tagDto.isArchived());
+
+			if (tagDto.isArchived())
+				tag.setArchived(tagDto.isArchived());
 		}
 
 		return tag;
 	}
 
-	private List<Group> convertGroups()
+	private List<GroupXml> convertGroups()
 	{
 		backupInfo.beginTask(MessageKeyEnum.BACKUP_TASK_EXPORT_GROUPS, (int)groupService.count());
 
-		List<Group> groups = null;
+		List<GroupXml> groups = null;
 
 		Pageable pageRequest = PageRequest.of(0, 50, Direction.ASC, AbstractEntityId_.ID);
 
@@ -433,7 +439,7 @@ public class BackupServiceImpl
 
 			for (GroupDto groupDto : page.getContent())
 			{
-				Group group = convertGroup(groupDto);
+				GroupXml group = convertGroup(groupDto);
 				if (group != null)
 					groups.add(group);
 
@@ -450,16 +456,16 @@ public class BackupServiceImpl
 		return groups;
 	}
 
-	private List<Group> convertGroups(List<GroupDto> groupsDto)
+	private List<GroupXml> convertGroups(List<GroupDto> groupsDto)
 	{
 		if (groupsDto == null || groupsDto.isEmpty())
 			return null;
 
-		List<Group> groups = new ArrayList<>();
+		List<GroupXml> groups = new ArrayList<>();
 
 		for (GroupDto groupDto : groupsDto)
 		{
-			Group group = convertGroup(groupDto);
+			GroupXml group = convertGroup(groupDto);
 			if (group != null)
 				groups.add(group);
 		}
@@ -467,23 +473,23 @@ public class BackupServiceImpl
 		return groups;
 	}
 
-	private Group convertGroup(GroupDto groupDto)
+	private GroupXml convertGroup(GroupDto groupDto)
 	{
 		if (groupDto == null)
 			return null;
 
-		Group group = PAPERLESS_BACKUP_OBJECT_FACTORY.createGroup();
+		GroupXml group = PAPERLESS_BACKUP_OBJECT_FACTORY.createGroupXml();
 		group.setId(groupDto.getId());
 		group.setName(groupDto.getName());
 
 		return group;
 	}
 
-	private List<User> convertUsers()
+	private List<UserXml> convertUsers()
 	{
 		backupInfo.beginTask(MessageKeyEnum.BACKUP_TASK_EXPORT_USERS, (int)userService.count());
 
-		List<User> users = null;
+		List<UserXml> users = null;
 
 		Pageable pageRequest = PageRequest.of(0, 50, Direction.ASC, AbstractEntityId_.ID);
 
@@ -499,15 +505,25 @@ public class BackupServiceImpl
 
 			for (UserDto userDto : page.getContent())
 			{
-				User user = PAPERLESS_BACKUP_OBJECT_FACTORY.createUser();
+				UserXml user = PAPERLESS_BACKUP_OBJECT_FACTORY.createUserXml();
 				user.setId(userDto.getId());
 				user.setUsername(userDto.getUsername());
 				user.setHashedPassword(userDto.getHashedPassword());
 				user.setFullName(userDto.getFullName());
 				user.setEnabled(userDto.isEnabled());
-				user.setLocked(userDto.isLocked());
-				user.setNewRegistered(userDto.isNewRegistered());
-				user.setDeleted(userDto.isDeleted());
+
+				if (userDto.isLocked())
+					user.setLocked(userDto.isLocked());
+
+				if (userDto.getFailedLoginAttempts() > 0)
+					user.setFailedLoginAttempts(userDto.getFailedLoginAttempts());
+
+				if (userDto.isNewRegistered())
+					user.setNewRegistered(userDto.isNewRegistered());
+
+				if (userDto.isDeleted())
+					user.setDeleted(userDto.isDeleted());
+
 				user.setAuthorities(convertAuthorities(userDto.getAuthorities()));
 				user.setGroups(convertGroups(userDto.getGroups()));
 				users.add(user);
@@ -525,16 +541,16 @@ public class BackupServiceImpl
 		return users;
 	}
 
-	private List<Authority> convertAuthorities(List<String> authoritiesDto)
+	private List<AuthorityXml> convertAuthorities(List<String> authoritiesDto)
 	{
 		if (authoritiesDto == null || authoritiesDto.isEmpty())
 			return null;
 
-		List<Authority> authorities = new ArrayList<>();
+		List<AuthorityXml> authorities = new ArrayList<>();
 
 		for (String authorityDto : authoritiesDto)
 		{
-			Authority authority = PAPERLESS_BACKUP_OBJECT_FACTORY.createAuthority();
+			AuthorityXml authority = PAPERLESS_BACKUP_OBJECT_FACTORY.createAuthorityXml();
 			authority.setName(authorityDto);
 			authorities.add(authority);
 		}
@@ -542,11 +558,11 @@ public class BackupServiceImpl
 		return authorities;
 	}
 
-	private List<Document> convertDocumentsAndArchiveFiles(Path backupArchivePath) throws IOException
+	private List<DocumentXml> convertDocumentsAndArchiveFiles(Path backupArchivePath) throws IOException
 	{
 		backupInfo.beginTask(MessageKeyEnum.BACKUP_TASK_EXPORT_DOCUMENTS, (int)documentService.count());
 
-		List<Document> documents = null;
+		List<DocumentXml> documents = null;
 
 		Pageable pageRequest = PageRequest.of(0, 50, Direction.ASC, AbstractEntityId_.ID);
 
@@ -562,7 +578,7 @@ public class BackupServiceImpl
 
 			for (DocumentDto documentDto : page.getContent())
 			{
-				Document document = PAPERLESS_BACKUP_OBJECT_FACTORY.createDocument();
+				DocumentXml document = PAPERLESS_BACKUP_OBJECT_FACTORY.createDocumentXml();
 				document.setId(documentDto.getId());
 				document.setTitle(documentDto.getTitle());
 				document.setDocumentType(convertDocumentType(documentDto.getDocumentType(), false));
@@ -594,16 +610,16 @@ public class BackupServiceImpl
 		return documents;
 	}
 
-	private List<Comment> convertComments(List<CommentDto> commentsDto)
+	private List<CommentXml> convertComments(List<CommentDto> commentsDto)
 	{
 		if (commentsDto == null || commentsDto.isEmpty())
 			return null;
 
-		List<Comment> comments = new ArrayList<>();
+		List<CommentXml> comments = new ArrayList<>();
 
 		for (CommentDto commentDto : commentsDto)
 		{
-			Comment comment = PAPERLESS_BACKUP_OBJECT_FACTORY.createComment();
+			CommentXml comment = PAPERLESS_BACKUP_OBJECT_FACTORY.createCommentXml();
 			comment.setId(commentDto.getId());
 			comment.setText(commentDto.getText());
 			comment.setCreatedDatetime(commentDto.getCreatedDatetime());
@@ -615,16 +631,16 @@ public class BackupServiceImpl
 		return comments;
 	}
 
-	private List<FileAttachment> convertFileAttachments(List<FileAttachmentDto> fileAttachmentsDto, Path backupArchivePath) throws IOException
+	private List<FileAttachmentXml> convertFileAttachments(List<FileAttachmentDto> fileAttachmentsDto, Path backupArchivePath) throws IOException
 	{
 		if (fileAttachmentsDto == null || fileAttachmentsDto.isEmpty())
 			return null;
 
-		List<FileAttachment> fileAttachments = new ArrayList<>();
+		List<FileAttachmentXml> fileAttachments = new ArrayList<>();
 
 		for (FileAttachmentDto fileAttachmentDto : fileAttachmentsDto)
 		{
-			FileAttachment fileAttachment = PAPERLESS_BACKUP_OBJECT_FACTORY.createFileAttachment();
+			FileAttachmentXml fileAttachment = PAPERLESS_BACKUP_OBJECT_FACTORY.createFileAttachmentXml();
 			fileAttachment.setId(fileAttachmentDto.getId());
 			fileAttachment.setName(fileAttachmentDto.getName());
 			fileAttachment.setContentType(fileAttachmentDto.getContentType());
@@ -660,9 +676,9 @@ public class BackupServiceImpl
 		return stringPathToFileInArchive;
 	}
 
-	private void writePaperlessToBackupArchive(Path backupArchivePath, Paperless paperless) throws IOException, JAXBException
+	private void writePaperlessToBackupArchive(Path backupArchivePath, PaperlessXml paperless) throws IOException, JAXBException
 	{
-		JAXBContext context = JAXBContext.newInstance(Paperless.class);
+		JAXBContext context = JAXBContext.newInstance(PaperlessXml.class);
 		Marshaller marshaller = context.createMarshaller();
 		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 

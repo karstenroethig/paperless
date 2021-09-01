@@ -16,7 +16,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode(callSuper = true, exclude = {"name"})
+@EqualsAndHashCode(callSuper = true, exclude = {"name", "members"})
 public class GroupDto extends AbstractDtoId
 {
 	@NotNull

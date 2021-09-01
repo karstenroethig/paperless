@@ -92,6 +92,23 @@ public enum MessageKeyEnum
 	BACKUP_TASK_EXPORT_USERS("backup.task.exportUsers"),
 	BACKUP_TASK_EXPORT_DOCUMENTS("backup.task.exportDocuments"),
 
+	RESTORE_EXECUTE_SUCCESS("restore.execute.success"),
+	RESTORE_EXECUTE_INVALID("restore.execute.invalid"),
+	RESTORE_EXECUTE_INVALID_FILE_PATH_DOES_NOT_EXIST("restore.execute.invalid.filePath.doesNotExist"),
+	RESTORE_EXECUTE_INVALID_FILE_PATH_NOT_READABLE("restore.execute.invalid.filePath.notReadable"),
+	RESTORE_EXECUTE_INVALID_FILE_PATH_NOT_A_FILE("restore.execute.invalid.filePath.notAFile"),
+	RESTORE_EXECUTE_ERROR("restore.execute.error"),
+
+	RESTORE_TASK_INITIALIZE("restore.task.initialize"),
+	RESTORE_TASK_RESET_DATABASE("restore.task.resetDatabase"),
+	RESTORE_TASK_IMPORT_CONTACTS("restore.task.importContacts"),
+	RESTORE_TASK_IMPORT_DOCUMENT_BOXES("restore.task.importDocumentBoxes"),
+	RESTORE_TASK_IMPORT_DOCUMENT_TYPES("restore.task.importDocumentTypes"),
+	RESTORE_TASK_IMPORT_TAGS("restore.task.importTags"),
+	RESTORE_TASK_IMPORT_GROUPS("restore.task.importGroups"),
+	RESTORE_TASK_IMPORT_USERS("restore.task.importUsers"),
+	RESTORE_TASK_IMPORT_DOCUMENTS("restore.task.importDocuments"),
+
 	USER_SAVE_INVALID("user.save.invalid"),
 	USER_SAVE_ERROR("user.save.error"),
 	USER_SAVE_ERROR_EXISTS_USERNAME("user.save.error.exists.username"),

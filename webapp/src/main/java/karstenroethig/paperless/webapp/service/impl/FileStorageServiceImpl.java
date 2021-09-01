@@ -1,6 +1,7 @@
 package karstenroethig.paperless.webapp.service.impl;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -36,9 +37,9 @@ public class FileStorageServiceImpl
 
 	@Autowired private FileStorageRepository fileStorageRepository;
 
-	public FileStorageDto saveFile(MultipartFile multipartFile) throws IOException
+	public FileStorageDto saveFile(InputStream in, long filesize) throws IOException
 	{
-		FileStorage fileStorage = findOrCreateStorage(multipartFile.getSize());
+		FileStorage fileStorage = findOrCreateStorage(filesize);
 
 		Path fileStorageArchivePath = createAndGetStorageArchiveIfItDoesNotExist(fileStorage.getKey());
 		String fileKey = UUID.randomUUID().toString();
@@ -46,12 +47,20 @@ public class FileStorageServiceImpl
 		try (FileSystem fileStorageFileSystem = FileSystems.newFileSystem(fileStorageArchivePath, null))
 		{
 			Path pathToFileInArchive = fileStorageFileSystem.getPath(ROOT_PATH_DELIMITER + fileKey);
-			multipartFile.transferTo(pathToFileInArchive);
+			Files.copy(in, pathToFileInArchive);
 		}
 
-		addAndSaveFilesize(fileStorage.getId(), multipartFile.getSize());
+		addAndSaveFilesize(fileStorage.getId(), filesize);
 
 		return new FileStorageDto(fileStorage.getId(), fileKey);
+	}
+
+	public FileStorageDto saveFile(MultipartFile multipartFile) throws IOException
+	{
+		try (InputStream in = multipartFile.getInputStream())
+		{
+			return saveFile(in, multipartFile.getSize());
+		}
 	}
 
 	public Resource loadAsResource(FileStorageDto fileStorageDto) throws IOException
@@ -85,6 +94,15 @@ public class FileStorageServiceImpl
 		}
 
 		subtractAndSaveFilesize(fileStorage.getId(), fileSize);
+	}
+
+	protected Path resolvePathToStorageArchive(String storageKey) throws IOException
+	{
+		Path fileDataDirectory = createAndGetFileDataDirectory();
+		String storageArchiveFilename = buildStorageFilename(storageKey);
+		Path storageArchivePath = fileDataDirectory.resolve(storageArchiveFilename);
+
+		return storageArchivePath;
 	}
 
 	protected FileStorage transform(FileStorageDto fileStorageDto)
@@ -124,9 +142,7 @@ public class FileStorageServiceImpl
 
 	private Path createAndGetStorageArchiveIfItDoesNotExist(String storageKey) throws IOException
 	{
-		Path fileDataDirectory = createAndGetFileDataDirectory();
-		String storageArchiveFilename = buildStorageFilename(storageKey);
-		Path storageArchivePath = fileDataDirectory.resolve(storageArchiveFilename);
+		Path storageArchivePath = resolvePathToStorageArchive(storageKey);
 
 		if (!Files.exists(storageArchivePath))
 		{
