@@ -12,7 +12,7 @@
 			<ul class="nav flex-column" sec:authorize="hasRole('ADMIN')">
 				<li class="nav-item" th:classappend="${#strings.equals(menu,'server-info')} ? active">
 					<a class="nav-link" th:href="@{/admin/server-info}">
-						<i class="fas fa-info-circle fa-lg"></i>
+						<em class="fas fa-info-circle fa-lg"></em>
 						<span th:text="#{utility.serverInfo.label}">Server Info</span>
 					</a>
 				</li>
@@ -23,13 +23,13 @@
 			<ul class="nav flex-column" sec:authorize="hasRole('ADMIN')">
 				<li class="nav-item" th:classappend="${#strings.equals(menu,'user-admin')} ? active">
 					<a class="nav-link" th:href="@{/user-admin/list}">
-						<i class="fas fa-user"></i>
+						<em class="fas fa-user"></em>
 						<span th:text="#{user.label.plural}">Users</span>
 					</a>
 				</li>
 				<li class="nav-item" th:classappend="${#strings.equals(menu,'group')} ? active">
 					<a class="nav-link" th:href="@{/group/list}">
-						<i class="fas fa-users"></i>
+						<em class="fas fa-users"></em>
 						<span th:text="#{group.label.plural}">Groups</span>
 					</a>
 				</li>
@@ -40,19 +40,19 @@
 			<ul class="nav flex-column" sec:authorize="hasRole('USER') or hasRole('ADMIN')">
 				<li class="nav-item" th:classappend="${#strings.equals(menu,'document-type')} ? active">
 					<a class="nav-link" th:href="@{/document-type/list}">
-						<i class="fas fa-file fa-lg"></i>
+						<em class="fas fa-file fa-lg"></em>
 						<span th:text="#{documentType.label.plural}">Document types</span>
 					</a>
 				</li>
 				<li class="nav-item" th:classappend="${#strings.equals(menu,'document-box')} ? active">
 					<a class="nav-link" th:href="@{/document-box/list}">
-						<i class="fas fa-archive fa-lg"></i>
+						<em class="fas fa-archive fa-lg"></em>
 						<span th:text="#{documentBox.label.plural}">Document boxes</span>
 					</a>
 				</li>
 				<li class="nav-item" th:classappend="${#strings.equals(menu,'contact')} ? active">
 					<a class="nav-link" th:href="@{/contact/list}">
-						<i class="far fa-address-card"></i>
+						<em class="far fa-address-card"></em>
 						<span th:text="#{contact.label.plural}">Contacts</span>
 					</a>
 				</li>
@@ -63,13 +63,13 @@
 			<ul class="nav flex-column" sec:authorize="hasRole('ADMIN')">
 				<li class="nav-item" th:classappend="${#strings.equals(menu,'backup')} ? active">
 					<a class="nav-link" th:href="@{/backup}">
-						<i class="fas fa-file-export"></i>
+						<em class="fas fa-file-export"></em>
 						<span th:text="#{admin.section.backupAdministration.backup.label}">Backup</span>
 					</a>
 				</li>
 				<li class="nav-item" th:classappend="${#strings.equals(menu,'restore')} ? active">
 					<a class="nav-link" th:href="@{/backup/restore}">
-						<i class="fas fa-file-import"></i>
+						<em class="fas fa-file-import"></em>
 						<span th:text="#{admin.section.backupAdministration.restore.label}">Restore</span>
 					</a>
 				</li>

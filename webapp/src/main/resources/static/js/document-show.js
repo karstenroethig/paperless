@@ -72,12 +72,12 @@ $( document ).ready( function() {
 			html += '<form action="/comment/update" method="post" id="editCommentForm-' + commentId + '" autocomplete="off">';
 			html += '	<input type="hidden" id="id" name="id" value="' + commentId + '">';
 			html += '	<input type="hidden" id="document" name="document" value="' + documentId + '">';
-			html += '	<div class="form-group row">';
+			html += '	<div class="row">';
 			html += '		<div class="col-sm-12">';
 			html += '			<textarea class="form-control" id="editCommentInput-' + commentId + '" rows="5" name="text">' + commentText + '</textarea>';
 			html += '		</div>';
 			html += '	</div>';
-			html += '	<div class="form-group row">';
+			html += '	<div class="row mt-3">';
 			html += '		<div class="col-sm-12">';
 			html += '			<input type="submit" class="btn btn-sm btn-primary" value="' + messages_defaultButtonSaveLabel + '">';
 			html += '			<button type="button" id="editCommentCancelButton-' + commentId + '" class="btn btn-sm btn-outline-secondary">' + messages_defaultButtonCancelLabel + '</button>';

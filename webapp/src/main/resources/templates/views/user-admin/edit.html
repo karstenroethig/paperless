@@ -27,8 +27,8 @@
 		<form th:object="${user}" th:action="@{/user-admin/update}" action="#" method="post" autocomplete="off">
 			<input type="hidden" th:field="*{id}"/>
 
-			<div class="form-group row">
-				<label class="col-sm-2 col-form-label text-right">
+			<div class="row">
+				<label class="col-sm-2 col-form-label text-end">
 					<span class="required">*</span>
 					<span th:text="#{user.username.label}">Username</span>
 				</label>
@@ -38,8 +38,8 @@
 				</div>
 			</div>
 
-			<div class="form-group row">
-				<label class="col-sm-2 col-form-label text-right">
+			<div class="row mt-3">
+				<label class="col-sm-2 col-form-label text-end">
 					<span th:text="#{user.password.label}">Password</span>
 				</label>
 				<div class="col-sm-10">
@@ -48,8 +48,8 @@
 				</div>
 			</div>
 
-			<div class="form-group row">
-				<label class="col-sm-2 col-form-label text-right">
+			<div class="row mt-3">
+				<label class="col-sm-2 col-form-label text-end">
 					<span th:text="#{user.repeatPassword.label}">Repeat password</span>
 				</label>
 				<div class="col-sm-10">
@@ -58,8 +58,8 @@
 				</div>
 			</div>
 
-			<div class="form-group row">
-				<label class="col-sm-2 col-form-label text-right">
+			<div class="row mt-3">
+				<label class="col-sm-2 col-form-label text-end">
 					<span class="required">*</span>
 					<span th:text="#{user.fullName.label}">Full name</span>
 				</label>
@@ -69,49 +69,49 @@
 				</div>
 			</div>
 
-			<div class="form-group row">
-				<label class="col-sm-2 col-form-label text-right">
+			<div class="row mt-3">
+				<label class="col-sm-2 col-form-label text-end">
 					<span th:text="#{user.enabled.label}">Enabled</span>
 				</label>
 				<div class="col-sm-10 col-form-label">
-					<div class="custom-control custom-checkbox">
-						<input type="checkbox" th:field="*{enabled}" class="custom-control-input" id="enabled">
-						<label class="custom-control-label" for="enabled"></label>
+					<div class="form-check">
+						<input type="checkbox" th:field="*{enabled}" class="form-check-input" id="enabled">
+						<label class="form-check-label" for="enabled"></label>
 					</div>
 					<div class="invalid-feedback" th:if="${#fields.hasErrors('enabled')}" th:each="err : ${#fields.errors('enabled')}" th:text="${err}">validation error</div>
 				</div>
 			</div>
 
-			<div class="form-group row">
-				<label class="col-sm-2 col-form-label text-right">
+			<div class="row mt-3">
+				<label class="col-sm-2 col-form-label text-end">
 					<span th:text="#{user.locked.label}">Locked</span>
 				</label>
 				<div class="col-sm-10 col-form-label">
-					<div class="custom-control custom-checkbox">
-						<input type="checkbox" th:field="*{locked}" class="custom-control-input" id="locked">
-						<label class="custom-control-label" for="locked"></label>
+					<div class="form-check">
+						<input type="checkbox" th:field="*{locked}" class="form-check-input" id="locked">
+						<label class="form-check-label" for="locked"></label>
 					</div>
 					<div class="invalid-feedback" th:if="${#fields.hasErrors('locked')}" th:each="err : ${#fields.errors('locked')}" th:text="${err}">validation error</div>
 				</div>
 			</div>
 
-			<div class="form-group row">
-				<label class="col-sm-2 col-form-label text-right">
+			<div class="row mt-3">
+				<label class="col-sm-2 col-form-label text-end">
 					<span th:text="#{user.authorities.label}">Authorities</span>
 					<span class="far fa-question-circle text-muted help-icon" id="help_authorities"></span>
 				</label>
 				<div class="col-sm-10 col-form-label">
-					<div class="custom-control custom-checkbox" th:each="auth : ${allAuthorities}">
-						<input type="checkbox" th:field="*{authorities}" th:value="${auth}" class="custom-control-input" th:id="${'authorities_'+auth}">
-						<label class="custom-control-label" th:for="${'authorities_'+auth}" th:text="${#messages.msg('user.authorities.'+auth+'.label')}"></label>
+					<div class="form-check" th:each="auth : ${allAuthorities}">
+						<input type="checkbox" th:field="*{authorities}" th:value="${auth}" class="form-check-input" th:id="${'authorities_'+auth}">
+						<label class="form-check-label" th:for="${'authorities_'+auth}" th:text="${#messages.msg('user.authorities.'+auth+'.label')}"></label>
 					</div>
 					<div class="invalid-feedback" th:if="${#fields.hasErrors('authorities')}" th:each="err : ${#fields.errors('authorities')}" th:text="${err}">validation error</div>
 				</div>
 			</div>
-			<div class="form-group row" id="help_authorities_content" style="display: none;">
+			<div class="row" id="help_authorities_content" style="display: none;">
 				<div class="offset-sm-2 col-sm-10">
 					<div class="alert alert-light help-box">
-						<span class="text-dark far fa-question-circle fa-lg mt-2 mr-3 mb-3"></span>
+						<span class="text-dark far fa-question-circle fa-lg mt-2 me-3 mb-3"></span>
 						<p th:text="#{user.authorities.ROLE_USER.label}">User</p>
 						<ul>
 							<li th:text="#{user.authorities.ROLE_USER.help1}">Help 1</li>
@@ -126,8 +126,8 @@
 				</div>
 			</div>
 
-			<div class="form-group row">
-				<label class="col-sm-2 col-form-label text-right">
+			<div class="row mt-3">
+				<label class="col-sm-2 col-form-label text-end">
 					<span th:text="#{user.groups.label}">Groups</span>
 				</label>
 				<div class="col-sm-10">
@@ -138,13 +138,13 @@
 				</div>
 			</div>
 
-			<div class="form-group row">
+			<div class="row mt-3">
 				<div class="offset-sm-2 col-sm-10">
 					<span class="required">*</span> <span th:text="#{default.form.required}">required</span>
 				</div>
 			</div>
 
-			<div class="form-group row">
+			<div class="row mt-2 mb-2">
 				<div class="offset-sm-2 col-sm-10">
 					<input type="submit" class="btn btn-primary" th:value="#{default.button.save.label}" value="Save">
 					<a th:href="@{/user-admin/list}" class="btn btn-outline-secondary" th:text="#{default.button.cancel.label}">Cancel</a>

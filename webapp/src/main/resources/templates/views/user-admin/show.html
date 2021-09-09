@@ -21,53 +21,53 @@
 				<span th:text="${user.username}">[username]</span>
 			</h1>
 			<div class="btn-toolbar mb-2 mb-md-0">
-				<div class="btn-group mr-2">
+				<div class="btn-group me-2">
 					<a th:href="@{/user-admin/edit/{id}(id=${user.id})}" class="btn btn-sm btn-outline-secondary" th:text="#{default.button.edit.label}">Edit</a>
 				</div>
-				<div class="btn-group mr-2">
-					<a href="" class="btn btn-sm btn-outline-danger" data-toggle="modal" data-target="#deleteModal" th:attr="data-id=${user.id}" th:text="#{default.button.delete.label}">Delete</a>
+				<div class="btn-group me-2">
+					<a href="" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" th:attr="data-id=${user.id}" th:text="#{default.button.delete.label}">Delete</a>
 				</div>
 			</div>
 		</div>
 
 		<div th:replace="~{fragments/messages :: messages-fragment(${messages})}"></div>
 
-		<div class="form-group row" th:if="${user.username!=null}">
-			<label class="col-sm-2 text-right" th:text="#{user.username.label}">Username</label>
+		<div class="row" th:if="${user.username!=null}">
+			<label class="col-sm-2 test-end" th:text="#{user.username.label}">Username</label>
 			<div class="col-sm-10" th:text="${user.username}">[username]</div>
 		</div>
 
-		<div class="form-group row" th:if="${user.fullName!=null}">
-			<label class="col-sm-2 text-right" th:text="#{user.fullName.label}">Full name</label>
+		<div class="row mt-3" th:if="${user.fullName!=null}">
+			<label class="col-sm-2 test-end" th:text="#{user.fullName.label}">Full name</label>
 			<div class="col-sm-10" th:text="${user.fullName}">[fullName]</div>
 		</div>
 
-		<div class="form-group row">
-			<label class="col-sm-2 col-form-label text-right">
+		<div class="row mt-3">
+			<label class="col-sm-2 col-form-label test-end">
 				<span th:text="#{user.enabled.label}">Enabled</span>
 			</label>
 			<div class="col-sm-10 col-form-label">
-				<div class="custom-control custom-checkbox">
-					<input type="checkbox" th:field="${user.enabled}" class="custom-control-input" id="enabled" disabled="disabled">
-					<label class="custom-control-label" for="enabled"></label>
+				<div class="form-check">
+					<input type="checkbox" th:field="${user.enabled}" class="form-check-input" id="enabled" disabled="disabled">
+					<label class="form-check-label" for="enabled"></label>
 				</div>
 			</div>
 		</div>
 
-		<div class="form-group row">
-			<label class="col-sm-2 col-form-label text-right">
+		<div class="row mt-3">
+			<label class="col-sm-2 col-form-label test-end">
 				<span th:text="#{user.locked.label}">Locked</span>
 			</label>
 			<div class="col-sm-10 col-form-label">
-				<div class="custom-control custom-checkbox">
-					<input type="checkbox" th:field="${user.locked}" class="custom-control-input" id="locked" disabled="disabled">
-					<label class="custom-control-label" for="locked"></label>
+				<div class="form-check">
+					<input type="checkbox" th:field="${user.locked}" class="form-check-input" id="locked" disabled="disabled">
+					<label class="form-check-label" for="locked"></label>
 				</div>
 			</div>
 		</div>
 
-		<div class="form-group row">
-			<label class="col-sm-2 col-form-label text-right">
+		<div class="row mt-3">
+			<label class="col-sm-2 col-form-label test-end">
 				<span th:text="#{user.authorities.label}">Authorities</span>
 				<span class="far fa-question-circle text-muted help-icon" id="help_authorities"></span>
 			</label>
@@ -75,10 +75,10 @@
 				<div th:each="authority : ${user.authorities}" th:text="${#messages.msg('user.authorities.'+authority+'.label')}">[authority]</div>
 			</div>
 		</div>
-		<div class="form-group row" id="help_authorities_content" style="display: none;">
+		<div class="row" id="help_authorities_content" style="display: none;">
 			<div class="offset-sm-2 col-sm-10">
 				<div class="alert alert-light help-box">
-					<span class="text-dark far fa-question-circle fa-lg mt-2 mr-3 mb-3"></span>
+					<span class="text-dark far fa-question-circle fa-lg mt-2 me-3 mb-3"></span>
 					<p th:text="#{user.authorities.ROLE_USER.label}">User</p>
 					<ul>
 						<li th:text="#{user.authorities.ROLE_USER.help1}">Help 1</li>
@@ -93,8 +93,8 @@
 			</div>
 		</div>
 
-		<div class="form-group row">
-			<label class="col-sm-2 col-form-label text-right">
+		<div class="row mt-3">
+			<label class="col-sm-2 col-form-label test-end">
 				<span th:text="#{user.groups.label}">Groups</span>
 			</label>
 			<div class="col-sm-10 col-form-label">
@@ -107,16 +107,14 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title" id="deleteModalLabel" th:text="#{userAdmin.deletePopup.title}">Delete user</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
 						<span th:text="#{userAdmin.deletePopup.question}">Do you really want to delete this user?</span>
 					</div>
 					<div class="modal-footer">
 						<a href="" th:attr="data-href-template=@{/user-admin/delete/{id}}" class="btn btn-danger" th:text="#{default.button.delete.label}">Delete</a>
-						<button type="button" class="btn btn-outline-secondary" data-dismiss="modal" th:text="#{default.button.cancel.label}">Cancel</button>
+						<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" th:text="#{default.button.cancel.label}">Cancel</button>
 					</div>
 				</div>
 			</div>

@@ -18,7 +18,7 @@
 		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 			<h1 class="h2" th:text="#{document.label.plural}">Documents</h1>
 			<div class="btn-toolbar mb-2 mb-md-0">
-				<div class="btn-group mr-2">
+				<div class="btn-group me-2">
 					<a th:href="@{/document/create}" class="btn btn-sm btn-outline-secondary" th:text="#{document.add.label}">Add document</a>
 				</div>
 			</div>
@@ -28,53 +28,57 @@
 
 		<div class="row">
 			<div class="col-sm-10">
-				<button id="search-button" class="btn btn-outline-secondary mb-2" th:if="${!searchParams.hasParams()}" th:title="#{default.search.filterEntries.label}"><i class="fas fa-search"></i></button>
-				<button id="search-button" class="btn btn-primary mb-2" th:if="${searchParams.hasParams()}" th:title="#{default.search.filterEntries.label}"><i class="fas fa-search"></i></button>
+				<button id="search-button" class="btn btn-outline-secondary mb-2 me-2" th:if="${!searchParams.hasParams()}" th:title="#{default.search.filterEntries.label}"><em class="fas fa-search"></em></button>
+				<button id="search-button" class="btn btn-primary mb-2 me-2" th:if="${searchParams.hasParams()}" th:title="#{default.search.filterEntries.label}"><em class="fas fa-search"></em></button>
 
-				<span class="badge badge-secondary" th:if="${#strings.isEmpty(searchParams.text)==false}">
+				<span class="badge bg-secondary" th:if="${#strings.isEmpty(searchParams.text)==false}">
 					<span th:text="#{document.search.text.label}">Text</span>: <span th:text="${searchParams.text}">[searchParams.text]</span>
 				</span>
-				<span class="badge badge-secondary" th:if="${searchParams.documentType!=null}">
+				<span class="badge bg-secondary" th:if="${searchParams.documentType!=null}">
 					<span th:text="#{document.documentType.label}">Document type</span>: <span th:text="${searchParams.documentType.name}">[searchParams.documentType]</span>
 				</span>
-				<span class="badge badge-secondary" th:if="${searchParams.dateOfIssueFrom!=null}">
+				<span class="badge bg-secondary" th:if="${searchParams.dateOfIssueFrom!=null}">
 					<span th:text="#{document.search.dateOfIssueFrom.label}">Date of issue (from)</span>: <span th:text="${#temporals.format(searchParams.dateOfIssueFrom, #messages.msg('default.dateFormat'))}">[searchParams.dateOfIssueFrom]</span>
 				</span>
-				<span class="badge badge-secondary" th:if="${searchParams.dateOfIssueTo!=null}">
+				<span class="badge bg-secondary" th:if="${searchParams.dateOfIssueTo!=null}">
 					<span th:text="#{document.search.dateOfIssueTo.label}">Date of issue (to)</span>: <span th:text="${#temporals.format(searchParams.dateOfIssueTo, #messages.msg('default.dateFormat'))}">[searchParams.dateOfIssueTo]</span>
 				</span>
-				<span class="badge badge-secondary" th:if="${searchParams.contact!=null}">
+				<span class="badge bg-secondary" th:if="${searchParams.contact!=null}">
 					<span th:text="#{document.search.contact.label}">Sender/receiver</span>: <span th:text="${searchParams.contact.name}">[searchParams.contact]</span>
 					(<span th:text="${#messages.msg('document.search.contact.'+searchParams.contactSearchType.name()+'.label')}"></span>)
 				</span>
-				<span class="badge badge-secondary" th:if="${searchParams.tags!=null and #lists.isEmpty(searchParams.tags)==false}">
+				<span class="badge bg-secondary" th:if="${searchParams.tags!=null and #lists.isEmpty(searchParams.tags)==false}">
 					<span th:text="#{document.tags.label}">Tags</span>: <span th:each="tag, iterStat : ${searchParams.tags}" th:text="!${iterStat.last} ? ${tag.name} + ', ': ${tag.name}">[searchParams.tags]</span>
 				</span>
-				<span class="badge badge-secondary" th:if="${searchParams.documentBox!=null}">
+				<span class="badge bg-secondary" th:if="${searchParams.documentBox!=null}">
 					<span th:text="#{document.documentBox.label}">Document box</span>: <span th:text="${searchParams.documentBox.name}">[searchParams.documentBox]</span>
 				</span>
-				<span class="badge badge-secondary" th:if="${searchParams.reviewDateFrom!=null}">
+				<span class="badge bg-secondary" th:if="${searchParams.reviewDateFrom!=null}">
 					<span th:text="#{document.search.reviewDateFrom.label}">Review date (from)</span>: <span th:text="${#temporals.format(searchParams.reviewDateFrom, #messages.msg('default.dateFormat'))}">[searchParams.reviewDateFrom]</span>
 				</span>
-				<span class="badge badge-secondary" th:if="${searchParams.reviewDateTo!=null}">
+				<span class="badge bg-secondary" th:if="${searchParams.reviewDateTo!=null}">
 					<span th:text="#{document.search.reviewDateTo.label}">Review date (to)</span>: <span th:text="${#temporals.format(searchParams.reviewDateTo, #messages.msg('default.dateFormat'))}">[searchParams.reviewDateTo]</span>
 				</span>
-				<span class="badge badge-secondary" th:if="${searchParams.deletionDateFrom!=null}">
+				<span class="badge bg-secondary" th:if="${searchParams.deletionDateFrom!=null}">
 					<span th:text="#{document.search.deletionDateFrom.label}">Deletion date (from)</span>: <span th:text="${#temporals.format(searchParams.deletionDateFrom, #messages.msg('default.dateFormat'))}">[searchParams.deletionDateFrom]</span>
 				</span>
-				<span class="badge badge-secondary" th:if="${searchParams.deletionDateTo!=null}">
+				<span class="badge bg-secondary" th:if="${searchParams.deletionDateTo!=null}">
 					<span th:text="#{document.search.deletionDateTo.label}">Deletion date (to)</span>: <span th:text="${#temporals.format(searchParams.deletionDateTo, #messages.msg('default.dateFormat'))}">[searchParams.deletionDateTo]</span>
 				</span>
-				<span class="badge badge-secondary" th:if="${searchParams.showArchived}">
+				<span class="badge bg-secondary" th:if="${searchParams.showArchived}">
 					<span th:text="#{default.search.showArchived.label}">Show archived</span>
 				</span>
 			</div>
 			<div class="col-sm-2">
-				<form class="form-inline float-right mb-2" autocomplete="off">
-					<select class="form-control mr-2 pagination-pagesize">
-						<option th:each="size : ${availablePagesizes}" th:value="${size}" th:text="${size}" th:selected="${size == page.size}"></option>
-					</select>
-					<span th:text="#{default.pagination.perPage.label}">per page</span>
+				<form class="float-end mb-2 row g-2" autocomplete="off">
+					<div class="col-auto">
+						<select class="form-control me-2 pagination-pagesize">
+							<option th:each="size : ${availablePagesizes}" th:value="${size}" th:text="${size}" th:selected="${size == page.size}"></option>
+						</select>
+					</div>
+					<div class="col-auto">
+						<span class="form-control-plaintext" th:text="#{default.pagination.perPage.label}">per page</span>
+					</div>
 				</form>
 			</div>
 		</div>
@@ -82,14 +86,14 @@
 		<div class="card mb-3" id="search-card" style="display: none;">
 			<div class="card-body">
 				<h5 class="card-title" th:text="#{default.search.filterEntries.label}">Filter entries</h5>
-				<form style="padding-top: 10px;" th:object="${searchParams}" th:action="@{/document/search}" action="#" method="post" autocomplete="off">
+				<form th:object="${searchParams}" th:action="@{/document/search}" action="#" method="post" autocomplete="off">
 
-					<div class="form-group row">
-						<label class="col-sm-2 col-form-label text-right" th:text="#{document.search.text.label}">Text</label>
+					<div class="row mt-3">
+						<label class="col-sm-2 col-form-label text-end" th:text="#{document.search.text.label}">Text</label>
 						<div class="col-sm-4">
 							<input type="text" class="form-control" th:field="*{text}">
 						</div>
-						<label class="col-sm-2 col-form-label text-right" th:text="#{document.documentType.label}">Document type</label>
+						<label class="col-sm-2 col-form-label text-end" th:text="#{document.documentType.label}">Document type</label>
 						<div class="col-sm-4">
 							<select th:field="*{documentType}" class="form-control">
 								<option value=""></option>
@@ -97,15 +101,15 @@
 							</select>
 						</div>
 					</div>
-					<div class="form-group row">
-						<label class="col-sm-2 col-form-label text-right" th:text="#{document.search.dateOfIssueFromTo.label}">Date of issue (from/to)</label>
+					<div class="row mt-3">
+						<label class="col-sm-2 col-form-label text-end" th:text="#{document.search.dateOfIssueFromTo.label}">Date of issue (from/to)</label>
 						<div class="col-sm-2">
 							<input type="date" th:field="*{dateOfIssueFrom}" class="form-control">
 						</div>
 						<div class="col-sm-2">
 							<input type="date" th:field="*{dateOfIssueTo}" class="form-control">
 						</div>
-						<label class="col-sm-2 col-form-label text-right" th:text="#{document.search.contact.label}">Sender/receiver</label>
+						<label class="col-sm-2 col-form-label text-end" th:text="#{document.search.contact.label}">Sender/receiver</label>
 						<div class="col-sm-2">
 							<select th:field="*{contact}" class="form-control">
 								<option value=""></option>
@@ -119,14 +123,14 @@
 							</select>
 						</div>
 					</div>
-					<div class="form-group row">
-						<label class="col-sm-2 col-form-label text-right" th:text="#{document.tags.label}">Tags</label>
+					<div class="row mt-3">
+						<label class="col-sm-2 col-form-label text-end" th:text="#{document.tags.label}">Tags</label>
 						<div class="col-sm-4">
 							<select th:field="*{tags}" class="form-control tags-search" size="4" multiple="multiple">
 								<option th:each="tag : ${allTags}" th:value="${{tag}}" th:text="${tag.name}">[name]</option>
 							</select>
 						</div>
-						<label class="col-sm-2 col-form-label text-right" th:text="#{document.documentBox.label}">Document box</label>
+						<label class="col-sm-2 col-form-label text-end" th:text="#{document.documentBox.label}">Document box</label>
 						<div class="col-sm-4">
 							<select th:field="*{documentBox}" class="form-control">
 								<option value=""></option>
@@ -134,15 +138,15 @@
 							</select>
 						</div>
 					</div>
-					<div class="form-group row">
-						<label class="col-sm-2 col-form-label text-right" th:text="#{document.search.reviewDateFromTo.label}">Review date (from/to)</label>
+					<div class="row mt-3">
+						<label class="col-sm-2 col-form-label text-end" th:text="#{document.search.reviewDateFromTo.label}">Review date (from/to)</label>
 						<div class="col-sm-2">
 							<input type="date" th:field="*{reviewDateFrom}" class="form-control">
 						</div>
 						<div class="col-sm-2">
 							<input type="date" th:field="*{reviewDateTo}" class="form-control">
 						</div>
-						<label class="col-sm-2 col-form-label text-right" th:text="#{document.search.deletionDateFromTo.label}">Deletion date (from/to)</label>
+						<label class="col-sm-2 col-form-label text-end" th:text="#{document.search.deletionDateFromTo.label}">Deletion date (from/to)</label>
 						<div class="col-sm-2">
 							<input type="date" th:field="*{deletionDateFrom}" class="form-control">
 						</div>
@@ -150,8 +154,8 @@
 							<input type="date" th:field="*{deletionDateTo}" class="form-control">
 						</div>
 					</div>
-					<div class="form-group row">
-						<div class="col-sm-2 text-right" th:text="#{default.archived.label}">Archived</div>
+					<div class="row mt-3">
+						<div class="col-sm-2 text-end" th:text="#{default.archived.label}">Archived</div>
 						<div class="col-sm-4">
 							<div class="form-check">
 								<input class="form-check-input" type="checkbox" th:field="*{showArchived}">
@@ -160,7 +164,7 @@
 						</div>
 					</div>
 
-					<div class="form-group row">
+					<div class="row mt-3">
 						<div class="offset-sm-2 col-sm-10">
 							<input type="submit" class="btn btn-primary" th:value="#{default.button.search.label}" value="Search">
 							<button type="button" id="search-button-delete-parameters" class="btn btn-outline-secondary" th:text="#{default.search.button.deleteParameters.label}">Delete parameters</button>
@@ -174,37 +178,37 @@
 		<table class="table table-bordered">
 			<thead>
 				<tr>
-					<th class="clickable" data-sort-prop="title" th:text="#{document.title.label}">Title</th>
-					<th class="clickable" data-sort-prop="documentType.name" th:text="#{document.documentType.label}">Document type</th>
-					<th class="clickable text-right" data-sort-prop="dateOfIssue" th:text="#{document.dateOfIssue.label}">Date of issue</th>
-					<th th:text="#{document.tags.label}">Tags</th>
-					<th class="clickable" data-sort-prop="sender.name" th:text="#{document.sender.label}">Sender</th>
-					<th class="clickable" data-sort-prop="receiver.name" th:text="#{document.receiver.label}">Receiver</th>
-					<th class="clickable text-right" data-sort-prop="createdDatetime" th:text="#{default.date.createdDatetime.label}">Created</th>
-					<th class="clickable text-right" data-sort-prop="updatedDatetime" th:text="#{default.date.updatedDatetime.label}">Updated</th>
-					<th th:if="${searchParams.showArchived}" class="clickable" data-sort-prop="archived" th:text="#{default.archived.label}">Archived</th>
-					<th th:text="#{default.table.operations.label}">Actions</th>
+					<th scope="col" class="clickable" data-sort-prop="title" th:text="#{document.title.label}">Title</th>
+					<th scope="col" class="clickable" data-sort-prop="documentType.name" th:text="#{document.documentType.label}">Document type</th>
+					<th scope="col" class="clickable text-end" data-sort-prop="dateOfIssue" th:text="#{document.dateOfIssue.label}">Date of issue</th>
+					<th scope="col" th:text="#{document.tags.label}">Tags</th>
+					<th scope="col" class="clickable" data-sort-prop="sender.name" th:text="#{document.sender.label}">Sender</th>
+					<th scope="col" class="clickable" data-sort-prop="receiver.name" th:text="#{document.receiver.label}">Receiver</th>
+					<th scope="col" class="clickable text-end" data-sort-prop="createdDatetime" th:text="#{default.date.createdDatetime.label}">Created</th>
+					<th scope="col" class="clickable text-end" data-sort-prop="updatedDatetime" th:text="#{default.date.updatedDatetime.label}">Updated</th>
+					<th scope="col" th:if="${searchParams.showArchived}" class="clickable" data-sort-prop="archived" th:text="#{default.archived.label}">Archived</th>
+					<th scope="col" th:text="#{default.table.operations.label}">Actions</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr th:if="${#lists.isEmpty(page.content)}">
-					<td th:colspan="${searchParams.showArchived ? '10' : '9'}" align="center" th:text="#{default.table.empty.text}">Data can not be found.</td>
+					<td th:colspan="${searchParams.showArchived ? '10' : '9'}" class="text-center" th:text="#{default.table.empty.text}">Data can not be found.</td>
 				</tr>
 				<tr th:each="document : ${page.content}">
 					<td>
 						<span th:text="${document.title}">[title]</span>
-						<i th:if="${#strings.isEmpty(document.description)==false}" class="far fa-comment-alt text-muted" data-toggle="popover" data-html="true" th:title="#{document.description.label}" th:attr="data-content=${document.description}"></i>
+						<em th:if="${#strings.isEmpty(document.description)==false}" class="far fa-comment-alt text-muted" data-bs-toggle="popover" data-bs-html="true" th:title="#{document.description.label}" th:attr="data-bs-content=${document.description}"></em>
 					</td>
 					<td>
 						<span th:text="${document.documentType?.name}">[documentType.name]</span>
 					</td>
-					<td class="text-right">
+					<td class="text-end">
 						<span th:if="${document.dateOfIssue==null}" th:text="#{default.date.unknown}">Unknown</span>
 						<span th:if="${document.dateOfIssue!=null}" th:text="${#temporals.format(document.dateOfIssue, #messages.msg('default.dateFormat'))}">[dateOfIssue]</span>
 					</td>
 					<td>
 						<div th:if="${!#lists.isEmpty(document.tags)}">
-							<span th:each="tag : ${document.tags}" class="badge badge-pill badge-info mr-1" th:text="${tag.name}">[tag.name]</span>
+							<span th:each="tag : ${document.tags}" class="badge rounded-pill bg-info me-1" th:text="${tag.name}">[tag.name]</span>
 						</div>
 					</td>
 					<td>
@@ -213,26 +217,26 @@
 					<td>
 						<span th:text="${document.receiver?.name}">[receiver.name]</span>
 					</td>
-					<td class="text-right">
+					<td class="text-end">
 						<span th:if="${document.createdDatetime==null}" th:text="#{default.date.unknown}">Unknown</span>
 						<span th:if="${document.createdDatetime!=null}" th:text="${#temporals.format(document.createdDatetime, #messages.msg('default.dateTimeHHmmssFormat'))}">[createdDatetime]</span>
 					</td>
-					<td class="text-right">
+					<td class="text-end">
 						<span th:if="${document.updatedDatetime==null}" th:text="#{default.date.unknown}">Unknown</span>
 						<span th:if="${document.updatedDatetime!=null}" th:text="${#temporals.format(document.updatedDatetime, #messages.msg('default.dateTimeHHmmssFormat'))}">[updatedDatetime]</span>
 					</td>
 					<td th:if="${searchParams.showArchived}">
-						<span th:if="${document.archived}" class="badge badge-secondary" th:text="#{default.archived.label}">Archived</span>
+						<span th:if="${document.archived}" class="badge bg-secondary" th:text="#{default.archived.label}">Archived</span>
 					</td>
 					<td>
 						<div class="btn-group">
 							<a th:href="@{/document/show/{id}(id=${document.id})}" class="btn btn-outline-secondary btn-sm" th:text="#{default.button.show.label}">Show</a>
-							<button type="button" class="btn btn-outline-secondary btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<button type="button" class="btn btn-outline-secondary btn-sm dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 								<span class="sr-only">Toggle Dropdown</span>
 							</button>
-							<div class="dropdown-menu dropdown-menu-right">
+							<div class="dropdown-menu dropdown-menu-end">
 								<a th:href="@{/document/edit/{id}(id=${document.id})}" class="dropdown-item" th:text="#{default.button.edit.label}">Edit</a>
-								<a href="" class="dropdown-item" data-toggle="modal" data-target="#deleteModal" th:attr="data-id=${document.id}" th:text="#{default.button.delete.label}">Delete</a>
+								<a href="" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deleteModal" th:attr="data-id=${document.id}" th:text="#{default.button.delete.label}">Delete</a>
 							</div>
 						</div>
 					</td>
@@ -242,32 +246,46 @@
 
 		<div class="row" th:if="${page.hasContent()}">
 			<div class="col-sm-12">
-				<form class="form-inline float-right" th:with="sortParam=${sortProperty+','+(sortDesc?'desc':'asc')}" autocomplete="off">
-					<span class="mr-2">
-						<span th:text="${currentItems}">[currentItems]</span>
-						<span th:text="#{default.pagination.pageOfPages.label}">of</span>
-						<span th:text="${page.totalElements}">[page.totalElements]</span>
-					</span>
-					<div class="btn-group mr-2" th:if="${page.isFirst()}">
-						<button class="btn btn-outline-secondary" th:title="#{default.pagination.firstPage.label}" disabled><i class="fa fa-angle-double-left"></i></button>
-						<button class="btn btn-outline-secondary" th:title="#{default.pagination.previousPage.label}" disabled><i class="fa fa-angle-left"></i></button>
+				<form class="float-end row g-2" th:with="sortParam=${sortProperty+','+(sortDesc?'desc':'asc')}" autocomplete="off">
+					<div class="col-auto">
+						<span class="form-control-plaintext me-2">
+							<span th:text="${currentItems}">[currentItems]</span>
+							<span th:text="#{default.pagination.pageOfPages.label}">of</span>
+							<span th:text="${page.totalElements}">[page.totalElements]</span>
+						</span>
 					</div>
-					<div class="btn-group mr-2" th:if="${page.hasPrevious()}">
-						<a class="btn btn-outline-secondary" th:href="@{/document/list(size=${page.size}, page=0, sort=${sortParam})}" th:title="#{default.pagination.firstPage.label}"><i class="fa fa-angle-double-left"></i></a>
-						<a class="btn btn-outline-secondary" th:href="@{/document/list(size=${page.size}, page=${page.previousPageable().pageNumber}, sort=${sortParam})}" th:title="#{default.pagination.previousPage.label}"><i class="i fa fa-angle-left"></i></a>
+					<div class="col-auto" th:if="${page.isFirst()}">
+						<div class="btn-group me-2">
+							<button class="btn btn-outline-secondary" th:title="#{default.pagination.firstPage.label}" disabled><em class="fa fa-angle-double-left"></em></button>
+							<button class="btn btn-outline-secondary" th:title="#{default.pagination.previousPage.label}" disabled><em class="fa fa-angle-left"></em></button>
+						</div>
 					</div>
-					<input type="text" class="form-control mr-2 pagination-page" style="width: 3em;" th:value="${page.number+1}">
-					<span class="mr-2">
-						<span th:text="#{default.pagination.pageOfPages.label}">of</span>
-						<span th:text="${page.totalPages}">[page.totalPages]</span>
-					</span>
-					<div class="btn-group" th:if="${page.isLast()}">
-						<button class="btn btn-outline-secondary" th:title="#{default.pagination.nextPage.label}" disabled><i class="fa fa-angle-right"></i></button>
-						<button class="btn btn-outline-secondary" th:title="#{default.pagination.lastPage.label}" disabled><i class="fa fa-angle-double-right"></i></button>
+					<div class="col-auto" th:if="${page.hasPrevious()}">
+						<div class="btn-group me-2">
+							<a class="btn btn-outline-secondary" th:href="@{/document/list(size=${page.size}, page=0, sort=${sortParam})}" th:title="#{default.pagination.firstPage.label}"><em class="fa fa-angle-double-left"></em></a>
+							<a class="btn btn-outline-secondary" th:href="@{/document/list(size=${page.size}, page=${page.previousPageable().pageNumber}, sort=${sortParam})}" th:title="#{default.pagination.previousPage.label}"><em class="i fa fa-angle-left"></em></a>
+						</div>
 					</div>
-					<div class="btn-group" th:if="${page.hasNext()}">
-						<a class="btn btn-outline-secondary" th:href="@{/document/list(size=${page.size}, page=${page.nextPageable().pageNumber}, sort=${sortParam})}" th:title="#{default.pagination.nextPage.label}"><i class="fa fa-angle-right"></i></a>
-						<a class="btn btn-outline-secondary" th:href="@{/document/list(size=${page.size}, page=${page.totalPages-1}, sort=${sortParam})}" th:title="#{default.pagination.lastPage.label}"><i class="fa fa-angle-double-right"></i></a>
+					<div class="col-auto">
+						<input type="text" class="form-control me-2 pagination-page" style="width: 3em;" th:value="${page.number+1}">
+					</div>
+					<div class="col-auto">
+						<span class="form-control-plaintext me-2">
+							<span th:text="#{default.pagination.pageOfPages.label}">of</span>
+							<span th:text="${page.totalPages}">[page.totalPages]</span>
+						</span>
+					</div>
+					<div class="col-auto" th:if="${page.isLast()}">
+						<div class="btn-group">
+							<button class="btn btn-outline-secondary" th:title="#{default.pagination.nextPage.label}" disabled><em class="fa fa-angle-right"></em></button>
+							<button class="btn btn-outline-secondary" th:title="#{default.pagination.lastPage.label}" disabled><em class="fa fa-angle-double-right"></em></button>
+						</div>
+					</div>
+					<div class="col-auto" th:if="${page.hasNext()}">
+						<div class="btn-group">
+							<a class="btn btn-outline-secondary" th:href="@{/document/list(size=${page.size}, page=${page.nextPageable().pageNumber}, sort=${sortParam})}" th:title="#{default.pagination.nextPage.label}"><em class="fa fa-angle-right"></em></a>
+							<a class="btn btn-outline-secondary" th:href="@{/document/list(size=${page.size}, page=${page.totalPages-1}, sort=${sortParam})}" th:title="#{default.pagination.lastPage.label}"><em class="fa fa-angle-double-right"></em></a>
+						</div>
 					</div>
 				</form>
 			</div>
@@ -278,16 +296,14 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title" id="deleteModalLabel" th:text="#{document.deletePopup.title}">Delete document</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
 						<span th:text="#{document.deletePopup.question}">Do you really want to delete this document?</span>
 					</div>
 					<div class="modal-footer">
 						<a href="" th:attr="data-href-template=@{/document/delete/{id}}" class="btn btn-danger" th:text="#{default.button.delete.label}">Delete</a>
-						<button type="button" class="btn btn-outline-secondary" data-dismiss="modal" th:text="#{default.button.cancel.label}">Cancel</button>
+						<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" th:text="#{default.button.cancel.label}">Cancel</button>
 					</div>
 				</div>
 			</div>

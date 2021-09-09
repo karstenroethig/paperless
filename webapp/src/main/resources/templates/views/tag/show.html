@@ -19,27 +19,27 @@
 			<h1 class="h2">
 				<span th:text="#{tag.show.label}">Show tag</span>:
 				<span th:text="${tag.name}">[name]</span>
-				<span th:if="${tag.archived}" class="badge badge-secondary" th:text="#{default.archived.label}">Archived</span>
+				<span th:if="${tag.archived}" class="badge bg-secondary" th:text="#{default.archived.label}">Archived</span>
 			</h1>
 			<div class="btn-toolbar mb-2 mb-md-0">
-				<div class="btn-group mr-2">
+				<div class="btn-group me-2">
 					<a th:href="@{/tag/edit/{id}(id=${tag.id})}" class="btn btn-sm btn-outline-secondary" th:text="#{default.button.edit.label}">Edit</a>
 				</div>
-				<div class="btn-group mr-2">
-					<a href="" class="btn btn-sm btn-outline-danger" data-toggle="modal" data-target="#deleteModal" th:attr="data-id=${tag.id}" th:text="#{default.button.delete.label}">Delete</a>
+				<div class="btn-group me-2">
+					<a href="" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" th:attr="data-id=${tag.id}" th:text="#{default.button.delete.label}">Delete</a>
 				</div>
 			</div>
 		</div>
 
 		<div th:replace="~{fragments/messages :: messages-fragment(${messages})}"></div>
 
-		<div class="form-group row">
-			<label class="col-sm-2 text-right" th:text="#{tag.name.label}">Name</label>
+		<div class="row">
+			<label class="col-sm-2 text-end" th:text="#{tag.name.label}">Name</label>
 			<div class="col-sm-10" th:text="${tag.name}">[name]</div>
 		</div>
 
-		<div class="form-group row">
-			<label class="col-sm-2 text-right" th:text="#{tag.description.label}">Description</label>
+		<div class="row mt-3">
+			<label class="col-sm-2 text-end" th:text="#{tag.description.label}">Description</label>
 			<div class="col-sm-10" th:utext="${tag.description}">[description]</div>
 		</div>
 
@@ -48,16 +48,14 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title" id="deleteModalLabel" th:text="#{tag.deletePopup.title}">Delete tag</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
 						<span th:text="#{tag.deletePopup.question}">Do you really want to delete this tag?</span>
 					</div>
 					<div class="modal-footer">
 						<a href="" th:attr="data-href-template=@{/tag/delete/{id}}" class="btn btn-danger" th:text="#{default.button.delete.label}">Delete</a>
-						<button type="button" class="btn btn-outline-secondary" data-dismiss="modal" th:text="#{default.button.cancel.label}">Cancel</button>
+						<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" th:text="#{default.button.cancel.label}">Cancel</button>
 					</div>
 				</div>
 			</div>

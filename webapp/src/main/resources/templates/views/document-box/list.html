@@ -18,7 +18,7 @@
 		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 			<h1 class="h2" th:text="#{documentBox.label.plural}">Document boxes</h1>
 			<div class="btn-toolbar mb-2 mb-md-0">
-				<div class="btn-group mr-2">
+				<div class="btn-group me-2">
 					<a th:href="@{/document-box/create}" class="btn btn-sm btn-outline-secondary" th:text="#{documentBox.add.label}">Add document box</a>
 				</div>
 			</div>
@@ -28,19 +28,25 @@
 
 		<div class="row">
 			<div class="col-sm-10">
-				<form class="form-inline" th:object="${searchParams}" th:action="@{/document-box/search}" action="#" method="post" autocomplete="off">
-					<div class="form-check form-check-inline">
-						<input class="form-check-input" type="checkbox" th:field="*{showArchived}" onchange="this.form.submit();">
-						<label class="form-check-label" th:text="#{default.search.showArchived.label}">Show archived</label>
+				<form class="row g-2" th:object="${searchParams}" th:action="@{/document-box/search}" action="#" method="post" autocomplete="off">
+					<div class="col-auto">
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="checkbox" th:field="*{showArchived}" onchange="this.form.submit();">
+							<label class="form-check-label" th:text="#{default.search.showArchived.label}">Show archived</label>
+						</div>
 					</div>
 				</form>
 			</div>
 			<div class="col-sm-2">
-				<form class="form-inline float-right mb-2" autocomplete="off">
-					<select class="form-control mr-2 pagination-pagesize">
-						<option th:each="size : ${availablePagesizes}" th:value="${size}" th:text="${size}" th:selected="${size == page.size}"></option>
-					</select>
-					<span th:text="#{default.pagination.perPage.label}">per page</span>
+				<form class="float-end mb-2 row g-2" autocomplete="off">
+					<div class="col-auto">
+						<select class="form-control me-2 pagination-pagesize">
+							<option th:each="size : ${availablePagesizes}" th:value="${size}" th:text="${size}" th:selected="${size == page.size}"></option>
+						</select>
+					</div>
+					<div class="col-auto">
+						<span class="form-control-plaintext" th:text="#{default.pagination.perPage.label}">per page</span>
+					</div>
 				</form>
 			</div>
 		</div>
@@ -48,32 +54,32 @@
 		<table class="table table-bordered">
 			<thead>
 				<tr>
-					<th class="clickable" data-sort-prop="name" th:text="#{documentBox.name.label}">Name</th>
-					<th th:if="${searchParams.showArchived}" class="clickable" data-sort-prop="archived" th:text="#{default.archived.label}">Archived</th>
-					<th th:text="#{default.table.operations.label}">Actions</th>
+					<th scope="col" class="clickable" data-sort-prop="name" th:text="#{documentBox.name.label}">Name</th>
+					<th scope="col" th:if="${searchParams.showArchived}" class="clickable" data-sort-prop="archived" th:text="#{default.archived.label}">Archived</th>
+					<th scope="col" th:text="#{default.table.operations.label}">Actions</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr th:if="${#lists.isEmpty(page.content)}">
-					<td th:colspan="${searchParams.showArchived ? '3' : '2'}" align="center" th:text="#{default.table.empty.text}">Data can not be found.</td>
+					<td th:colspan="${searchParams.showArchived ? '3' : '2'}" class="text-center" th:text="#{default.table.empty.text}">Data can not be found.</td>
 				</tr>
 				<tr th:each="documentBox : ${page.content}">
 					<td>
 						<span th:text="${documentBox.name}">[name]</span>
-						<i th:if="${#strings.isEmpty(documentBox.description)==false}" class="far fa-comment-alt text-muted" data-toggle="popover" data-html="true" th:title="#{documentBox.description.label}" th:attr="data-content=${documentBox.description}"></i>
+						<em th:if="${#strings.isEmpty(documentBox.description)==false}" class="far fa-comment-alt text-muted" data-bs-toggle="popover" data-bs-html="true" th:title="#{documentBox.description.label}" th:attr="data-bs-content=${documentBox.description}"></em>
 					</td>
 					<td th:if="${searchParams.showArchived}">
-						<span th:if="${documentBox.archived}" class="badge badge-secondary" th:text="#{default.archived.label}">Archived</span>
+						<span th:if="${documentBox.archived}" class="badge bg-secondary" th:text="#{default.archived.label}">Archived</span>
 					</td>
 					<td>
 						<div class="btn-group">
 							<a th:href="@{/document-box/show/{id}(id=${documentBox.id})}" class="btn btn-outline-secondary btn-sm" th:text="#{default.button.show.label}">Show</a>
-							<button type="button" class="btn btn-outline-secondary btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<button type="button" class="btn btn-outline-secondary btn-sm dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 								<span class="sr-only">Toggle Dropdown</span>
 							</button>
-							<div class="dropdown-menu dropdown-menu-right">
+							<div class="dropdown-menu dropdown-menu-end">
 								<a th:href="@{/document-box/edit/{id}(id=${documentBox.id})}" class="dropdown-item" th:text="#{default.button.edit.label}">Edit</a>
-								<a href="" class="dropdown-item" data-toggle="modal" data-target="#deleteModal" th:attr="data-id=${documentBox.id}" th:text="#{default.button.delete.label}">Delete</a>
+								<a href="" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deleteModal" th:attr="data-id=${documentBox.id}" th:text="#{default.button.delete.label}">Delete</a>
 							</div>
 						</div>
 					</td>
@@ -83,32 +89,46 @@
 
 		<div class="row" th:if="${page.hasContent()}">
 			<div class="col-sm-12">
-				<form class="form-inline float-right" th:with="sortParam=${sortProperty+','+(sortDesc?'desc':'asc')}" autocomplete="off">
-					<span class="mr-2">
-						<span th:text="${currentItems}">[currentItems]</span>
-						<span th:text="#{default.pagination.pageOfPages.label}">of</span>
-						<span th:text="${page.totalElements}">[page.totalElements]</span>
-					</span>
-					<div class="btn-group mr-2" th:if="${page.isFirst()}">
-						<button class="btn btn-outline-secondary" th:title="#{default.pagination.firstPage.label}" disabled><i class="fa fa-angle-double-left"></i></button>
-						<button class="btn btn-outline-secondary" th:title="#{default.pagination.previousPage.label}" disabled><i class="fa fa-angle-left"></i></button>
+				<form class="float-end row g-2" th:with="sortParam=${sortProperty+','+(sortDesc?'desc':'asc')}" autocomplete="off">
+					<div class="col-auto">
+						<span class="form-control-plaintext me-2">
+							<span th:text="${currentItems}">[currentItems]</span>
+							<span th:text="#{default.pagination.pageOfPages.label}">of</span>
+							<span th:text="${page.totalElements}">[page.totalElements]</span>
+						</span>
 					</div>
-					<div class="btn-group mr-2" th:if="${page.hasPrevious()}">
-						<a class="btn btn-outline-secondary" th:href="@{/document-box/list(size=${page.size}, page=0, sort=${sortParam})}" th:title="#{default.pagination.firstPage.label}"><i class="fa fa-angle-double-left"></i></a>
-						<a class="btn btn-outline-secondary" th:href="@{/document-box/list(size=${page.size}, page=${page.previousPageable().pageNumber}, sort=${sortParam})}" th:title="#{default.pagination.previousPage.label}"><i class="i fa fa-angle-left"></i></a>
+					<div class="col-auto" th:if="${page.isFirst()}">
+						<div class="btn-group me-2">
+							<button class="btn btn-outline-secondary" th:title="#{default.pagination.firstPage.label}" disabled><em class="fa fa-angle-double-left"></em></button>
+							<button class="btn btn-outline-secondary" th:title="#{default.pagination.previousPage.label}" disabled><em class="fa fa-angle-left"></em></button>
+						</div>
 					</div>
-					<input type="text" class="form-control mr-2 pagination-page" style="width: 3em;" th:value="${page.number+1}">
-					<span class="mr-2">
-						<span th:text="#{default.pagination.pageOfPages.label}">of</span>
-						<span th:text="${page.totalPages}">[page.totalPages]</span>
-					</span>
-					<div class="btn-group" th:if="${page.isLast()}">
-						<button class="btn btn-outline-secondary" th:title="#{default.pagination.nextPage.label}" disabled><i class="fa fa-angle-right"></i></button>
-						<button class="btn btn-outline-secondary" th:title="#{default.pagination.lastPage.label}" disabled><i class="fa fa-angle-double-right"></i></button>
+					<div class="col-auto" th:if="${page.hasPrevious()}">
+						<div class="btn-group me-2">
+							<a class="btn btn-outline-secondary" th:href="@{/document-box/list(size=${page.size}, page=0, sort=${sortParam})}" th:title="#{default.pagination.firstPage.label}"><em class="fa fa-angle-double-left"></em></a>
+							<a class="btn btn-outline-secondary" th:href="@{/document-box/list(size=${page.size}, page=${page.previousPageable().pageNumber}, sort=${sortParam})}" th:title="#{default.pagination.previousPage.label}"><em class="i fa fa-angle-left"></em></a>
+						</div>
 					</div>
-					<div class="btn-group" th:if="${page.hasNext()}">
-						<a class="btn btn-outline-secondary" th:href="@{/document-box/list(size=${page.size}, page=${page.nextPageable().pageNumber}, sort=${sortParam})}" th:title="#{default.pagination.nextPage.label}"><i class="fa fa-angle-right"></i></a>
-						<a class="btn btn-outline-secondary" th:href="@{/document-box/list(size=${page.size}, page=${page.totalPages-1}, sort=${sortParam})}" th:title="#{default.pagination.lastPage.label}"><i class="fa fa-angle-double-right"></i></a>
+					<div class="col-auto">
+						<input type="text" class="form-control me-2 pagination-page" style="width: 3em;" th:value="${page.number+1}">
+					</div>
+					<div class="col-auto">
+						<span class="form-control-plaintext me-2">
+							<span th:text="#{default.pagination.pageOfPages.label}">of</span>
+							<span th:text="${page.totalPages}">[page.totalPages]</span>
+						</span>
+					</div>
+					<div class="col-auto" th:if="${page.isLast()}">
+						<div class="btn-group">
+							<button class="btn btn-outline-secondary" th:title="#{default.pagination.nextPage.label}" disabled><em class="fa fa-angle-right"></em></button>
+							<button class="btn btn-outline-secondary" th:title="#{default.pagination.lastPage.label}" disabled><em class="fa fa-angle-double-right"></em></button>
+						</div>
+					</div>
+					<div class="col-auto" th:if="${page.hasNext()}">
+						<div class="btn-group">
+							<a class="btn btn-outline-secondary" th:href="@{/document-box/list(size=${page.size}, page=${page.nextPageable().pageNumber}, sort=${sortParam})}" th:title="#{default.pagination.nextPage.label}"><em class="fa fa-angle-right"></em></a>
+							<a class="btn btn-outline-secondary" th:href="@{/document-box/list(size=${page.size}, page=${page.totalPages-1}, sort=${sortParam})}" th:title="#{default.pagination.lastPage.label}"><em class="fa fa-angle-double-right"></em></a>
+						</div>
 					</div>
 				</form>
 			</div>
@@ -119,16 +139,14 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title" id="deleteModalLabel" th:text="#{documentBox.deletePopup.title}">Delete document box</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
 						<span th:text="#{documentBox.deletePopup.question}">Do you really want to delete this document box?</span>
 					</div>
 					<div class="modal-footer">
 						<a href="" th:attr="data-href-template=@{/document-box/delete/{id}}" class="btn btn-danger" th:text="#{default.button.delete.label}">Delete</a>
-						<button type="button" class="btn btn-outline-secondary" data-dismiss="modal" th:text="#{default.button.cancel.label}">Cancel</button>
+						<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" th:text="#{default.button.cancel.label}">Cancel</button>
 					</div>
 				</div>
 			</div>

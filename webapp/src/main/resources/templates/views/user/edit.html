@@ -26,8 +26,8 @@
 
 		<form th:object="${user}" th:action="@{/user/update}" action="#" method="post" autocomplete="off">
 
-			<div class="form-group row">
-				<label class="col-sm-2 col-form-label text-right">
+			<div class="row">
+				<label class="col-sm-2 col-form-label text-end">
 					<span class="required">*</span>
 					<span th:text="#{user.username.label}">Username</span>
 				</label>
@@ -37,8 +37,8 @@
 				</div>
 			</div>
 
-			<div class="form-group row">
-				<label class="col-sm-2 col-form-label text-right">
+			<div class="row mt-3">
+				<label class="col-sm-2 col-form-label text-end">
 					<span th:text="#{user.password.label}">Password</span>
 				</label>
 				<div class="col-sm-10">
@@ -47,8 +47,8 @@
 				</div>
 			</div>
 
-			<div class="form-group row">
-				<label class="col-sm-2 col-form-label text-right">
+			<div class="row mt-3">
+				<label class="col-sm-2 col-form-label text-end">
 					<span th:text="#{user.repeatPassword.label}">Repeat password</span>
 				</label>
 				<div class="col-sm-10">
@@ -57,8 +57,8 @@
 				</div>
 			</div>
 
-			<div class="form-group row">
-				<label class="col-sm-2 col-form-label text-right">
+			<div class="row mt-3">
+				<label class="col-sm-2 col-form-label text-end">
 					<span class="required">*</span>
 					<span th:text="#{user.fullName.label}">Full name</span>
 				</label>
@@ -68,13 +68,13 @@
 				</div>
 			</div>
 
-			<div class="form-group row">
+			<div class="row mt-3">
 				<div class="offset-sm-2 col-sm-10">
 					<span class="required">*</span> <span th:text="#{default.form.required}">required</span>
 				</div>
 			</div>
 
-			<div class="form-group row">
+			<div class="row mt-2">
 				<div class="offset-sm-2 col-sm-10">
 					<input type="submit" class="btn btn-primary" th:value="#{default.button.save.label}" value="Save">
 					<a th:href="@{/user/show}" class="btn btn-outline-secondary" th:text="#{default.button.cancel.label}">Cancel</a>

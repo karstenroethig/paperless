@@ -9,27 +9,19 @@
 	<span th:fragment="messages-fragment (messages)" th:if="${messages}">
 		<div class="alert alert-danger alert-dismissible fade show" th:if="${messages.hasErrors()}" th:each="message : ${messages.errors}" role="alert">
 			<span th:utext="${#messages.msgWithParams(message.key, message.params)}">error message</span>
-			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-				<span aria-hidden="true">&times;</span>
-			</button>
+			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 		</div>
 		<div class="alert alert-warning alert-dismissible fade show" th:if="${messages.hasWarnings()}" th:each="message : ${messages.warnings}" role="alert">
 			<span th:utext="${#messages.msgWithParams(message.key, message.params)}">warning message</span>
-			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-				<span aria-hidden="true">&times;</span>
-			</button>
+			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 		</div>
 		<div class="alert alert-info alert-dismissible fade show" th:if="${messages.hasInfos()}" th:each="message : ${messages.infos}" role="alert">
 			<span th:utext="${#messages.msgWithParams(message.key, message.params)}">info message</span>
-			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-				<span aria-hidden="true">&times;</span>
-			</button>
+			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 		</div>
 		<div class="alert alert-success alert-dismissible fade show" th:if="${messages.hasSuccesses()}" th:each="message : ${messages.successes}" role="alert">
 			<span th:utext="${#messages.msgWithParams(message.key, message.params)}">success message</span>
-			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-				<span aria-hidden="true">&times;</span>
-			</button>
+			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 		</div>
 	</span>
 

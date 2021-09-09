@@ -18,8 +18,8 @@
 		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 			<h1 class="h2">Backup settings</h1>
 			<div class="btn-toolbar mb-2 mb-md-0">
-				<div class="btn-group mr-2">
-					<a href="" class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#backupNowModal">Backup now</a>
+				<div class="btn-group me-2">
+					<a href="" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#backupNowModal">Backup now</a>
 				</div>
 			</div>
 		</div>
@@ -39,36 +39,36 @@
 			</div>
 		</div>
 
-		<div class="form-group row">
-			<label class="col-sm-2 text-right">Perform backups</label>
+		<div class="row">
+			<label class="col-sm-2 text-end">Perform backups</label>
 			<div class="col-sm-10">
 				<span th:if="${backupSettings.enabled}">Enabled</span>
 				<span th:if="${!backupSettings.enabled}">Disabled</span>
 			</div>
 		</div>
 
-		<div class="form-group row">
-			<label class="col-sm-2 text-right">Schedule</label>
+		<div class="row mt-3">
+			<label class="col-sm-2 text-end">Schedule</label>
 			<div class="col-sm-10" th:text="${backupSettings.schedule}">[schedule]</div>
 		</div>
 
-		<div class="form-group row">
-			<label class="col-sm-2 text-right">Backup directory</label>
+		<div class="row mt-3">
+			<label class="col-sm-2 text-end">Backup directory</label>
 			<div class="col-sm-10" th:text="${backupSettings.backupDirectory}">[backupDirectory]</div>
 		</div>
 
-		<div class="form-group row">
-			<label class="col-sm-2 text-right">Backup file prefix</label>
+		<div class="row mt-3">
+			<label class="col-sm-2 text-end">Backup file prefix</label>
 			<div class="col-sm-10" th:text="${backupSettings.backupFilePrefix}">[backupFilePrefix]</div>
 		</div>
 
-		<div class="form-group row">
-			<label class="col-sm-2 text-right">Backup file date pattern</label>
+		<div class="row mt-3">
+			<label class="col-sm-2 text-end">Backup file date pattern</label>
 			<div class="col-sm-10" th:text="${backupSettings.backupFileDatePattern}">[backupFileDatePattern]</div>
 		</div>
 
-		<div class="form-group row">
-			<label class="col-sm-2 text-right">Backup filename (sample)</label>
+		<div class="row mt-3">
+			<label class="col-sm-2 text-end">Backup filename (sample)</label>
 			<div class="col-sm-10" th:text="${backupSettings.backupFilePrefix + #dates.format(#dates.createNow(), backupSettings.backupFileDatePattern) + '.zip'}">[sample]</div>
 		</div>
 
@@ -77,16 +77,14 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title" id="backupNowModalLabel" th:text="#{backup.now.popup.title}">Backup now</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
 						<span th:text="#{backup.now.popup.question}">Are you sure you want to create a current backup now?</span>
 					</div>
 					<div class="modal-footer">
 						<a th:href="@{/backup/now}" class="btn btn-outline-secondary">Backup now</a>
-						<button type="button" class="btn btn-outline-secondary" data-dismiss="modal" th:text="#{default.button.cancel.label}">Cancel</button>
+						<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" th:text="#{default.button.cancel.label}">Cancel</button>
 					</div>
 				</div>
 			</div>

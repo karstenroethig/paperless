@@ -30,28 +30,36 @@
 					<h3 class="card-header">Activity Stream</h3>
 					<ul class="list-group list-group-flush">
 						<li class="list-group-item">
-							<h6 class="card-subtitle mb-2 text-muted">4 minutes ago - 2020-10-15 10:42:21</h6>
-							<p class="card-text"><a href="#"><strong>Karsten</strong></a> commented on <a href="#">document name</a>.</p>
+							<h6 class="card-title mb-2 text-muted">4 minutes ago - 2020-10-15 10:42:21</h6>
+							<p class="card-text">
+								<a href="#"><strong>Karsten</strong></a> commented on <a href="#">document name</a>.
+							</p>
 							<div class="alert alert-secondary">
 								You successfully read this important message.
 							</div>
 						</li>
 						<li class="list-group-item">
-							<h6 class="card-subtitle mb-2 text-muted">4 minutes ago - 2020-10-15 10:42:21</h6>
-							<p class="card-text"><a href="#"><strong>Karsten</strong></a> attachted one file to <a href="#">document name</a>.</p>
-							<ul style="list-style-type: disc;">
-								<li>
-									<a href="#">filename.pdf</a>
-								</li>
-							</ul>
+							<h6 class="card-title mb-2 text-muted">4 minutes ago - 2020-10-15 10:42:21</h6>
+							<p class="card-text">
+								<a href="#"><strong>Karsten</strong></a> attachted one file to <a href="#">document name</a>.
+							</p>
+							<div class="mb-2">
+								<ul style="list-style-type: disc;">
+									<li>
+										<a href="#">filename.pdf</a>
+									</li>
+								</ul>
+							</div>
 						</li>
 						<li class="list-group-item">
-							<h6 class="card-subtitle mb-2 text-muted">4 minutes ago - 2020-10-15 10:42:21</h6>
+							<h6 class="card-title mb-2 text-muted">4 minutes ago - 2020-10-15 10:42:21</h6>
 							<p class="card-text"><a href="#"><strong>Karsten</strong></a> updated 2 fields of <a href="#">document name</a>.</p>
-							<ul style="list-style-type: disc;">
-								<li>Logged '2h'</li>
-								<li>Changed the Remaining Estimate to '0h'</li>
-							</ul>
+							<div class="mb-2">
+								<ul style="list-style-type: disc;">
+									<li>Logged '2h'</li>
+									<li>Changed the Remaining Estimate to '0h'</li>
+								</ul>
+							</div>
 						</li>
 					</ul>
 					<div class="card-body">
@@ -90,9 +98,9 @@
 						<table class="table table-sm">
 							<thead>
 								<tr>
-									<th th:text="#{document.label}">Document</th>
-									<th class="text-right">Days</th>
-									<th class="text-right" th:text="#{document.reviewDate.label}">Review date</th>
+									<th scope="col" th:text="#{document.label}">Document</th>
+									<th scope="col" class="text-end">Days</th>
+									<th scope="col" class="text-end" th:text="#{document.reviewDate.label}">Review date</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -100,11 +108,11 @@
 									<td>
 										<a th:href="@{/document/show/{id}(id=${document.id})}" th:text="${document.title}">[title]</a>
 									</td>
-									<td class="text-right">
+									<td class="text-end">
 										<span th:if="${document.reviewDate==null}" th:text="#{default.date.unknown}">Unknown</span>
 										<span th:if="${document.reviewDate!=null}" th:text="${dateUtils.daysFromDateUntilNow(document.reviewDate)}">[days]</span>
 									</td>
-									<td class="text-right">
+									<td class="text-end">
 										<span th:if="${document.reviewDate==null}" th:text="#{default.date.unknown}">Unknown</span>
 										<span th:if="${document.reviewDate!=null}" th:text="${#temporals.format(document.reviewDate, #messages.msg('default.dateFormat'))}">[reviewDate]</span>
 									</td>
@@ -126,9 +134,9 @@
 						<table class="table table-sm">
 							<thead>
 								<tr>
-									<th th:text="#{document.label}">Document</th>
-									<th class="text-right">Days</th>
-									<th class="text-right" th:text="#{document.deletionDate.label}">Deletion date</th>
+									<th scope="col" th:text="#{document.label}">Document</th>
+									<th scope="col" class="text-end">Days</th>
+									<th scope="col" class="text-end" th:text="#{document.deletionDate.label}">Deletion date</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -136,11 +144,11 @@
 									<td>
 										<a th:href="@{/document/show/{id}(id=${document.id})}" th:text="${document.title}">[title]</a>
 									</td>
-									<td class="text-right">
+									<td class="text-end">
 										<span th:if="${document.deletionDate==null}" th:text="#{default.date.unknown}">Unknown</span>
 										<span th:if="${document.deletionDate!=null}" th:text="${dateUtils.daysFromDateUntilNow(document.deletionDate)}">[days]</span>
 									</td>
-									<td class="text-right">
+									<td class="text-end">
 										<span th:if="${document.deletionDate==null}" th:text="#{default.date.unknown}">Unknown</span>
 										<span th:if="${document.deletionDate!=null}" th:text="${#temporals.format(document.deletionDate, #messages.msg('default.dateFormat'))}">[reviewDate]</span>
 									</td>

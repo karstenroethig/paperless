@@ -7,42 +7,50 @@
 </head>
 <body>
 
-	<nav th:fragment="header-fragment (menu)" class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
-		<span class="navbar-brand mb-0 h1">
-			<img th:src="@{/images/brand.png}" width="30" height="30" class="d-inline-block align-top">
-			<span th:text="#{application.name}">[application.name]</span>
-		</span>
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-			<ul class="navbar-nav mr-auto" sec:authorize="hasRole('USER') or hasRole('ADMIN')">
-				<li class="nav-item" th:classappend="${#strings.equals(menu,'dashboard')} ? active">
-					<a class="nav-link" th:href="@{/dashboard}" th:title="#{dashboard.label}"><i class="fas fa-home fa-lg"></i></a>
-				</li>
-				<li class="nav-item" th:classappend="${#strings.equals(menu,'document')} ? active">
-					<a class="nav-link" th:href="@{/document/list}" th:title="#{document.label.plural}"><i class="far fa-file-alt fa-lg"></i></a>
-				</li>
-				<li class="nav-item" th:classappend="${#strings.equals(menu,'tag')} ? active">
-					<a class="nav-link" th:href="@{/tag/list}" th:title="#{tag.label.plural}"><i class="fas fa-tags fa-lg"></i></a>
-				</li>
-				<li class="nav-item" th:classappend="${#strings.equals(menu,'admin')} ? active" sec:authorize="hasRole('USER') and !hasRole('ADMIN')">
-					<a class="nav-link" th:href="@{/document-type/list}" th:title="#{admin.label}"><i class="fas fa-cog"></i></a>
-				</li>
-				<li class="nav-item" th:classappend="${#strings.equals(menu,'admin')} ? active" sec:authorize="hasRole('ADMIN')">
-					<a class="nav-link" th:href="@{/admin/server-info}" th:title="#{admin.label}"><i class="fas fa-cog"></i></a>
-				</li>
-			</ul>
-			<ul class="nav navbar-nav ml-auto">
-				<li class="nav-item dropdown" th:classappend="${#strings.equals(menu,'user')} ? active" sec:authorize="isAuthenticated()">
-					<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fas fa-user"></i></a>
-					<div class="dropdown-menu dropdown-menu-right">
-						<a th:href="@{/user/show}" class="dropdown-item">User data</a>
-						<div class="dropdown-divider"></div>
-						<a th:href="@{/logout}"class="dropdown-item">Logout</a>
-					</div>
-				</li>
-			</ul>
+	<nav th:fragment="header-fragment (menu)" class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark">
+		<div class="container-fluid">
+			<span class="navbar-brand">
+				<img th:src="@{/images/brand.png}" width="30" height="30" class="d-inline-block align-text-top" alt=""/>
+				<span th:text="#{application.name}">[application.name]</span>
+			</span>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav me-auto" sec:authorize="hasRole('USER') or hasRole('ADMIN')">
+					<li class="nav-item">
+						<a class="nav-link" th:classappend="${#strings.equals(menu,'dashboard')} ? active"
+							th:href="@{/dashboard}" th:title="#{dashboard.label}"><em class="fas fa-home fa-lg"></em></a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" th:classappend="${#strings.equals(menu,'document')} ? active"
+							th:href="@{/document/list}" th:title="#{document.label.plural}"><em class="far fa-file-alt fa-lg"></em></a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" th:classappend="${#strings.equals(menu,'tag')} ? active"
+							th:href="@{/tag/list}" th:title="#{tag.label.plural}"><em class="fas fa-tags fa-lg"></em></a>
+					</li>
+					<li class="nav-item" sec:authorize="hasRole('USER') and !hasRole('ADMIN')">
+						<a class="nav-link" th:classappend="${#strings.equals(menu,'admin')} ? active"
+							th:href="@{/document-type/list}" th:title="#{admin.label}"><em class="fas fa-cog"></em></a>
+					</li>
+					<li class="nav-item" sec:authorize="hasRole('ADMIN')">
+						<a class="nav-link" th:classappend="${#strings.equals(menu,'admin')} ? active"
+							th:href="@{/admin/server-info}" th:title="#{admin.label}"><em class="fas fa-cog"></em></a>
+					</li>
+				</ul>
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item dropdown" sec:authorize="isAuthenticated()">
+						<a href="#" class="nav-link dropdown-toggle" th:classappend="${#strings.equals(menu,'user')} ? active"
+							data-bs-toggle="dropdown"><em class="fas fa-user"></em></a>
+						<div class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
+							<a th:href="@{/user/show}" class="dropdown-item">User data</a>
+							<div class="dropdown-divider"></div>
+							<a th:href="@{/logout}"class="dropdown-item">Logout</a>
+						</div>
+					</li>
+				</ul>
+			</div>
 		</div>
 	</nav>
 

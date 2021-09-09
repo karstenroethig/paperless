@@ -18,7 +18,7 @@
 		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 			<h1 class="h2" th:text="#{user.label.plural}">Users</h1>
 			<div class="btn-toolbar mb-2 mb-md-0">
-				<div class="btn-group mr-2">
+				<div class="btn-group me-2">
 					<a th:href="@{/user-admin/create}" class="btn btn-sm btn-outline-secondary" th:text="#{userAdmin.add.label}">Add user</a>
 				</div>
 			</div>
@@ -28,31 +28,35 @@
 
 		<div class="row">
 			<div class="col-sm-10">
-				<button id="search-button" class="btn btn-outline-secondary mb-2" th:if="${!searchParams.hasParams()}" th:title="#{default.search.filterEntries.label}"><i class="fas fa-search"></i></button>
-				<button id="search-button" class="btn btn-primary mb-2" th:if="${searchParams.hasParams()}" th:title="#{default.search.filterEntries.label}"><i class="fas fa-search"></i></button>
+				<button id="search-button" class="btn btn-outline-secondary mb-2 me-2" th:if="${!searchParams.hasParams()}" th:title="#{default.search.filterEntries.label}"><em class="fas fa-search"></em></button>
+				<button id="search-button" class="btn btn-primary mb-2 me-2" th:if="${searchParams.hasParams()}" th:title="#{default.search.filterEntries.label}"><em class="fas fa-search"></em></button>
 
-				<span class="badge badge-secondary" th:if="${#strings.isEmpty(searchParams.name)==false}">
+				<span class="badge bg-secondary" th:if="${#strings.isEmpty(searchParams.name)==false}">
 					<span th:text="#{userAdmin.search.name.label}">Name</span>: <span th:text="${searchParams.name}">[searchParams.name]</span>
 				</span>
-				<span class="badge badge-secondary" th:if="${searchParams.group!=null}">
+				<span class="badge bg-secondary" th:if="${searchParams.group!=null}">
 					<span th:text="#{userAdmin.search.group.label}">Group</span>: <span th:text="${searchParams.group.name}">[searchParams.group.name]</span>
 				</span>
-				<span class="badge badge-secondary" th:if="${searchParams.enabledSearchType!=null}">
+				<span class="badge bg-secondary" th:if="${searchParams.enabledSearchType!=null}">
 					<span th:text="${#messages.msg('userAdmin.search.enabled.'+searchParams.enabledSearchType.name()+'.label')}"></span>
 				</span>
-				<span class="badge badge-secondary" th:if="${searchParams.lockedSearchType!=null}">
+				<span class="badge bg-secondary" th:if="${searchParams.lockedSearchType!=null}">
 					<span th:text="${#messages.msg('userAdmin.search.locked.'+searchParams.lockedSearchType.name()+'.label')}"></span>
 				</span>
-				<span class="badge badge-secondary" th:if="${searchParams.newRegisteredSearchType!=null}">
+				<span class="badge bg-secondary" th:if="${searchParams.newRegisteredSearchType!=null}">
 					<span th:text="${#messages.msg('userAdmin.search.newRegistered.'+searchParams.newRegisteredSearchType.name()+'.label')}"></span>
 				</span>
 			</div>
 			<div class="col-sm-2">
-				<form class="form-inline float-right mb-2" autocomplete="off">
-					<select class="form-control mr-2 pagination-pagesize">
-						<option th:each="size : ${availablePagesizes}" th:value="${size}" th:text="${size}" th:selected="${size == page.size}"></option>
-					</select>
-					<span th:text="#{default.pagination.perPage.label}">per page</span>
+				<form class="float-end mb-2 row g-2" autocomplete="off">
+					<div class="col-auto">
+						<select class="form-control me-2 pagination-pagesize">
+							<option th:each="size : ${availablePagesizes}" th:value="${size}" th:text="${size}" th:selected="${size == page.size}"></option>
+						</select>
+					</div>
+					<div class="col-auto">
+						<span class="form-control-plaintext" th:text="#{default.pagination.perPage.label}">per page</span>
+					</div>
 				</form>
 			</div>
 		</div>
@@ -60,14 +64,14 @@
 		<div class="card mb-3" id="search-card" style="display: none;">
 			<div class="card-body">
 				<h5 class="card-title" th:text="#{default.search.filterEntries.label}">Filter entries</h5>
-				<form style="padding-top: 10px;" th:object="${searchParams}" th:action="@{/user-admin/search}" action="#" method="post" autocomplete="off">
+				<form th:object="${searchParams}" th:action="@{/user-admin/search}" action="#" method="post" autocomplete="off">
 
-					<div class="form-group row">
-						<label class="col-sm-2 col-form-label text-right" th:text="#{userAdmin.search.name.label}">Name</label>
+					<div class="row mt-3">
+						<label class="col-sm-2 col-form-label text-end" th:text="#{userAdmin.search.name.label}">Name</label>
 						<div class="col-sm-4">
 							<input type="text" class="form-control" th:field="*{name}">
 						</div>
-						<label class="col-sm-2 col-form-label text-right" th:text="#{userAdmin.search.group.label}">Group</label>
+						<label class="col-sm-2 col-form-label text-end" th:text="#{userAdmin.search.group.label}">Group</label>
 						<div class="col-sm-4">
 							<select th:field="*{group}" class="form-control">
 								<option value=""></option>
@@ -75,22 +79,22 @@
 							</select>
 						</div>
 					</div>
-					<div class="form-group row">
-						<label class="col-sm-2 col-form-label text-right" th:text="#{user.enabled.label}">Enabled</label>
+					<div class="row mt-3">
+						<label class="col-sm-2 col-form-label text-end" th:text="#{user.enabled.label}">Enabled</label>
 						<div class="col-sm-2">
 							<select th:field="*{enabledSearchType}" class="form-control">
 								<option value=""></option>
 								<option th:each="ty : ${searchParams.ALL_AVAILABLE_ENABLED_SEARCH_TYPES}" th:value="${{ty}}" th:text="${#messages.msg('userAdmin.search.enabled.'+ty.name()+'.label')}"></option>
 							</select>
 						</div>
-						<label class="col-sm-2 col-form-label text-right" th:text="#{user.locked.label}">Locked</label>
+						<label class="col-sm-2 col-form-label text-end" th:text="#{user.locked.label}">Locked</label>
 						<div class="col-sm-2">
 							<select th:field="*{lockedSearchType}" class="form-control">
 								<option value=""></option>
 								<option th:each="ty : ${searchParams.ALL_AVAILABLE_LOCKED_SEARCH_TYPES}" th:value="${{ty}}" th:text="${#messages.msg('userAdmin.search.locked.'+ty.name()+'.label')}"></option>
 							</select>
 						</div>
-						<label class="col-sm-2 col-form-label text-right" th:text="#{userAdmin.search.newRegistered.label}">New registered</label>
+						<label class="col-sm-2 col-form-label text-end" th:text="#{userAdmin.search.newRegistered.label}">New registered</label>
 						<div class="col-sm-2">
 							<select th:field="*{newRegisteredSearchType}" class="form-control">
 								<option value=""></option>
@@ -99,7 +103,7 @@
 						</div>
 					</div>
 
-					<div class="form-group row">
+					<div class="row mt-3">
 						<div class="offset-sm-2 col-sm-10">
 							<input type="submit" class="btn btn-primary" th:value="#{default.button.search.label}" value="Search">
 							<button type="button" id="search-button-delete-parameters" class="btn btn-outline-secondary" th:text="#{default.search.button.deleteParameters.label}">Delete parameters</button>
@@ -113,32 +117,32 @@
 		<table class="table table-bordered">
 			<thead>
 				<tr>
-					<th class="clickable" data-sort-prop="username" th:text="#{user.username.label}">Username</th>
-					<th class="clickable" data-sort-prop="fullName" th:text="#{user.fullName.label}">Full name</th>
-					<th class="clickable" data-sort-prop="enabled" th:text="#{user.enabled.label}">Enabled</th>
-					<th class="clickable" data-sort-prop="locked" th:text="#{user.locked.label}">Locked</th>
-					<th th:text="#{user.authorities.label}">Authorities</th>
-					<th th:text="#{default.table.operations.label}">Actions</th>
+					<th scope="col" class="clickable" data-sort-prop="username" th:text="#{user.username.label}">Username</th>
+					<th scope="col" class="clickable" data-sort-prop="fullName" th:text="#{user.fullName.label}">Full name</th>
+					<th scope="col" class="clickable" data-sort-prop="enabled" th:text="#{user.enabled.label}">Enabled</th>
+					<th scope="col" class="clickable" data-sort-prop="locked" th:text="#{user.locked.label}">Locked</th>
+					<th scope="col" th:text="#{user.authorities.label}">Authorities</th>
+					<th scope="col" th:text="#{default.table.operations.label}">Actions</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr th:if="${#lists.isEmpty(page.content)}">
-					<td colspan="6" align="center" th:text="#{default.table.empty.text}">Data can not be found.</td>
+					<td colspan="6" class="text-center" th:text="#{default.table.empty.text}">Data can not be found.</td>
 				</tr>
 				<tr th:each="user : ${page.content}">
 					<td>
 						<span th:text="${user.username}">[username]</span>
-						<span class="badge badge-pill badge-secondary" th:if="${user.newRegistered}">New</span>
+						<span class="badge rounded-pill bg-secondary" th:if="${user.newRegistered}">New</span>
 					</td>
 					<td>
 						<span th:text="${user.fullName}">[fullName]</span>
 					</td>
 					<td>
-						<i th:if="${user.enabled}" class="far fa-check-circle"></i>
-						<i th:if="${!user.enabled}" class="fas fa-exclamation-circle text-danger"></i>
+						<em th:if="${user.enabled}" class="far fa-check-circle"></em>
+						<em th:if="${!user.enabled}" class="fas fa-exclamation-circle text-danger"></em>
 					</td>
 					<td>
-						<i th:if="${user.locked}" class="fas fa-lock"></i>
+						<em th:if="${user.locked}" class="fas fa-lock"></em>
 					</td>
 					<td>
 						<div th:each="authority : ${user.authorities}" th:text="${#messages.msg('user.authorities.'+authority+'.label')}">[authority]</div>
@@ -146,12 +150,12 @@
 					<td>
 						<div class="btn-group">
 							<a th:href="@{/user-admin/show/{id}(id=${user.id})}" class="btn btn-outline-secondary btn-sm" th:text="#{default.button.show.label}">Show</a>
-							<button type="button" class="btn btn-outline-secondary btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<button type="button" class="btn btn-outline-secondary btn-sm dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 								<span class="sr-only">Toggle Dropdown</span>
 							</button>
-							<div class="dropdown-menu dropdown-menu-right">
+							<div class="dropdown-menu dropdown-menu-end">
 								<a th:href="@{/user-admin/edit/{id}(id=${user.id})}" class="dropdown-item" th:text="#{default.button.edit.label}">Edit</a>
-								<a href="" class="dropdown-item" data-toggle="modal" data-target="#deleteModal" th:attr="data-id=${user.id}" th:text="#{default.button.delete.label}">Delete</a>
+								<a href="" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deleteModal" th:attr="data-id=${user.id}" th:text="#{default.button.delete.label}">Delete</a>
 							</div>
 						</div>
 					</td>
@@ -161,32 +165,46 @@
 
 		<div class="row" th:if="${page.hasContent()}">
 			<div class="col-sm-12">
-				<form class="form-inline float-right" th:with="sortParam=${sortProperty+','+(sortDesc?'desc':'asc')}" autocomplete="off">
-					<span class="mr-2">
-						<span th:text="${currentItems}">[currentItems]</span>
-						<span th:text="#{default.pagination.pageOfPages.label}">of</span>
-						<span th:text="${page.totalElements}">[page.totalElements]</span>
-					</span>
-					<div class="btn-group mr-2" th:if="${page.isFirst()}">
-						<button class="btn btn-outline-secondary" th:title="#{default.pagination.firstPage.label}" disabled><i class="fa fa-angle-double-left"></i></button>
-						<button class="btn btn-outline-secondary" th:title="#{default.pagination.previousPage.label}" disabled><i class="fa fa-angle-left"></i></button>
+				<form class="float-end row g-2" th:with="sortParam=${sortProperty+','+(sortDesc?'desc':'asc')}" autocomplete="off">
+					<div class="col-auto">
+						<span class="form-control-plaintext me-2">
+							<span th:text="${currentItems}">[currentItems]</span>
+							<span th:text="#{default.pagination.pageOfPages.label}">of</span>
+							<span th:text="${page.totalElements}">[page.totalElements]</span>
+						</span>
 					</div>
-					<div class="btn-group mr-2" th:if="${page.hasPrevious()}">
-						<a class="btn btn-outline-secondary" th:href="@{/user-admin/list(size=${page.size}, page=0, sort=${sortParam})}" th:title="#{default.pagination.firstPage.label}"><i class="fa fa-angle-double-left"></i></a>
-						<a class="btn btn-outline-secondary" th:href="@{/user-admin/list(size=${page.size}, page=${page.previousPageable().pageNumber}, sort=${sortParam})}" th:title="#{default.pagination.previousPage.label}"><i class="i fa fa-angle-left"></i></a>
+					<div class="col-auto" th:if="${page.isFirst()}">
+						<div class="btn-group me-2">
+							<button class="btn btn-outline-secondary" th:title="#{default.pagination.firstPage.label}" disabled><em class="fa fa-angle-double-left"></em></button>
+							<button class="btn btn-outline-secondary" th:title="#{default.pagination.previousPage.label}" disabled><em class="fa fa-angle-left"></em></button>
+						</div>
 					</div>
-					<input type="text" class="form-control mr-2 pagination-page" style="width: 3em;" th:value="${page.number+1}">
-					<span class="mr-2">
-						<span th:text="#{default.pagination.pageOfPages.label}">of</span>
-						<span th:text="${page.totalPages}">[page.totalPages]</span>
-					</span>
-					<div class="btn-group" th:if="${page.isLast()}">
-						<button class="btn btn-outline-secondary" th:title="#{default.pagination.nextPage.label}" disabled><i class="fa fa-angle-right"></i></button>
-						<button class="btn btn-outline-secondary" th:title="#{default.pagination.lastPage.label}" disabled><i class="fa fa-angle-double-right"></i></button>
+					<div class="col-auto" th:if="${page.hasPrevious()}">
+						<div class="btn-group me-2">
+							<a class="btn btn-outline-secondary" th:href="@{/user-admin/list(size=${page.size}, page=0, sort=${sortParam})}" th:title="#{default.pagination.firstPage.label}"><em class="fa fa-angle-double-left"></em></a>
+							<a class="btn btn-outline-secondary" th:href="@{/user-admin/list(size=${page.size}, page=${page.previousPageable().pageNumber}, sort=${sortParam})}" th:title="#{default.pagination.previousPage.label}"><em class="i fa fa-angle-left"></em></a>
+						</div>
 					</div>
-					<div class="btn-group" th:if="${page.hasNext()}">
-						<a class="btn btn-outline-secondary" th:href="@{/user-admin/list(size=${page.size}, page=${page.nextPageable().pageNumber}, sort=${sortParam})}" th:title="#{default.pagination.nextPage.label}"><i class="fa fa-angle-right"></i></a>
-						<a class="btn btn-outline-secondary" th:href="@{/user-admin/list(size=${page.size}, page=${page.totalPages-1}, sort=${sortParam})}" th:title="#{default.pagination.lastPage.label}"><i class="fa fa-angle-double-right"></i></a>
+					<div class="col-auto">
+						<input type="text" class="form-control me-2 pagination-page" style="width: 3em;" th:value="${page.number+1}">
+					</div>
+					<div class="col-auto">
+						<span class="form-control-plaintext me-2">
+							<span th:text="#{default.pagination.pageOfPages.label}">of</span>
+							<span th:text="${page.totalPages}">[page.totalPages]</span>
+						</span>
+					</div>
+					<div class="col-auto" th:if="${page.isLast()}">
+						<div class="btn-group">
+							<button class="btn btn-outline-secondary" th:title="#{default.pagination.nextPage.label}" disabled><em class="fa fa-angle-right"></em></button>
+							<button class="btn btn-outline-secondary" th:title="#{default.pagination.lastPage.label}" disabled><em class="fa fa-angle-double-right"></em></button>
+						</div>
+					</div>
+					<div class="col-auto" th:if="${page.hasNext()}">
+						<div class="btn-group">
+							<a class="btn btn-outline-secondary" th:href="@{/user-admin/list(size=${page.size}, page=${page.nextPageable().pageNumber}, sort=${sortParam})}" th:title="#{default.pagination.nextPage.label}"><em class="fa fa-angle-right"></em></a>
+							<a class="btn btn-outline-secondary" th:href="@{/user-admin/list(size=${page.size}, page=${page.totalPages-1}, sort=${sortParam})}" th:title="#{default.pagination.lastPage.label}"><em class="fa fa-angle-double-right"></em></a>
+						</div>
 					</div>
 				</form>
 			</div>
@@ -197,16 +215,14 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title" id="deleteModalLabel" th:text="#{userAdmin.deletePopup.title}">Delete user</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
 						<span th:text="#{userAdmin.deletePopup.question}">Do you really want to delete this user?</span>
 					</div>
 					<div class="modal-footer">
 						<a href="" th:attr="data-href-template=@{/user-admin/delete/{id}}" class="btn btn-danger" th:text="#{default.button.delete.label}">Delete</a>
-						<button type="button" class="btn btn-outline-secondary" data-dismiss="modal" th:text="#{default.button.cancel.label}">Cancel</button>
+						<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" th:text="#{default.button.cancel.label}">Cancel</button>
 					</div>
 				</div>
 			</div>
