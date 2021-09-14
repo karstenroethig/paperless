@@ -38,16 +38,7 @@
 				</form>
 			</div>
 			<div class="col-sm-2">
-				<form class="float-end mb-2 row g-2" autocomplete="off">
-					<div class="col-auto">
-						<select class="form-control me-2 pagination-pagesize">
-							<option th:each="size : ${availablePagesizes}" th:value="${size}" th:text="${size}" th:selected="${size == page.size}"></option>
-						</select>
-					</div>
-					<div class="col-auto">
-						<span class="form-control-plaintext" th:text="#{default.pagination.perPage.label}">per page</span>
-					</div>
-				</form>
+				<div th:replace="~{fragments/paging :: pagesize-fragment(availablePagesizes=${availablePagesizes}, currentSize=${page.size})}"></div>
 			</div>
 		</div>
 
@@ -87,70 +78,9 @@
 			</tbody>
 		</table>
 
-		<div class="row" th:if="${page.hasContent()}">
-			<div class="col-sm-12">
-				<form class="float-end row g-2" th:with="sortParam=${sortProperty+','+(sortDesc?'desc':'asc')}" autocomplete="off">
-					<div class="col-auto">
-						<span class="form-control-plaintext me-2">
-							<span th:text="${currentItems}">[currentItems]</span>
-							<span th:text="#{default.pagination.pageOfPages.label}">of</span>
-							<span th:text="${page.totalElements}">[page.totalElements]</span>
-						</span>
-					</div>
-					<div class="col-auto" th:if="${page.isFirst()}">
-						<div class="btn-group me-2">
-							<button class="btn btn-outline-secondary" th:title="#{default.pagination.firstPage.label}" disabled><em class="fa fa-angle-double-left"></em></button>
-							<button class="btn btn-outline-secondary" th:title="#{default.pagination.previousPage.label}" disabled><em class="fa fa-angle-left"></em></button>
-						</div>
-					</div>
-					<div class="col-auto" th:if="${page.hasPrevious()}">
-						<div class="btn-group me-2">
-							<a class="btn btn-outline-secondary" th:href="@{/document-type/list(size=${page.size}, page=0, sort=${sortParam})}" th:title="#{default.pagination.firstPage.label}"><em class="fa fa-angle-double-left"></em></a>
-							<a class="btn btn-outline-secondary" th:href="@{/document-type/list(size=${page.size}, page=${page.previousPageable().pageNumber}, sort=${sortParam})}" th:title="#{default.pagination.previousPage.label}"><em class="i fa fa-angle-left"></em></a>
-						</div>
-					</div>
-					<div class="col-auto">
-						<input type="text" class="form-control me-2 pagination-page" style="width: 3em;" th:value="${page.number+1}">
-					</div>
-					<div class="col-auto">
-						<span class="form-control-plaintext me-2">
-							<span th:text="#{default.pagination.pageOfPages.label}">of</span>
-							<span th:text="${page.totalPages}">[page.totalPages]</span>
-						</span>
-					</div>
-					<div class="col-auto" th:if="${page.isLast()}">
-						<div class="btn-group">
-							<button class="btn btn-outline-secondary" th:title="#{default.pagination.nextPage.label}" disabled><em class="fa fa-angle-right"></em></button>
-							<button class="btn btn-outline-secondary" th:title="#{default.pagination.lastPage.label}" disabled><em class="fa fa-angle-double-right"></em></button>
-						</div>
-					</div>
-					<div class="col-auto" th:if="${page.hasNext()}">
-						<div class="btn-group">
-							<a class="btn btn-outline-secondary" th:href="@{/document-type/list(size=${page.size}, page=${page.nextPageable().pageNumber}, sort=${sortParam})}" th:title="#{default.pagination.nextPage.label}"><em class="fa fa-angle-right"></em></a>
-							<a class="btn btn-outline-secondary" th:href="@{/document-type/list(size=${page.size}, page=${page.totalPages-1}, sort=${sortParam})}" th:title="#{default.pagination.lastPage.label}"><em class="fa fa-angle-double-right"></em></a>
-						</div>
-					</div>
-				</form>
-			</div>
-		</div>
+		<div th:replace="~{fragments/paging :: paging-fragment(controller='document-type', page=${page}, currentItems=${currentItems}, sortProperty=${sortProperty}, sortDesc=${sortDesc})}"></div>
 
-		<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="deleteModalLabel" th:text="#{documentType.deletePopup.title}">Delete document type</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-					</div>
-					<div class="modal-body">
-						<span th:text="#{documentType.deletePopup.question}">Do you really want to delete this document type?</span>
-					</div>
-					<div class="modal-footer">
-						<a href="" th:attr="data-href-template=@{/document-type/delete/{id}}" class="btn btn-danger" th:text="#{default.button.delete.label}">Delete</a>
-						<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" th:text="#{default.button.cancel.label}">Cancel</button>
-					</div>
-				</div>
-			</div>
-		</div>
+		<div th:replace="~{fragments/dialogs :: deleteDialog-fragment(id='deleteModal', controller='document-type', title=#{documentType.deletePopup.title}, question=#{documentType.deletePopup.question})}"></div>
 
 		<script th:inline="javascript">
 			/*<![CDATA[*/

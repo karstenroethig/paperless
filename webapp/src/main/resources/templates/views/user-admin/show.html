@@ -102,23 +102,7 @@
 			</div>
 		</div>
 
-		<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="deleteModalLabel" th:text="#{userAdmin.deletePopup.title}">Delete user</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-					</div>
-					<div class="modal-body">
-						<span th:text="#{userAdmin.deletePopup.question}">Do you really want to delete this user?</span>
-					</div>
-					<div class="modal-footer">
-						<a href="" th:attr="data-href-template=@{/user-admin/delete/{id}}" class="btn btn-danger" th:text="#{default.button.delete.label}">Delete</a>
-						<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" th:text="#{default.button.cancel.label}">Cancel</button>
-					</div>
-				</div>
-			</div>
-		</div>
+		<div th:replace="~{fragments/dialogs :: deleteDialog-fragment(id='deleteModal', controller='user-admin', title=#{userAdmin.deletePopup.title}, question=#{userAdmin.deletePopup.question})}"></div>
 
 	</div>
 

@@ -6,7 +6,7 @@
 </head>
 <body>
 
-	<span th:fragment="messages-fragment (messages)" th:if="${messages}">
+	<div th:fragment="messages-fragment (messages)" th:if="${messages}">
 		<div class="alert alert-danger alert-dismissible fade show" th:if="${messages.hasErrors()}" th:each="message : ${messages.errors}" role="alert">
 			<span th:utext="${#messages.msgWithParams(message.key, message.params)}">error message</span>
 			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -23,7 +23,7 @@
 			<span th:utext="${#messages.msgWithParams(message.key, message.params)}">success message</span>
 			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 		</div>
-	</span>
+	</div>
 
 </body>
 </html>

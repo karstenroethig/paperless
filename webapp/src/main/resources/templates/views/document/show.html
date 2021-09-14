@@ -274,59 +274,11 @@
 			<input type="file" th:field="*{files}" hidden multiple/>
 		</form>
 
-		<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="deleteModalLabel" th:text="#{document.deletePopup.title}">Delete document</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-					</div>
-					<div class="modal-body">
-						<span th:text="#{document.deletePopup.question}">Do you really want to delete this document?</span>
-					</div>
-					<div class="modal-footer">
-						<a href="" th:attr="data-href-template=@{/document/delete/{id}}" class="btn btn-danger" th:text="#{default.button.delete.label}">Delete</a>
-						<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" th:text="#{default.button.cancel.label}">Cancel</button>
-					</div>
-				</div>
-			</div>
-		</div>
+		<div th:replace="~{fragments/dialogs :: deleteDialog-fragment(id='deleteModal', controller='document', title=#{document.deletePopup.title}, question=#{document.deletePopup.question})}"></div>
 
-		<div class="modal fade syncIdModal" id="deleteModal_fileAttachment" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel_fileAttachment" aria-hidden="true">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="deleteModalLabel_fileAttachment" th:text="#{fileAttachment.deletePopup.title}">Delete file</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-					</div>
-					<div class="modal-body">
-						<span th:text="#{fileAttachment.deletePopup.question}">Do you really want to delete this file?</span>
-					</div>
-					<div class="modal-footer">
-						<a href="" th:attr="data-href-template=@{/file-attachment/delete/{id}}" class="btn btn-danger" th:text="#{default.button.delete.label}">Delete</a>
-						<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" th:text="#{default.button.cancel.label}">Cancel</button>
-					</div>
-				</div>
-			</div>
-		</div>
+		<div th:replace="~{fragments/dialogs :: deleteDialog-fragment(id='deleteModal_fileAttachment', controller='file-attachment', title=#{fileAttachment.deletePopup.title}, question=#{fileAttachment.deletePopup.question})}"></div>
 
-		<div class="modal fade syncIdModal" id="deleteModal_comment" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel_comment" aria-hidden="true">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="deleteModalLabel_comment" th:text="#{comment.deletePopup.title}">Delete comment</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-					</div>
-					<div class="modal-body">
-						<span th:text="#{comment.deletePopup.question}">Do you really want to delete this comment?</span>
-					</div>
-					<div class="modal-footer">
-						<a href="" th:attr="data-href-template=@{/comment/delete/{id}}" class="btn btn-danger" th:text="#{default.button.delete.label}">Delete</a>
-						<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" th:text="#{default.button.cancel.label}">Cancel</button>
-					</div>
-				</div>
-			</div>
-		</div>
+		<div th:replace="~{fragments/dialogs :: deleteDialog-fragment(id='deleteModal_comment', controller='comment', title=#{comment.deletePopup.title}, question=#{comment.deletePopup.question})}"></div>
 
 		<script th:inline="javascript">
 			/*<![CDATA[*/
