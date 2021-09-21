@@ -167,23 +167,8 @@
 						<doUpdate>false</doUpdate>
 						<!-- Use short version of git revision -->
 						<shortRevisionLength>7</shortRevisionLength>
-						<providerImplementations>
-							<git>jgit</git>
-						</providerImplementations>
 						<!--skip>true</skip-->
 					</configuration>
-					<dependencies>
-						<dependency>
-							<groupId>org.apache.maven.scm</groupId>
-							<artifactId>maven-scm-api</artifactId>
-							<version>1.12.0</version>
-						</dependency>
-						<dependency>
-							<groupId>org.apache.maven.scm</groupId>
-							<artifactId>maven-scm-provider-jgit</artifactId>
-							<version>1.12.0</version>
-						</dependency>
-					</dependencies>
 				</plugin>
 
 				<plugin>
