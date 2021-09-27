@@ -1,4 +1,4 @@
-package karstenroethig.paperless.webapp.bean;
+package karstenroethig.paperless.webapp.bean.search;
 
 import javax.annotation.PostConstruct;
 

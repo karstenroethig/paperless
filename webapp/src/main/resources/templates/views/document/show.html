@@ -213,7 +213,7 @@
 						<div class="pt-3 pl-2 pr-2 border-bottom border-gray" th:each="comment : ${comments}" th:id="${'comment-'+comment.id}">
 							<p class="pb-3 mb-0" th:if="${!comment.deleted}">
 								<span class="d-block">
-									<a href="#"><strong>Karsten</strong></a>
+									<span th:replace="~{fragments/user :: userLink-fragment(user=${comment.author})}"></span>
 									<span th:if="${comment.createdDatetime!=null}" class="text-muted">
 										-
 										<span th:text="${dateUtils.prettyFormatDuration(comment.createdDatetime)}">4 minutes ago</span>

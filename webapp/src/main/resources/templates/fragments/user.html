@@ -1,0 +1,18 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8" />
+</head>
+<body>
+
+	<span th:fragment="userLink-fragment (user)">
+
+		<a href="#" th:if="${!user.deleted}"><strong th:text="${user.fullName}">[user.fullName]</strong></a>
+
+		<em th:if="${user.deleted}" th:text="#{user.deleted.text}">This user has been deleted.</em>
+
+	</span>
+
+</body>
+</html>

@@ -45,6 +45,10 @@ public class Comment extends AbstractEntityId
 	@Column(name = "deleted", nullable = false)
 	private boolean deleted;
 
+	@ManyToOne
+	@JoinColumn(name = "author_id")
+	private User author;
+
 	@PreRemove
 	private void removeCommentFromDocument()
 	{

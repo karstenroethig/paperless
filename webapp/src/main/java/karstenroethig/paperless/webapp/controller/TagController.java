@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import karstenroethig.paperless.webapp.bean.TagSearchBean;
+import karstenroethig.paperless.webapp.bean.search.TagSearchBean;
 import karstenroethig.paperless.webapp.controller.exceptions.NotFoundException;
 import karstenroethig.paperless.webapp.controller.util.AttributeNames;
 import karstenroethig.paperless.webapp.controller.util.UrlMappings;

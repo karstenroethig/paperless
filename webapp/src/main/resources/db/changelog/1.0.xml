@@ -376,12 +376,20 @@
 			<column name="deleted" type="${type.boolean}" defaultValueBoolean="false">
 				<constraints nullable="false"/>
 			</column>
+			<column name="author_id" type="${type.idRef}">
+				<constraints nullable="false"/>
+			</column>
 		</createTable>
 
 		<addForeignKeyConstraint
 			baseTableName="comment" baseColumnNames="document_id"
 			referencedTableName="document" referencedColumnNames="id"
 			constraintName="fk_comment__document_id__document"/>
+
+		<addForeignKeyConstraint
+			baseTableName="comment" baseColumnNames="author_id"
+			referencedTableName="user" referencedColumnNames="id"
+			constraintName="fk_comment__author_id__user"/>
 
 	</changeSet>
 

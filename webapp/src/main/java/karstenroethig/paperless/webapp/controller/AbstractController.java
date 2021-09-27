@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -15,9 +16,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import karstenroethig.paperless.webapp.bean.CurrentUserSessionBean;
 import karstenroethig.paperless.webapp.controller.exceptions.ForbiddenException;
 import karstenroethig.paperless.webapp.controller.exceptions.NotFoundException;
 import karstenroethig.paperless.webapp.controller.util.AttributeNames;
+import karstenroethig.paperless.webapp.model.dto.UserDto;
 import karstenroethig.paperless.webapp.util.MessageKeyEnum;
 import karstenroethig.paperless.webapp.util.Messages;
 import karstenroethig.paperless.webapp.util.validation.PropertyValidationMessage;
@@ -26,6 +29,13 @@ import karstenroethig.paperless.webapp.util.validation.ValidationState;
 
 public abstract class AbstractController
 {
+	@Autowired private CurrentUserSessionBean currentUserBean;
+
+	protected UserDto getCurrentUser()
+	{
+		return currentUserBean.getCurrentUser();
+	}
+
 	protected void addPagingAttributes(Model model, Page<?> page)
 	{
 		model.addAttribute(AttributeNames.PAGE, page);

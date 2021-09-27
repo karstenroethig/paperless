@@ -13,8 +13,10 @@ import org.springframework.stereotype.Service;
 import karstenroethig.paperless.webapp.model.domain.Comment;
 import karstenroethig.paperless.webapp.model.domain.Comment_;
 import karstenroethig.paperless.webapp.model.domain.Document;
+import karstenroethig.paperless.webapp.model.domain.User;
 import karstenroethig.paperless.webapp.model.dto.CommentDto;
 import karstenroethig.paperless.webapp.model.dto.DocumentDto;
+import karstenroethig.paperless.webapp.model.dto.UserDto;
 import karstenroethig.paperless.webapp.repository.CommentRepository;
 import karstenroethig.paperless.webapp.repository.specification.CommentSpecifications;
 
@@ -23,6 +25,7 @@ import karstenroethig.paperless.webapp.repository.specification.CommentSpecifica
 public class CommentServiceImpl
 {
 	@Autowired private DocumentServiceImpl documentService;
+	@Autowired private UserServiceImpl userService;
 
 	@Autowired private CommentRepository commentRepository;
 
@@ -33,10 +36,14 @@ public class CommentServiceImpl
 		return comment;
 	}
 
-	public CommentDto save(CommentDto commentDto)
+	public CommentDto save(CommentDto commentDto, UserDto executingUser)
 	{
 		Document document = documentService.transform(commentDto.getDocument());
 		if (document == null)
+			return null;
+
+		User author = userService.transform(executingUser);
+		if (author == null)
 			return null;
 
 		Comment comment = new Comment();
@@ -44,7 +51,7 @@ public class CommentServiceImpl
 		comment.setText(commentDto.getText());
 		comment.setCreatedDatetime(LocalDateTime.now());
 		comment.setDeleted(Boolean.FALSE);
-
+		comment.setAuthor(author);
 		Comment savedComment = commentRepository.save(comment);
 
 		documentService.markUpdated(document.getId());
@@ -108,7 +115,7 @@ public class CommentServiceImpl
 		commentDto.setCreatedDatetime(comment.getCreatedDatetime());
 		commentDto.setUpdatedDatetime(comment.getUpdatedDatetime());
 		commentDto.setDeleted(comment.isDeleted());
-
+		commentDto.setAuthor(userService.transform(comment.getAuthor()));
 		return commentDto;
 	}
 }

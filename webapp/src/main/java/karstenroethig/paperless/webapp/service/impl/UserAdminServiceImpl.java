@@ -193,7 +193,7 @@ public class UserAdminServiceImpl extends UserServiceImpl
 	@PostConstruct
 	protected void createInitialUser()
 	{
-		if (userRepository.count() > 1)
+		if (userRepository.count() > 0)
 			return;
 
 		String username = "admin";

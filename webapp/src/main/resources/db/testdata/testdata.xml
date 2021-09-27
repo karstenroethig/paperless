@@ -11,38 +11,64 @@
 	<!-- =========== -->
 	<changeSet id="test" author="roethig">
 
-		<loadData tableName="contact" file="db/testdata/contacts.csv" separator=";"></loadData>
-		<loadData tableName="document_box" file="db/testdata/documentBoxes.csv" separator=";"></loadData>
+		<loadData tableName="authority" file="db/testdata/authorities.csv" separator=";"></loadData>
+
+		<insert tableName="user">
+			<column name="username"              value="admin"/>
+			<column name="hashed_password"       value="{bcrypt}$2a$10$xYan6XpTOv0XztWwuVkxL.9qqTYLH4QrDDRAqjAmDhqIMA1n7ywVO"/>
+			<column name="full_name"             value="Administrator"/>
+			<column name="enabled"               valueBoolean="true"/>
+			<column name="locked"                valueBoolean="false"/>
+			<column name="failed_login_attempts" valueNumeric="0"/>
+			<column name="new_registered"        valueBoolean="false"/>
+			<column name="deleted"               valueBoolean="false"/>
+		</insert>
+
+		<insert tableName="user_authority">
+			<column name="user_id"      valueNumeric="select id from user where username='admin'"/>
+			<column name="authority_id" valueNumeric="select id from authority where name='ROLE_USER'"/>
+		</insert>
+
+		<insert tableName="user_authority">
+			<column name="user_id"      valueNumeric="select id from user where username='admin'"/>
+			<column name="authority_id" valueNumeric="select id from authority where name='ROLE_ADMIN'"/>
+		</insert>
+
+		<loadData tableName="contact"       file="db/testdata/contacts.csv"      separator=";"></loadData>
+		<loadData tableName="document_box"  file="db/testdata/documentBoxes.csv" separator=";"></loadData>
 		<loadData tableName="document_type" file="db/testdata/documentTypes.csv" separator=";"></loadData>
-		<loadData tableName="tag" file="db/testdata/tags.csv" separator=";"></loadData>
+		<loadData tableName="tag"           file="db/testdata/tags.csv"          separator=";"></loadData>
 
 		<insert tableName="document">
-			<column name="title" value="Testdokument"/>
+			<column name="title"            value="Testdokument"/>
 			<column name="document_type_id" valueNumeric="select id from document_type where name='Rechnung'"/>
-			<column name="date_of_issue" value="now()"/>
-			<column name="sender_id" valueNumeric="select id from contact where name='ADAC'"/>
-			<column name="receiver_id" valueNumeric="select id from contact where name='Karsten'"/>
+			<column name="date_of_issue"    value="now()"/>
+			<column name="sender_id"        valueNumeric="select id from contact where name='ADAC'"/>
+			<column name="receiver_id"      valueNumeric="select id from contact where name='Karsten'"/>
 			<column name="created_datetime" value="now()"/>
 			<column name="updated_datetime" value="now()"/>
 		</insert>
 
 		<insert tableName="comment">
-			<column name="document_id" valueNumeric="select id from document where title='Testdokument'"/>
-			<column name="text" value="Ein erster Kommentar"/>
+			<column name="document_id"      valueNumeric="select id from document where title='Testdokument'"/>
+			<column name="text"             value="Ein erster Kommentar"/>
 			<column name="created_datetime" value="now()"/>
+			<column name="author_id"        valueNumeric="select id from user where username='admin'"/>
 		</insert>
 
 		<insert tableName="comment">
-			<column name="document_id" valueNumeric="select id from document where title='Testdokument'"/>
+			<column name="document_id"      valueNumeric="select id from document where title='Testdokument'"/>
 			<column name="created_datetime" value="now()"/>
-			<column name="deleted" valueBoolean="true"/>
+			<column name="deleted"          valueBoolean="true"/>
+			<column name="author_id"        valueNumeric="select id from user where username='admin'"/>
 		</insert>
 
 		<insert tableName="comment">
-			<column name="document_id" valueNumeric="select id from document where title='Testdokument'"/>
-			<column name="text" value="Ein bearbeiteter Kommentar"/>
+			<column name="document_id"      valueNumeric="select id from document where title='Testdokument'"/>
+			<column name="text"             value="Ein bearbeiteter Kommentar"/>
 			<column name="created_datetime" value="now()"/>
 			<column name="updated_datetime" value="now()"/>
+			<column name="author_id"        valueNumeric="select id from user where username='admin'"/>
 		</insert>
 
 	</changeSet>

@@ -1,4 +1,4 @@
-package karstenroethig.paperless.webapp.bean;
+package karstenroethig.paperless.webapp.bean.search;
 
 import javax.annotation.PostConstruct;
 
@@ -7,7 +7,7 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
-import karstenroethig.paperless.webapp.model.dto.search.ContactSearchDto;
+import karstenroethig.paperless.webapp.model.dto.search.DocumentBoxSearchDto;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,13 +16,13 @@ import lombok.Setter;
 
 @Component
 @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
-public class ContactSearchBean
+public class DocumentBoxSearchBean
 {
-	private ContactSearchDto contactSearchDto;
+	private DocumentBoxSearchDto documentBoxSearchDto;
 
 	@PostConstruct
 	public void clear()
 	{
-		contactSearchDto = new ContactSearchDto();
+		documentBoxSearchDto = new DocumentBoxSearchDto();
 	}
 }

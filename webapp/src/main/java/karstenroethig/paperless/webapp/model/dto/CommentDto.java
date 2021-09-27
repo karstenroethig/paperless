@@ -30,4 +30,6 @@ public class CommentDto extends AbstractDtoId
 	private LocalDateTime updatedDatetime;
 
 	private boolean deleted = false;
+
+	private UserDto author;
 }

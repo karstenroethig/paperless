@@ -66,7 +66,7 @@ public class CommentController extends AbstractController
 			return ViewEnum.DOCUMENT_SHOW.getViewName();
 		}
 
-		if (commentService.save(comment) != null)
+		if (commentService.save(comment, getCurrentUser()) != null)
 		{
 			redirectAttributes.addFlashAttribute(AttributeNames.MESSAGES,
 					Messages.createWithSuccess(MessageKeyEnum.COMMENT_SAVE_SUCCESS));

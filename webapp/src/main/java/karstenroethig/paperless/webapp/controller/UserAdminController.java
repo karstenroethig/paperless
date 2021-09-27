@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import karstenroethig.paperless.webapp.bean.UserSearchBean;
+import karstenroethig.paperless.webapp.bean.search.UserSearchBean;
 import karstenroethig.paperless.webapp.config.SecurityConfiguration.Authorities;
 import karstenroethig.paperless.webapp.controller.exceptions.NotFoundException;
 import karstenroethig.paperless.webapp.controller.util.AttributeNames;
