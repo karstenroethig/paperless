@@ -18,14 +18,11 @@ import lombok.ToString;
 
 @Entity
 @Table(name = "document_type")
-public class DocumentType extends AbstractEntityId
+public class DocumentType extends AbstractEntityIdArchivable
 {
 	@Column(name = "name", length = 191, nullable = false)
 	private String name;
 
 	@Column(name = "description", nullable = true)
 	private String description;
-
-	@Column(name = "archived", nullable = false)
-	private boolean archived;
 }

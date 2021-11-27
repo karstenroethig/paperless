@@ -14,11 +14,9 @@ import lombok.ToString;
 @Setter
 @ToString
 @EqualsAndHashCode(callSuper = true)
-public class ContactDto extends AbstractDtoId
+public class ContactDto extends AbstractDtoIdArchivable
 {
 	@NotNull
 	@Size(min = 1, max = 191)
 	private String name;
-
-	private boolean archived = false;
 }

@@ -30,6 +30,10 @@
 						<a class="nav-link" th:classappend="${#strings.equals(menu,'tag')} ? active"
 							th:href="@{/tag/list}" th:title="#{tag.label.plural}"><em class="fas fa-tags fa-lg"></em></a>
 					</li>
+					<li class="nav-item">
+						<a class="nav-link" th:classappend="${#strings.equals(menu,'activity-stream')} ? active"
+							th:href="@{/activity-stream/list}" th:title="#{activityStream.label}"><em class="fas fa-stream fa-lg"></em></a>
+					</li>
 					<li class="nav-item" sec:authorize="hasRole('USER') and !hasRole('ADMIN')">
 						<a class="nav-link" th:classappend="${#strings.equals(menu,'admin')} ? active"
 							th:href="@{/document-type/list}" th:title="#{admin.label}"><em class="fas fa-cog"></em></a>

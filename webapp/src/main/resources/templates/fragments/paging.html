@@ -23,7 +23,7 @@
 
 	<div th:fragment="paging-fragment (controller, page, currentItems, sortProperty, sortDesc)">
 
-		<div class="row" th:if="${page.hasContent()}">
+		<div class="row mb-2" th:if="${page.hasContent()}">
 			<div class="col-sm-12">
 				<form class="float-end row g-2" th:with="sortParam=${sortProperty+','+(sortDesc?'desc':'asc')}" autocomplete="off">
 					<div class="col-auto">

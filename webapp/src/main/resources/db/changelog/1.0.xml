@@ -391,6 +391,146 @@
 			referencedTableName="user" referencedColumnNames="id"
 			constraintName="fk_comment__author_id__user"/>
 
+		<!-- ==================== -->
+		<!-- Table "change_group" -->
+		<!-- ==================== -->
+		<createTable tableName="change_group">
+			<column name="id" type="${type.id}" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="entity_name" type="varchar(191)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="entity_id" type="${type.idRef}">
+				<constraints nullable="false"/>
+			</column>
+			<column name="entity_title" type="varchar(191)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="created_datetime" type="datetime">
+				<constraints nullable="false"/>
+			</column>
+			<column name="created_user_id" type="${type.idRef}">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+
+		<addForeignKeyConstraint
+			baseTableName="change_group" baseColumnNames="created_user_id"
+			referencedTableName="user" referencedColumnNames="id"
+			constraintName="fk_change_group__created_user_id__user"/>
+
+		<!-- =================== -->
+		<!-- Table "change_item" -->
+		<!-- =================== -->
+		<createTable tableName="change_item">
+			<column name="id" type="${type.id}" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="change_group_id" type="${type.idRef}">
+				<constraints nullable="false"/>
+			</column>
+			<column name="operation" type="varchar(191)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="entity_name" type="varchar(191)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="entity_id" type="${type.idRef}">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+
+		<addForeignKeyConstraint
+			baseTableName="change_item" baseColumnNames="change_group_id"
+			referencedTableName="change_group" referencedColumnNames="id"
+			constraintName="fk_change_item__change_group_id__change_group"/>
+
+		<!-- ======================= -->
+		<!-- Table "change_property" -->
+		<!-- ======================= -->
+		<createTable tableName="change_property">
+			<column name="id" type="${type.id}" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="change_item_id" type="${type.idRef}">
+				<constraints nullable="false"/>
+			</column>
+			<column name="property_key" type="varchar(191)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="property_type" type="varchar(191)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="old_value_text" type="longtext">
+				<constraints nullable="true"/>
+			</column>
+			<column name="new_value_text" type="longtext">
+				<constraints nullable="true"/>
+			</column>
+			<column name="old_value_boolean" type="${type.boolean}">
+				<constraints nullable="true"/>
+			</column>
+			<column name="new_value_boolean" type="${type.boolean}">
+				<constraints nullable="true"/>
+			</column>
+			<column name="old_value_date" type="date">
+				<constraints nullable="true"/>
+			</column>
+			<column name="new_value_date" type="date">
+				<constraints nullable="true"/>
+			</column>
+			<column name="old_value_datetime" type="datetime">
+				<constraints nullable="true"/>
+			</column>
+			<column name="new_value_datetime" type="datetime">
+				<constraints nullable="true"/>
+			</column>
+			<column name="old_value_int" type="int">
+				<constraints nullable="true"/>
+			</column>
+			<column name="new_value_int" type="int">
+				<constraints nullable="true"/>
+			</column>
+			<column name="old_value_ref" type="${type.idRef}">
+				<constraints nullable="true"/>
+			</column>
+			<column name="new_value_ref" type="${type.idRef}">
+				<constraints nullable="true"/>
+			</column>
+		</createTable>
+
+		<addForeignKeyConstraint
+			baseTableName="change_property" baseColumnNames="change_item_id"
+			referencedTableName="change_item" referencedColumnNames="id"
+			constraintName="fk_change_property__change_item_id__change_item"/>
+
+		<!-- ============================= -->
+		<!-- Table "change_property_entry" -->
+		<!-- ============================= -->
+		<createTable tableName="change_property_entry">
+			<column name="id" type="${type.id}" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="change_property_id" type="${type.idRef}">
+				<constraints nullable="false"/>
+			</column>
+			<column name="operation" type="varchar(191)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="entry_text" type="longtext">
+				<constraints nullable="false"/>
+			</column>
+			<column name="entry_ref" type="${type.idRef}">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+
+		<addForeignKeyConstraint
+			baseTableName="change_property_entry" baseColumnNames="change_property_id"
+			referencedTableName="change_property" referencedColumnNames="id"
+			constraintName="fk_change_property_entry__change_property_id__change_property"/>
+
 	</changeSet>
 
 </databaseChangeLog>

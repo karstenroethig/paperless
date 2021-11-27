@@ -21,7 +21,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @EqualsAndHashCode(callSuper = true)
-public class DocumentDto extends AbstractDtoId
+public class DocumentDto extends AbstractDtoIdArchivable
 {
 	@NotNull
 	@Size(min = 1, max = 191)
@@ -52,8 +52,6 @@ public class DocumentDto extends AbstractDtoId
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate deletionDate;
-
-	private boolean archived = false;
 
 	public void addTag(TagDto tag)
 	{

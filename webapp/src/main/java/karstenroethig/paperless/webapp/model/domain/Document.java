@@ -34,7 +34,7 @@ import lombok.ToString;
 
 @Entity
 @Table(name = "document")
-public class Document extends AbstractEntityId
+public class Document extends AbstractEntityIdArchivable
 {
 	@Column(name = "title", length = 191, nullable = false)
 	private String title;
@@ -84,9 +84,6 @@ public class Document extends AbstractEntityId
 	@Column(name = "deletion_date", nullable = true)
 	@Type(type = "org.hibernate.type.LocalDateType")
 	private LocalDate deletionDate;
-
-	@Column(name = "archived", nullable = false)
-	private boolean archived;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "document")
 	private List<Comment> comments = new ArrayList<>();

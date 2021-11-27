@@ -14,13 +14,11 @@ import lombok.ToString;
 @Setter
 @ToString
 @EqualsAndHashCode(callSuper = true)
-public class DocumentTypeDto extends AbstractDtoId
+public class DocumentTypeDto extends AbstractDtoIdArchivable
 {
 	@NotNull
 	@Size(min = 1, max = 191)
 	private String name;
 
 	private String description;
-
-	private boolean archived = false;
 }

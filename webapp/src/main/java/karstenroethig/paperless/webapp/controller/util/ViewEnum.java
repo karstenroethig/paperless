@@ -55,7 +55,9 @@ public enum ViewEnum
 	TAG_LIST(ControllerEnum.TAG, ActionEnum.LIST),
 	TAG_SHOW(ControllerEnum.TAG, ActionEnum.SHOW),
 	TAG_CREATE(ControllerEnum.TAG, ActionEnum.CREATE),
-	TAG_EDIT(ControllerEnum.TAG, ActionEnum.EDIT);
+	TAG_EDIT(ControllerEnum.TAG, ActionEnum.EDIT),
+
+	ACTIVITY_STREAM_LIST(ControllerEnum.ACTIVITY_STREAM, ActionEnum.LIST),;
 
 	private static final String VIEW_SUBDIRECTORY = "views";
 
@@ -73,7 +75,8 @@ public enum ViewEnum
 		DOCUMENT,
 		DOCUMENT_BOX("/document-box"),
 		DOCUMENT_TYPE("/document-type"),
-		TAG;
+		TAG,
+		ACTIVITY_STREAM("/activity-stream");
 
 		private String path = null;
 

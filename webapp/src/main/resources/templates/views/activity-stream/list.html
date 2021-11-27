@@ -1,0 +1,113 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{layout :: layout-fragment(
+							~{::title},
+							~{::content},
+							null,
+							~{:: #additionalJs},
+							'activity-stream'
+							)}">
+<head>
+	<title th:text="#{application.title-pattern(#{application.name}, #{activityStream.label})}"></title>
+</head>
+<body>
+
+	<div th:fragment="content">
+
+		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+			<h1 class="h2" th:text="#{activityStream.label}">Activity Stream</h1>
+		</div>
+
+		<div th:replace="~{fragments/messages :: messages-fragment(${messages})}"></div>
+
+		<div class="row">
+			<div class="offset-sm-10 col-sm-2">
+				<div th:replace="~{fragments/paging :: pagesize-fragment(availablePagesizes=${availablePagesizes}, currentSize=${page.size})}"></div>
+			</div>
+		</div>
+
+		<ul class="list-group list-group-flush" th:if="${!#lists.isEmpty(page.content)}">
+			<li class="list-group-item" th:each="activityGroup : ${page.content}">
+				<h6 class="card-title mb-2 text-muted">
+					<span th:text="${dateUtils.prettyFormatDuration(activityGroup.datetime)}">4 minutes ago</span>
+					-
+					<span th:text="${#temporals.format(activityGroup.datetime, #messages.msg('default.dateTimeHHmmssFormat'))}">[datetime]</span>
+				</h6>
+				<p class="card-text">
+					<span th:replace="~{fragments/user :: userLink-fragment(user=${activityGroup.user})}"></span>
+					<span th:text="#{'activityStream.'+${activityGroup.action.name()}}">[action]</span>
+					<span th:if="${activityGroup.entityLink != null}">
+						<a th:href="@{/{link}/list(link=${activityGroup.entityLink})}" th:text="${activityGroup.entityTitle}">[entityTitle]</a>.
+					</span>
+					<span th:if="${activityGroup.entityLink == null}">
+						<em  th:text="${activityGroup.entityTitle}">[entityTitle]</em>.
+					</span>
+				</p>
+				<div class="mb-2" th:if="${!#lists.isEmpty(activityGroup.properties)}">
+					<ul style="list-style-type: disc;">
+						<li th:each="activityProperty : ${activityGroup.properties}">
+							<span th:if="${!#strings.equals(activityProperty.type.name(),'DATE') && !#strings.equals(activityProperty.type.name(),'DATETIME')}"
+								th:text="${#messages.msgWithParams(activityProperty.createMessageKey(activityGroup.entityName), activityProperty.propertyValue)}">[propertyValue]</span>
+							<span th:if="${#strings.equals(activityProperty.type.name(),'DATE')}"
+								th:text="${#messages.msgWithParams(activityProperty.createMessageKey(activityGroup.entityName), #temporals.format(activityProperty.valueDate, #messages.msg('default.dateFormat')))}">[valueDate]</span>
+							<span th:if="${#strings.equals(activityProperty.type.name(),'DATETIME')}"
+								th:text="${#messages.msgWithParams(activityProperty.createMessageKey(activityGroup.entityName), #temporals.format(activityProperty.valueDatetime, #messages.msg('default.dateTimeHHmmssFormat')))}">[valueDatetime]</span>
+						</li>
+					</ul>
+				</div>
+			</li>
+			<li class="list-group-item">
+				<h6 class="card-title mb-2 text-muted">4 minutes ago - 2020-10-15 10:42:21</h6>
+				<p class="card-text">
+					<a href="#"><strong>Karsten</strong></a> commented on <a href="#">document name</a>.
+				</p>
+				<div class="alert alert-secondary">
+					You successfully read this important message.
+				</div>
+			</li>
+			<li class="list-group-item">
+				<h6 class="card-title mb-2 text-muted">4 minutes ago - 2020-10-15 10:42:21</h6>
+				<p class="card-text">
+					<a href="#"><strong>Karsten</strong></a> attached one file to <a href="#">document name</a>.
+				</p>
+				<div class="mb-2">
+					<ul style="list-style-type: disc;">
+						<li>
+							<a href="#">filename.pdf</a>
+						</li>
+					</ul>
+				</div>
+			</li>
+			<li class="list-group-item">
+				<h6 class="card-title mb-2 text-muted">4 minutes ago - 2020-10-15 10:42:21</h6>
+				<p class="card-text"><a href="#"><strong>Karsten</strong></a> updated 2 fields of <a href="#">document name</a>.</p>
+				<div class="mb-2">
+					<ul style="list-style-type: disc;">
+						<li>Logged '2h'</li>
+						<li>Changed the Remaining Estimate to '0h'</li>
+					</ul>
+				</div>
+			</li>
+		</ul>
+
+		<div th:replace="~{fragments/paging :: paging-fragment(controller='activity-stream', page=${page}, currentItems=${currentItems}, sortProperty=${sortProperty}, sortDesc=${sortDesc})}"></div>
+
+		<script th:inline="javascript">
+			/*<![CDATA[*/
+			var sortProperty = /*[[${sortProperty}]]*/ null;
+			var sortDesc = /*[[${sortDesc}]]*/ null;
+			var currentPage = /*[[${page.number}]]*/ 0;
+			var pageSize = /*[[${page.size}]]*/ 0;
+			var sortParam = sortProperty + ',' + (sortDesc ? 'desc' : 'asc');
+			/*]]>*/
+		</script>
+
+	</div>
+
+	<th:block id="additionalJs">
+		<script th:src="@{/js/activity-stream-list.js}"></script>
+	</th:block>
+
+</body>
+</html>

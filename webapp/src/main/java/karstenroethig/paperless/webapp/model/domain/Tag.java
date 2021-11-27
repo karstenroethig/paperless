@@ -26,7 +26,7 @@ import lombok.ToString;
 
 @Entity
 @Table(name = "tag")
-public class Tag extends AbstractEntityId
+public class Tag extends AbstractEntityIdArchivable
 {
 	@Column(name = "name", length = 191, nullable = false)
 	private String name;
@@ -37,9 +37,6 @@ public class Tag extends AbstractEntityId
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "document_tag", joinColumns = { @JoinColumn(name = "tag_id") }, inverseJoinColumns = { @JoinColumn(name = "document_id") })
 	private Set<Document> documents = new HashSet<>();
-
-	@Column(name = "archived", nullable = false)
-	private boolean archived;
 
 	@PreRemove
 	private void removeTagFromDocuments()

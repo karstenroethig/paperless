@@ -6,10 +6,7 @@
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
 	                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-	<!-- =========== -->
-	<!-- insert data -->
-	<!-- =========== -->
-	<changeSet id="test" author="roethig">
+	<changeSet id="testdata" author="roethig">
 
 		<loadData tableName="authority" file="db/testdata/authorities.csv" separator=";"></loadData>
 
@@ -49,6 +46,15 @@
 			<column name="updated_datetime" value="now()"/>
 		</insert>
 
+		<insert tableName="document_tag">
+			<column name="document_id" valueNumeric="select id from document where title='Testdokument'"/>
+			<column name="tag_id"      valueNumeric="select id from tag where name='Auto'"/>
+		</insert>
+		<insert tableName="document_tag">
+			<column name="document_id" valueNumeric="select id from document where title='Testdokument'"/>
+			<column name="tag_id"      valueNumeric="select id from tag where name='Handy'"/>
+		</insert>
+
 		<insert tableName="comment">
 			<column name="document_id"      valueNumeric="select id from document where title='Testdokument'"/>
 			<column name="text"             value="Ein erster Kommentar"/>
@@ -69,6 +75,185 @@
 			<column name="created_datetime" value="now()"/>
 			<column name="updated_datetime" value="now()"/>
 			<column name="author_id"        valueNumeric="select id from user where username='admin'"/>
+		</insert>
+
+	</changeSet>
+
+	<changeSet id="testdata-changes-contact-create" author="roethig">
+
+		<insert tableName="change_group">
+			<column name="entity_name"      value="contact"/>
+			<column name="entity_id"        valueNumeric="select id from contact where name='ADAC'"/>
+			<column name="entity_title"     value="ADAC"/>
+			<column name="created_datetime" value="now()"/>
+			<column name="created_user_id"  valueNumeric="select id from user where username='admin'"/>
+		</insert>
+
+		<insert tableName="change_item">
+			<column name="change_group_id" valueNumeric="select id from change_group where entity_name='contact' and entity_title='ADAC'"/>
+			<column name="operation"       value="CREATE"/>
+			<column name="entity_name"     value="contact"/>
+			<column name="entity_id"       valueNumeric="select id from contact where name='ADAC'"/>
+		</insert>
+
+		<insert tableName="change_property">
+			<column name="change_item_id" valueNumeric="select id from change_item where operation='CREATE' and entity_name='contact'"/>
+			<column name="property_key"   value="name"/>
+			<column name="property_type"  value="TEXT"/>
+			<column name="new_value_text" value="ADAC"/>
+		</insert>
+
+		<insert tableName="change_property">
+			<column name="change_item_id"    valueNumeric="select id from change_item where operation='CREATE' and entity_name='contact'"/>
+			<column name="property_key"      value="archived"/>
+			<column name="property_type"     value="BOOLEAN"/>
+			<column name="new_value_boolean" valueBoolean="false"/>
+		</insert>
+
+	</changeSet>
+
+	<changeSet id="testdata-changes-contact-update" author="roethig">
+
+		<insert tableName="change_group">
+			<column name="entity_name"      value="contact"/>
+			<column name="entity_id"        valueNumeric="select id from contact where name='Bonava'"/>
+			<column name="entity_title"     value="Bonaqa"/>
+			<column name="created_datetime" value="now()"/>
+			<column name="created_user_id"  valueNumeric="select id from user where username='admin'"/>
+		</insert>
+
+		<insert tableName="change_item">
+			<column name="change_group_id" valueNumeric="select id from change_group where entity_name='contact' and entity_title='Bonaqa'"/>
+			<column name="operation"       value="UPDATE"/>
+			<column name="entity_name"     value="contact"/>
+			<column name="entity_id"       valueNumeric="select id from contact where name='Bonava'"/>
+		</insert>
+
+		<insert tableName="change_property">
+			<column name="change_item_id" valueNumeric="select id from change_item where operation='UPDATE' and entity_name='contact'"/>
+			<column name="property_key"   value="name"/>
+			<column name="property_type"  value="TEXT"/>
+			<column name="old_value_text" value="Bonaqa"/>
+			<column name="new_value_text" value="Bonava"/>
+		</insert>
+
+		<insert tableName="change_property">
+			<column name="change_item_id"    valueNumeric="select id from change_item where operation='UPDATE' and entity_name='contact'"/>
+			<column name="property_key"      value="archived"/>
+			<column name="property_type"     value="BOOLEAN"/>
+			<column name="old_value_boolean" valueBoolean="true"/>
+			<column name="new_value_boolean" valueBoolean="false"/>
+		</insert>
+
+	</changeSet>
+
+	<changeSet id="testdata-changes-contact-delete" author="roethig">
+
+		<insert tableName="change_group">
+			<column name="entity_name"      value="contact"/>
+			<column name="entity_id"        value="69"/>
+			<column name="entity_title"     value="John Doe"/>
+			<column name="created_datetime" value="now()"/>
+			<column name="created_user_id"  valueNumeric="select id from user where username='admin'"/>
+		</insert>
+
+		<insert tableName="change_item">
+			<column name="change_group_id" valueNumeric="select id from change_group where entity_name='contact' and entity_title='John Doe'"/>
+			<column name="operation"       value="DELETE"/>
+			<column name="entity_name"     value="contact"/>
+			<column name="entity_id"       value="69"/>
+		</insert>
+
+		<insert tableName="change_property">
+			<column name="change_item_id" valueNumeric="select id from change_item where operation='DELETE' and entity_name='contact'"/>
+			<column name="property_key"   value="name"/>
+			<column name="property_type"  value="TEXT"/>
+			<column name="old_value_text" value="John Doe"/>
+		</insert>
+
+		<insert tableName="change_property">
+			<column name="change_item_id"    valueNumeric="select id from change_item where operation='DELETE' and entity_name='contact'"/>
+			<column name="property_key"      value="archived"/>
+			<column name="property_type"     value="BOOLEAN"/>
+			<column name="old_value_boolean" valueBoolean="false"/>
+		</insert>
+
+	</changeSet>
+
+	<changeSet id="testdata-changes-document-create" author="roethig">
+
+		<insert tableName="change_group">
+			<column name="entity_name"      value="document"/>
+			<column name="entity_id"        valueNumeric="select id from document where title='Testdokument'"/>
+			<column name="entity_title"     value="Testdokument"/>
+			<column name="created_datetime" value="now()"/>
+			<column name="created_user_id"  valueNumeric="select id from user where username='admin'"/>
+		</insert>
+
+		<insert tableName="change_item">
+			<column name="change_group_id" valueNumeric="select id from change_group where entity_name='document'"/>
+			<column name="operation"       value="CREATE"/>
+			<column name="entity_name"     value="document"/>
+			<column name="entity_id"       valueNumeric="select id from document where title='Testdokument'"/>
+		</insert>
+
+		<insert tableName="change_property">
+			<column name="change_item_id" valueNumeric="select id from change_item where operation='CREATE' and entity_name='document'"/>
+			<column name="property_key"   value="title"/>
+			<column name="property_type"  value="TEXT"/>
+			<column name="new_value_text" value="Testdokument"/>
+		</insert>
+
+		<insert tableName="change_property">
+			<column name="change_item_id" valueNumeric="select id from change_item where operation='CREATE' and entity_name='document'"/>
+			<column name="property_key"   value="documentType"/>
+			<column name="property_type"  value="REFERENCE"/>
+			<column name="new_value_text" value="Rechnung"/>
+			<column name="new_value_ref"  valueNumeric="select id from document_type where name='Rechnung'"/>
+		</insert>
+
+		<insert tableName="change_property">
+			<column name="change_item_id" valueNumeric="select id from change_item where operation='CREATE' and entity_name='document'"/>
+			<column name="property_key"   value="dateOfIssue"/>
+			<column name="property_type"  value="DATE"/>
+			<column name="new_value_date" value="now()"/>
+		</insert>
+
+		<insert tableName="change_property">
+			<column name="change_item_id" valueNumeric="select id from change_item where operation='CREATE' and entity_name='document'"/>
+			<column name="property_key"   value="sender"/>
+			<column name="property_type"  value="REFERENCE"/>
+			<column name="new_value_text" value="ADAC"/>
+			<column name="new_value_ref"  valueNumeric="select id from contact where name='ADAC'"/>
+		</insert>
+
+		<insert tableName="change_property">
+			<column name="change_item_id" valueNumeric="select id from change_item where operation='CREATE' and entity_name='document'"/>
+			<column name="property_key"   value="receiver"/>
+			<column name="property_type"  value="REFERENCE"/>
+			<column name="new_value_text" value="Karsten"/>
+			<column name="new_value_ref"  valueNumeric="select id from contact where name='Karsten'"/>
+		</insert>
+
+		<insert tableName="change_property">
+			<column name="change_item_id" valueNumeric="select id from change_item where operation='CREATE' and entity_name='document'"/>
+			<column name="property_key"   value="tags"/>
+			<column name="property_type"  value="REFERENCE_LIST"/>
+			<column name="new_value_text" value="[Auto, Handy]"/>
+		</insert>
+
+		<insert tableName="change_property_entry">
+			<column name="change_property_id" valueNumeric="select id from change_property where property_key='tags'"/>
+			<column name="operation"          value="ADD"/>
+			<column name="entry_text"         value="Auto"/>
+			<column name="entry_ref"          valueNumeric="select id from tag where name='Auto'"/>
+		</insert>
+
+		<insert tableName="change_property_entry">
+			<column name="change_property_id" valueNumeric="select id from change_property where property_key='tags'"/>
+			<column name="operation"          value="ADD"/>
+			<column name="entry_text"         value="Handy"/>
+			<column name="entry_ref"          valueNumeric="select id from tag where name='Handy'"/>
 		</insert>
 
 	</changeSet>
