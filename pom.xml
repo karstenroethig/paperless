@@ -155,7 +155,7 @@
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>buildnumber-maven-plugin</artifactId>
-					<version>1.4</version>
+					<version>3.0.0</version>
 					<configuration>
 						<revisionOnScmFailure>ERR</revisionOnScmFailure>
 						<timestampFormat>{0,date,yyyy-MM-dd HH:mm:ss}</timestampFormat>
